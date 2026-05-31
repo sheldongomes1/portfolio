@@ -9,6 +9,9 @@ Every CTA now resolves to a live product; nothing dead-ends. Source of truth mov
 surge CDN into this git repo.
 
 ### Added
+- **"Build in Public" section** — four curated LinkedIn posts (binary evals, precision-as-trust,
+  11s→0.1s latency, few-shot > instructions), sourced from the user's live posts doc, linking to
+  the LinkedIn activity feed. Refreshable via `_meta/REFRESH.md`.
 - **RedInk as the featured project** — Problem → Insight → Tradeoff → Result framing, with a
   CSS-rendered narrative-divergence demo (CONTRADICTS / NEUTRAL / CORROBORATES) and real stats.
 - **"The Arc" maturity ladder** — the deliberate progression from shipping → measuring →

@@ -359,6 +359,32 @@
     .matrix-legend { font-size: 0.74rem; color: var(--muted2); margin-top: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; }
     .matrix-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
 
+    /* ─── BUILD IN PUBLIC / WRITING ─── */
+    .writing { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; }
+    .write-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.6rem 1.7rem;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .write-card:hover { border-color: #a8d5be; transform: translateY(-3px); }
+    .write-topic {
+      font-size: 0.64rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+    }
+    .write-quote {
+      font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700;
+      letter-spacing: -0.01em; line-height: 1.3; margin-bottom: 0.7rem;
+    }
+    .write-take { font-size: 0.84rem; color: var(--muted); line-height: 1.7; font-weight: 300; flex-grow: 1; }
+    .write-take b { color: var(--ink); font-weight: 600; }
+    .write-meta {
+      font-size: 0.7rem; color: var(--muted2); margin-top: 1.1rem;
+      padding-top: 0.85rem; border-top: 1px solid var(--border);
+      letter-spacing: 0.02em;
+    }
+    .writing-cta { margin-top: 1.6rem; }
+
     /* ─── HOW I THINK ─── */
     .manifesto { display: flex; flex-direction: column; gap: 0; }
     .manifesto-item {
@@ -440,6 +466,7 @@
       .manifesto-item { grid-template-columns: 48px 1fr; gap: 1.25rem; }
       .manifesto-num { font-size: 2rem; }
       .rung { grid-template-columns: 1fr; gap: 0.4rem; padding: 1.25rem 0; }
+      .writing { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -451,6 +478,7 @@
   <div class="nav-links">
     <a href="#projects">Work</a>
     <a href="#arc">The Arc</a>
+    <a href="#writing">Writing</a>
     <a href="#thinking">How I Think</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
@@ -749,6 +777,51 @@
     <span><span class="dot dot-full"></span> Demonstrated</span>
     <span><span class="dot dot-part"></span> Partial / in progress</span>
     <span><span class="dot dot-none"></span> Not the focus</span>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- BUILD IN PUBLIC — curated from LinkedIn (source: _meta/linkedin-posts.txt) -->
+<div class="section reveal" id="writing">
+  <div class="section-header">
+    <div class="section-eyebrow">Build in Public</div>
+    <h2>I ship the lessons, not just the products</h2>
+    <p class="section-sub">A few from the feed — each one a real decision from building these tools, in the open.</p>
+  </div>
+  <div class="writing">
+
+    <div class="write-card">
+      <div class="write-topic">Evals</div>
+      <div class="write-quote">"A 4.9/5 became 42% FAIL the moment I switched to binary."</div>
+      <p class="write-take">Numerical rubrics smooth over the failures you most need to see. Moving RedInk's eval suite to binary PASS/FAIL (per Hamel Husain's method) surfaced a routing bug — the model pointing analysts to the wrong filing artifact — and <b>cut the failure rate 41% in one iteration, with no prompt change.</b></p>
+      <div class="write-meta">RedInk · 3,585 impressions</div>
+    </div>
+
+    <div class="write-card">
+      <div class="write-topic">Precision</div>
+      <div class="write-quote">"I built a gate, not a filter."</div>
+      <p class="write-take">Three independent anomaly signals — including teaching the system to notice what management chose <b>not</b> to address. ALERT fires only when all three agree. Set one false positive and an analyst forgives you; three and they stop opening your alerts. <b>Precision is a trust problem before it's a technical one.</b></p>
+      <div class="write-meta">RedInk · 687 impressions</div>
+    </div>
+
+    <div class="write-card">
+      <div class="write-topic">Latency</div>
+      <div class="write-quote">"I was calling an LLM because I could — not because every query needed it."</div>
+      <p class="write-take">PM Confessional's search took 11 seconds. <b>Dropped it to under 0.1s</b> by skipping the expensive rerank when internal confidence is already high, falling back to Gemini Flash-Lite when it isn't, and caching embeddings. The fix was judgment about <b>when</b> to spend the call, not a faster model.</p>
+      <div class="write-meta">PM Confessional · 1,084 impressions</div>
+    </div>
+
+    <div class="write-card">
+      <div class="write-topic">Prompting</div>
+      <div class="write-quote">"Too bullshitty. Trash. Wordy vomit."</div>
+      <p class="write-take">My manager's review of an exec-summary agent I built over our org's goals, repos, and sprints. Tightening the instructions didn't fix it. Feeding it five summaries he'd <b>actually written</b> did — one pass later it learned the audience cares about clients onboarded and CSAT, not plumbing. <b>Few-shot beat instruction-tuning.</b></p>
+      <div class="write-meta">Internal agent · build-in-public</div>
+    </div>
+
+  </div>
+  <div class="writing-cta">
+    <a href="https://www.linkedin.com/in/sheldongomes/recent-activity/all/" target="_blank" rel="noopener" class="btn btn-ghost">Read all posts on LinkedIn ↗</a>
   </div>
 </div>
 

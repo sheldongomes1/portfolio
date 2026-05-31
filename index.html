@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sheldon Gomes — Senior PM building eval-first AI products</title>
+
+  <!--
+    Design system (unchanged from v1 — it's good):
+    - Fraunces (variable serif, italic display) + Plus Jakarta Sans (body)
+    - Warm cream #f8f6f2 / deep forest green #155e45 / near-black ink #0e0e0e
+    Constraint: single self-contained HTML file, no build step, no binary assets.
+    v2 (2026-05-31): RedInk hero, real metrics, live CTAs, maturity ladder, AI-PM matrix.
+  -->
+
+  <!-- SEO + social share -->
+  <meta name="description" content="Senior Product Manager (15 years, Societe Generale, CFA) shipping eval-first AI products end to end — from grounded RAG to multi-repo financial anomaly detection across the Nasdaq-100." />
+  <meta name="author" content="Sheldon Gomes" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sheldon Gomes — Senior PM building eval-first AI products" />
+  <meta property="og:description" content="From user problem to shipped product. Eval-first AI products: grounded RAG, LLM-as-judge eval suites, and Nasdaq-100 anomaly detection." />
+  <meta property="og:url" content="https://sheldongomes.vercel.app/" />
+  <meta property="og:image" content="https://sheldongomes.vercel.app/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sheldon Gomes — Senior PM building eval-first AI products" />
+  <meta name="twitter:description" content="From user problem to shipped product. Eval-first AI products built and shipped end to end." />
+  <link rel="canonical" href="https://sheldongomes.vercel.app/" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:            #f8f6f2;
+      --surface:       #ffffff;
+      --surface2:      #f2f0ec;
+      --ink:           #0e0e0e;
+      --muted:         #6b6560;
+      --muted2:        #a09890;
+      --border:        #e4dfd9;
+      --accent:        #155e45;
+      --accent-light:  #e2f0ea;
+      --accent-mid:    #1a7a59;
+      --warn:          #b4541f;
+      --warn-light:    #f6e7dc;
+      --dark:          #0c1a14;
+      --dark-surface:  #132010;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 60px;
+      background: rgba(248,246,242,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+    .nav-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem; font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .nav-links {
+      display: flex; gap: 2.25rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+    .nav-links a { transition: color 0.15s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-btn {
+      padding: 0.45rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.8rem; font-weight: 500;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .nav-btn:hover { border-color: var(--ink); background: var(--surface); }
+
+    /* ─── HERO ─── */
+    .hero {
+      max-width: 1160px; margin: 0 auto;
+      padding: 6rem 2.5rem 5.5rem;
+      display: grid; grid-template-columns: 1fr 400px;
+      gap: 5rem; align-items: start;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.75rem;
+    }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 5.5vw, 4.75rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      font-weight: 800; margin-bottom: 1.75rem;
+    }
+    h1 em {
+      font-style: italic;
+      font-weight: 700;
+      font-variation-settings: 'opsz' 72;
+    }
+    .hero-sub {
+      font-size: 1.05rem; line-height: 1.8; color: var(--muted);
+      max-width: 520px; margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .hero-ctas { display: flex; gap: 0.65rem; flex-wrap: wrap; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.6rem 1.25rem; border-radius: 7px;
+      font-size: 0.85rem; font-weight: 500; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-mid); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* PM Philosophy card — sits top-right in hero */
+    .philosophy-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-top: 0.5rem;
+    }
+    .card-label {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted2); margin-bottom: 1.25rem;
+    }
+    .principle {
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .principle:first-of-type { border-top: none; padding-top: 0; }
+    .principle-title {
+      font-size: 0.875rem; font-weight: 600;
+      margin-bottom: 0.3rem;
+      display: flex; align-items: baseline; gap: 0.5rem;
+    }
+    .principle-title::before {
+      content: attr(data-n);
+      font-family: 'Fraunces', serif;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--accent); flex-shrink: 0;
+      width: 1.25rem;
+    }
+    .principle p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; padding-left: 1.75rem; }
+
+    /* ─── IMPACT STRIP ─── */
+    .impact {
+      background: var(--dark);
+      padding: 3rem 2.5rem;
+    }
+    .impact-inner {
+      max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-left: 3px solid var(--accent);
+      padding-left: 3rem; gap: 1.5rem;
+    }
+    .impact-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em;
+      color: #fff; line-height: 1;
+    }
+    .impact-num sub { font-size: 1rem; font-style: italic; color: var(--accent-mid); font-family: 'Fraunces', serif; }
+    .impact-label { font-size: 0.78rem; color: #6b8075; margin-top: 0.35rem; font-weight: 400; }
+
+    /* ─── SHARED SECTION LAYOUT ─── */
+    .section { max-width: 1160px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .section-eyebrow {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.025em; line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .section-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.4rem; font-weight: 300; max-width: 640px; }
+    .section-header { margin-bottom: 2.75rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); }
+
+    /* ─── FEATURED PROJECT ─── */
+    .featured {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .featured:hover { border-color: #a8d5be; }
+
+    .featured-body {
+      display: grid; grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    /* CSS-rendered product demo (replaces the old video asset) */
+    .featured-visual {
+      background: var(--dark);
+      padding: 2.25rem;
+      display: flex; flex-direction: column; gap: 0.85rem;
+      justify-content: center;
+    }
+    .visual-cap {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #6b8075; margin-bottom: 0.35rem;
+    }
+    .label-row {
+      background: var(--dark-surface);
+      border: 1px solid #1f3328;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .label-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em;
+      padding: 0.18rem 0.55rem; border-radius: 5px; width: fit-content;
+    }
+    .chip-contradicts { background: var(--warn-light); color: var(--warn); }
+    .chip-neutral     { background: #21302a; color: #9bb3a8; }
+    .chip-corroborates{ background: var(--accent-light); color: var(--accent); }
+    .label-text { font-size: 0.74rem; color: #aebfb6; line-height: 1.5; font-weight: 300; }
+    .label-text b { color: #e8efeb; font-weight: 600; }
+
+    .featured-info {
+      padding: 2.25rem;
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .featured-badge {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      background: var(--accent-light); color: var(--accent);
+      border-radius: 5px; padding: 0.2rem 0.65rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      width: fit-content; margin-bottom: 1rem;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .featured-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 1rem; line-height: 1.2;
+    }
+
+    /* Problem → Insight → Tradeoff → Result block */
+    .pitr { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; }
+    .pitr-row { font-size: 0.84rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+    .pitr-row b {
+      display: inline-block; min-width: 4.6rem;
+      font-family: 'Fraunces', serif; font-weight: 700; font-size: 0.72rem;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--accent); margin-right: 0.5rem;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .tag {
+      background: var(--accent-light); color: var(--accent);
+      border-radius: 5px; padding: 0.2rem 0.6rem;
+      font-size: 0.68rem; font-weight: 500;
+    }
+    .tag-neutral { background: var(--surface2); color: var(--muted); }
+    .featured-links { display: flex; gap: 0.5rem; }
+
+    .featured-stats {
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .stat-box { padding: 1.4rem 1.75rem; border-right: 1px solid var(--border); }
+    .stat-box:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem; font-weight: 800; color: var(--accent);
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .stat-label { font-size: 0.78rem; font-weight: 500; margin-top: 0.3rem; }
+    .stat-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* ─── PROJECTS GRID ─── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.6rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      cursor: pointer; transition: border-color 0.2s, transform 0.2s;
+      min-height: 240px;
+    }
+    .proj-card:hover { border-color: #a8d5be; transform: translateY(-3px); }
+    .proj-type { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 0.6rem; }
+    .proj-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.55rem; }
+    .proj-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-weight: 300; flex-grow: 1; }
+    .proj-desc b { color: var(--ink); font-weight: 600; }
+    .proj-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; }
+    .proj-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .proj-link { font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+    .proj-link:hover { text-decoration: underline; }
+
+    /* ─── MATURITY LADDER (the arc) ─── */
+    .ladder { display: flex; flex-direction: column; }
+    .rung {
+      display: grid; grid-template-columns: 150px 1fr 1.2fr; gap: 2rem;
+      align-items: baseline;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .rung:last-child { border-bottom: 1px solid var(--border); }
+    .rung-phase {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted2);
+    }
+    .rung-product { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+    .rung-product.flagship { color: var(--accent); }
+    .rung-product .flag-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; vertical-align: middle;
+      background: var(--accent-light); color: var(--accent);
+      padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem;
+    }
+    .rung-concept { font-size: 0.86rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+    .arc-caption {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+      font-size: 1.05rem; color: var(--ink); margin-top: 2rem; line-height: 1.5;
+    }
+    .arc-caption span { color: var(--accent); }
+
+    /* ─── AI-PM BAR MATRIX ─── */
+    .matrix-wrap { overflow-x: auto; }
+    table.matrix {
+      width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 640px;
+    }
+    table.matrix th, table.matrix td {
+      text-align: center; padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    table.matrix th { font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+    table.matrix td.product { text-align: left; font-family: 'Fraunces', serif; font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
+    table.matrix td.product.flagship { color: var(--accent); }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+    .dot-full { background: var(--accent); }
+    .dot-part { background: var(--accent); opacity: 0.4; }
+    .dot-none { background: var(--border); }
+    .matrix-legend { font-size: 0.74rem; color: var(--muted2); margin-top: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .matrix-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+    /* ─── HOW I THINK ─── */
+    .manifesto { display: flex; flex-direction: column; gap: 0; }
+    .manifesto-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 2rem; align-items: start;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .manifesto-item:first-child { border-top: 1px solid var(--border); }
+    .manifesto-num {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem; font-weight: 800; color: var(--border);
+      line-height: 1; letter-spacing: -0.04em; margin-top: -0.15rem;
+      user-select: none;
+    }
+    .manifesto-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 0.6rem; line-height: 1.2;
+    }
+    .manifesto-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.8; font-weight: 300; max-width: 680px; }
+
+    /* ─── SKILLS ─── */
+    .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem; }
+    .skill-group {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.6rem;
+    }
+    .skill-group-title {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted2); margin-bottom: 1.1rem;
+    }
+    .skill-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .skill-item { font-size: 0.875rem; color: var(--ink); font-weight: 400; }
+
+    /* ─── CONTACT ─── */
+    .contact-card {
+      background: var(--dark); border-radius: 16px;
+      padding: 3.75rem 4rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center;
+    }
+    .contact-card h2 { color: #fff; margin-bottom: 0.75rem; }
+    .contact-sub { font-size: 0.95rem; color: #5a7a6a; font-weight: 300; line-height: 1.7; }
+    .contact-btns { display: flex; flex-direction: column; gap: 0.65rem; min-width: 180px; }
+    .btn-white { background: #fff; color: var(--ink); justify-content: center; }
+    .btn-white:hover { background: #f0f0ef; }
+    .btn-dark-ghost {
+      background: transparent; border: 1px solid #263c30; color: #5a7a6a;
+      justify-content: center; transition: all 0.15s;
+    }
+    .btn-dark-ghost:hover { border-color: #5a7a6a; color: #a8c8b8; }
+
+    footer {
+      text-align: center; padding: 2rem;
+      font-size: 0.75rem; color: var(--muted2);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── SCROLL FADE-IN ─── */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 4rem; }
+      .philosophy-card { display: none; }
+      .featured-body { grid-template-columns: 1fr; }
+      .featured-info { border-left: none; border-top: 1px solid var(--border); }
+      .featured-stats { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .contact-card { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem; }
+      .contact-btns { flex-direction: row; }
+      .impact-inner { grid-template-columns: 1fr 1fr; padding-left: 1.5rem; }
+      .manifesto-item { grid-template-columns: 48px 1fr; gap: 1.25rem; }
+      .manifesto-num { font-size: 2rem; }
+      .rung { grid-template-columns: 1fr; gap: 0.4rem; padding: 1.25rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-name">Sheldon Gomes</div>
+  <div class="nav-links">
+    <a href="#projects">Work</a>
+    <a href="#arc">The Arc</a>
+    <a href="#thinking">How I Think</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="/Resume.pdf" target="_blank" rel="noopener" class="nav-btn">Résumé ↗</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">Senior PM · 15 Years · CFA · Now Building AI Products</div>
+    <h1>
+      From user problem<br/>
+      <em>to shipped product.</em>
+    </h1>
+    <p class="hero-sub">
+      Senior PM (Societe Generale, CFA) shipping eval-first AI products end to end —
+      from grounded RAG to multi-repo anomaly detection across the Nasdaq-100.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">See my work →</a>
+      <a href="/Resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost">Résumé ↗</a>
+      <a href="https://www.linkedin.com/in/sheldongomes/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <!-- PM Philosophy — floats top-right in hero -->
+  <div class="philosophy-card">
+    <div class="card-label">PM Philosophy</div>
+
+    <div class="principle">
+      <div class="principle-title" data-n="1.">Ground every claim, then measure it</div>
+      <p>AI that can't cite its source is a liability. I build with provenance first, then put an eval suite around it so quality is a number, not a vibe.</p>
+    </div>
+
+    <div class="principle">
+      <div class="principle-title" data-n="2.">Ship to learn, not to finish</div>
+      <p>Every release is a question to the market. I design for fast feedback loops — not for perfect launches.</p>
+    </div>
+
+    <div class="principle">
+      <div class="principle-title" data-n="3.">PMs who build earn trust</div>
+      <p>I write code, ship prototypes, and build tooling. Engineers respect PMs who understand what they're asking for.</p>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT STRIP — real metrics -->
+<div class="impact">
+  <div class="impact-inner">
+    <div>
+      <div class="impact-num">1,900<sub>+</sub></div>
+      <div class="impact-label">Filings scored across the Nasdaq-100</div>
+    </div>
+    <div>
+      <div class="impact-num">700<sub>+</sub></div>
+      <div class="impact-label">Grounded, cited sources in production RAG</div>
+    </div>
+    <div>
+      <div class="impact-num">33→90<sub>%</sub></div>
+      <div class="impact-label">Retrieval precision, via eval-driven tuning</div>
+    </div>
+    <div>
+      <div class="impact-num">56<sub>×</sub></div>
+      <div class="impact-label">Warm-search latency cut (11.2s → 0.2s)</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED PROJECT — RedInk (new hero) -->
+<div class="section reveal" id="projects">
+  <div class="section-header">
+    <div class="section-eyebrow">Featured Project</div>
+    <h2>RedInk</h2>
+    <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100 — where the signal isn't the anomaly, it's the gap between the numbers and the story management tells about them.</p>
+  </div>
+
+  <div class="featured">
+    <div class="featured-body">
+      <!-- CSS-rendered product demo: narrative-divergence labels -->
+      <div class="featured-visual">
+        <div class="visual-cap">Narrative-divergence labels · cited MD&amp;A</div>
+
+        <div class="label-row">
+          <span class="label-chip chip-contradicts">● CONTRADICTS</span>
+          <span class="label-text">Revenue <b>+12%</b> YoY, yet MD&amp;A omits the <b>margin compression</b> the cash-flow statement implies.</span>
+        </div>
+        <div class="label-row">
+          <span class="label-chip chip-neutral">● NEUTRAL</span>
+          <span class="label-text">Inventory build flagged, but framed as seasonal — <b>no clear stance</b> for or against the anomaly.</span>
+        </div>
+        <div class="label-row">
+          <span class="label-chip chip-corroborates">● CORROBORATES</span>
+          <span class="label-text">Management explicitly attributes the <b>guidance cut</b> to the same demand softness the data shows.</span>
+        </div>
+      </div>
+
+      <div class="featured-info">
+        <div>
+          <div class="featured-badge">
+            <span class="live-dot"></span>
+            Live · Eval-first
+          </div>
+          <div class="featured-title">Narrative-divergence detection</div>
+          <div class="pitr">
+            <p class="pitr-row"><b>Problem</b>Analysts can't manually catch when a company's numbers diverge from its own history <em>and</em> the narrative glosses over it.</p>
+            <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them.</p>
+            <p class="pitr-row"><b>Tradeoff</b>Scoped divergence to top anomalies (not all 1,371 filings) to ship a trustworthy demo over a boil-the-ocean one.</p>
+            <p class="pitr-row"><b>Result</b>CONTRADICTS / NEUTRAL / CORROBORATES labels with cited MD&amp;A passages, behind an LLM-as-judge eval suite.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">RAG</span>
+            <span class="tag">LLM-as-judge</span>
+            <span class="tag">GCP</span>
+            <span class="tag tag-neutral">Telemetry</span>
+          </div>
+        </div>
+        <div class="featured-links">
+          <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="featured-stats">
+      <div class="stat-box">
+        <div class="stat-num">1,900+</div>
+        <div class="stat-label">Filings scored</div>
+        <div class="stat-desc">Nasdaq-100 universe</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">96.2%</div>
+        <div class="stat-label">Code-eval pass</div>
+        <div class="stat-desc">Automated correctness checks</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Divergence labels</div>
+        <div class="stat-desc">Numbers vs. management narrative</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">v2</div>
+        <div class="stat-label">In progress</div>
+        <div class="stat-desc">Earnings-call vs. filing agent</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- MORE PROJECTS — all real, all live, Problem → Result framing -->
+<div class="section reveal">
+  <div class="section-header">
+    <div class="section-eyebrow">More Work</div>
+    <h2>Also Building</h2>
+    <p class="section-sub">Each one a rung on the same ladder — every link below is live.</p>
+  </div>
+  <div class="projects-grid">
+
+    <div class="proj-card" onclick="window.open('https://pm-confessional-359562560246.us-central1.run.app','_blank')">
+      <div>
+        <div class="proj-type">Grounded RAG · Live on Cloud Run</div>
+        <div class="proj-title">PM Confessional</div>
+        <p class="proj-desc">A grounded "Decision Coach" over <b>700+ verbatim PM regrets</b> from Lenny's Podcast. Precision <b>33%→90%</b> via prompt iteration; confidence threshold tuned to <b>refuse rather than guess</b> (top-1 relevance 30%→80%).</p>
+      </div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag">RAG</span><span class="tag tag-neutral">Evals</span></div>
+        <a href="https://pm-confessional-359562560246.us-central1.run.app" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Open app ↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card" onclick="window.open('https://strategic-fit-analyzer-615130038366.us-east1.run.app/','_blank')">
+      <div>
+        <div class="proj-type">0→1 Web App · Live on Cloud Run</div>
+        <div class="proj-title">Strategic Fit Canvas</div>
+        <p class="proj-desc">Résumé + JD → an AI-scored candidate-fit radar, with auth, batch processing, an analytics dashboard, and a feedback loop. <b>Kept deliberately raw — the "before" of the arc.</b></p>
+      </div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag">GCP</span><span class="tag tag-neutral">Full-stack</span></div>
+        <a href="https://strategic-fit-analyzer-615130038366.us-east1.run.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Open app ↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card" onclick="window.open('https://github.com/sheldongomes1/ProductMangementOS','_blank')">
+      <div>
+        <div class="proj-type">Open Source · Python · MCP</div>
+        <div class="proj-title">Product Management OS</div>
+        <p class="proj-desc">An open-source AI system that reads your goals + backlog and surfaces what to work on next. <b>The meta-tool that runs this whole portfolio</b> — building the system that builds the products.</p>
+      </div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag">MCP</span><span class="tag tag-neutral">Claude API</span></div>
+        <a href="https://github.com/sheldongomes1/ProductMangementOS" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">GitHub ↗</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- THE ARC — maturity ladder -->
+<div class="section reveal" id="arc">
+  <div class="section-header">
+    <div class="section-eyebrow">The Arc</div>
+    <h2>A deliberate progression</h2>
+    <p class="section-sub">Each product taught the next. Read top to bottom: the capability ladder from shipping to systems to agents.</p>
+  </div>
+  <div class="ladder">
+    <div class="rung">
+      <div class="rung-phase">0→1 · Raw</div>
+      <div class="rung-product">Strategic Fit Canvas</div>
+      <div class="rung-concept">Shipping a real web app end to end — auth, uploads, deploy.</div>
+    </div>
+    <div class="rung">
+      <div class="rung-phase">Grounding + Evals</div>
+      <div class="rung-product">PM Confessional</div>
+      <div class="rung-concept">RAG with provenance; precision auditing; threshold tuning; a 56× latency fix.</div>
+    </div>
+    <div class="rung">
+      <div class="rung-phase">Eval-first Systems</div>
+      <div class="rung-product flagship">RedInk<span class="flag-tag">Flagship</span></div>
+      <div class="rung-concept">Multi-repo architecture; LLM-judge eval suite; narrative divergence; telemetry.</div>
+    </div>
+    <div class="rung">
+      <div class="rung-phase">Agentic</div>
+      <div class="rung-product">RedInk v2 <span style="font-weight:400;font-size:0.8rem;color:var(--muted2)">(in progress)</span></div>
+      <div class="rung-concept">Multi-step call-vs-filing agent; labelling a golden set <em>before</em> building.</div>
+    </div>
+    <div class="rung">
+      <div class="rung-phase">Meta / Infra</div>
+      <div class="rung-product">Product Management OS</div>
+      <div class="rung-concept">Building the system that builds the products — and learning in public.</div>
+    </div>
+  </div>
+  <p class="arc-caption">Learned to ship <span>→</span> learned to measure <span>→</span> learned to build systems <span>→</span> learned to make them agentic — in public.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- THE AI-PM BAR — capability matrix -->
+<div class="section reveal">
+  <div class="section-header">
+    <div class="section-eyebrow">The AI-PM Bar</div>
+    <h2>What each product proves</h2>
+    <p class="section-sub">The capabilities a senior AI PM is expected to own — and where each shipped product demonstrates them.</p>
+  </div>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th style="text-align:left">Product</th>
+          <th>Grounding / RAG</th>
+          <th>Evals</th>
+          <th>Agentic</th>
+          <th>Telemetry</th>
+          <th>Shipped live</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="product flagship">RedInk</td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-part"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+        </tr>
+        <tr>
+          <td class="product">PM Confessional</td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-none"></span></td>
+          <td><span class="dot dot-part"></span></td>
+          <td><span class="dot dot-full"></span></td>
+        </tr>
+        <tr>
+          <td class="product">Strategic Fit Canvas</td>
+          <td><span class="dot dot-part"></span></td>
+          <td><span class="dot dot-none"></span></td>
+          <td><span class="dot dot-none"></span></td>
+          <td><span class="dot dot-part"></span></td>
+          <td><span class="dot dot-full"></span></td>
+        </tr>
+        <tr>
+          <td class="product">Product Management OS</td>
+          <td><span class="dot dot-none"></span></td>
+          <td><span class="dot dot-part"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-none"></span></td>
+          <td><span class="dot dot-part"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="matrix-legend">
+    <span><span class="dot dot-full"></span> Demonstrated</span>
+    <span><span class="dot dot-part"></span> Partial / in progress</span>
+    <span><span class="dot dot-none"></span> Not the focus</span>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- HOW I THINK — manifesto list format -->
+<div class="section reveal" id="thinking">
+  <div class="section-header">
+    <div class="section-eyebrow">Product Philosophy</div>
+    <h2>How I Think</h2>
+    <p class="section-sub">The principles that shape every product decision I make.</p>
+  </div>
+  <div class="manifesto">
+
+    <div class="manifesto-item">
+      <div class="manifesto-num">01</div>
+      <div class="manifesto-body">
+        <div class="manifesto-title">User problems over feature requests</div>
+        <p class="manifesto-desc">Features are solutions in search of problems. I spend more time understanding why users behave the way they do than cataloguing what they ask for. The best product insights live one question deeper — "why does that matter to you?" is where the real brief is.</p>
+      </div>
+    </div>
+
+    <div class="manifesto-item">
+      <div class="manifesto-num">02</div>
+      <div class="manifesto-body">
+        <div class="manifesto-title">Quality is a number, not a vibe</div>
+        <p class="manifesto-desc">For AI products especially, "it feels better" isn't shippable. I put an eval harness around the thing — precision, TPR/TNR, an LLM-as-judge with a golden set — so I can tell whether a prompt change helped, regressed, or just moved the demo. Metrics inform; judgment decides; but I refuse to fly blind.</p>
+      </div>
+    </div>
+
+    <div class="manifesto-item">
+      <div class="manifesto-num">03</div>
+      <div class="manifesto-body">
+        <div class="manifesto-title">Build the smallest thing that proves the point</div>
+        <p class="manifesto-desc">Momentum beats perfection. I bias toward shipping a prototype that answers the key risk question over writing a detailed spec for a product no one has validated — then I iterate fast on real signal. Scoping RedInk to the top anomalies instead of all 1,371 filings was exactly this call.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- SKILLS — curated, junior signals removed -->
+<div class="section reveal" id="skills">
+  <div class="section-header">
+    <div class="section-eyebrow">Skills</div>
+    <h2>What I Bring</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Product</div>
+      <div class="skill-list">
+        <div class="skill-item">Product Strategy</div>
+        <div class="skill-item">Prioritisation</div>
+        <div class="skill-item">User Research</div>
+        <div class="skill-item">PRDs &amp; Specs</div>
+        <div class="skill-item">Go-to-Market</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">AI &amp; Evals</div>
+      <div class="skill-list">
+        <div class="skill-item">Evals &amp; Measurement</div>
+        <div class="skill-item">Grounding / RAG</div>
+        <div class="skill-item">Agentic Workflows</div>
+        <div class="skill-item">Prompt Engineering</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Build &amp; Cloud</div>
+      <div class="skill-list">
+        <div class="skill-item">Google Cloud (GCP)</div>
+        <div class="skill-item">Claude API</div>
+        <div class="skill-item">MCP Protocol</div>
+        <div class="skill-item">Python</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- CONTACT -->
+<div class="section reveal" id="contact">
+  <div class="contact-card">
+    <div>
+      <div class="section-eyebrow" style="color:#4a9e7a;margin-bottom:0.6rem">Get in touch</div>
+      <h2>Let's build something worth trusting.</h2>
+      <p class="contact-sub" style="margin-top:0.75rem">I'm looking for senior AI PM roles where grounding, evals, and shipping matter. If that's the bar you're hiring for, let's talk.</p>
+    </div>
+    <div class="contact-btns">
+      <a href="mailto:sheldon.gomes@gmail.com" class="btn btn-white">Email me ↗</a>
+      <a href="/Resume.pdf" target="_blank" rel="noopener" class="btn btn-dark-ghost">Résumé ↗</a>
+      <a href="https://www.linkedin.com/in/sheldongomes/" target="_blank" rel="noopener" class="btn btn-dark-ghost">LinkedIn ↗</a>
+    </div>
+  </div>
+</div>
+
+<footer>Built &amp; shipped by Sheldon Gomes · © 2026</footer>
+
+<script>
+  // Subtle fade-in on scroll (P3). Respects prefers-reduced-motion via CSS.
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

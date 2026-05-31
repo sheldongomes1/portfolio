@@ -1,0 +1,19 @@
+# Private planning / maintenance docs — live locally, never published.
+# (These would otherwise be web-served at /_meta/... and visible on a public repo.)
+_meta/
+
+# Local backups / superseded snapshots — git history is the real record.
+archive/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Vercel local state
+.vercel/
+
+# Claude Code local state (keep settings out of the public portfolio repo)
+.claude/

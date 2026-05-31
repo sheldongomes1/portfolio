@@ -9,6 +9,7 @@ Every CTA now resolves to a live product; nothing dead-ends. Source of truth mov
 surge CDN into this git repo.
 
 ### Added
+- **RedInk "Code ↗" link** → `github.com/sheldongomes1/redink-ui` (repos made public 2026-05-31).
 - **"Build in Public" section** — four curated LinkedIn posts (binary evals, precision-as-trust,
   11s→0.1s latency, few-shot > instructions), sourced from the user's live posts doc, linking to
   the LinkedIn activity feed. Refreshable via `_meta/REFRESH.md`.

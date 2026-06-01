@@ -9,7 +9,9 @@ Every CTA now resolves to a live product; nothing dead-ends. Source of truth mov
 surge CDN into this git repo.
 
 ### Added
-- **RedInk "Code ↗" link** → `github.com/sheldongomes1/redink-ui` (repos made public 2026-05-31).
+- **RedInk multi-repo architecture strip** — the flagship card now shows the four public repos
+  in data-flow order (`qqq-anomaly-lab → scoring-pipeline → qqq-eval-suite → redink-ui`), each
+  clickable. (Superseded the single "Code ↗" link once all four RedInk repos went public 2026-05-31.)
 - **"Build in Public" section** — four curated LinkedIn posts (binary evals, precision-as-trust,
   11s→0.1s latency, few-shot > instructions), sourced from the user's live posts doc, linking to
   the LinkedIn activity feed. Refreshable via `_meta/REFRESH.md`.

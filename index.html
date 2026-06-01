@@ -277,6 +277,22 @@
     .tag-neutral { background: var(--surface2); color: var(--muted); }
     .featured-links { display: flex; gap: 0.5rem; }
 
+    /* Multi-repo architecture strip on the RedInk card */
+    .repo-strip { margin-top: 1.25rem; }
+    .repo-strip-label {
+      display: block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted2); margin-bottom: 0.6rem;
+    }
+    .repo-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .repo-chip {
+      font-size: 0.72rem; font-weight: 500; color: var(--accent);
+      background: var(--accent-light); border: 1px solid transparent;
+      border-radius: 5px; padding: 0.22rem 0.55rem;
+      transition: border-color 0.15s;
+    }
+    .repo-chip:hover { border-color: var(--accent); }
+    .repo-arrow { color: var(--muted2); font-size: 0.72rem; user-select: none; }
+
     .featured-stats {
       border-top: 1px solid var(--border);
       display: grid; grid-template-columns: repeat(4,1fr);
@@ -597,9 +613,22 @@
             <span class="tag tag-neutral">Telemetry</span>
           </div>
         </div>
-        <div class="featured-links">
-          <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
-          <a href="https://github.com/sheldongomes1/redink-ui" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">Code ↗</a>
+        <div>
+          <div class="featured-links">
+            <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
+          </div>
+          <div class="repo-strip">
+            <span class="repo-strip-label">The architecture — built across 4 repos</span>
+            <div class="repo-chips">
+              <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-anomaly-lab" target="_blank" rel="noopener" title="Data layer — SEC EDGAR ingestion, features → BigQuery">qqq-anomaly-lab</a>
+              <span class="repo-arrow">→</span>
+              <a class="repo-chip" href="https://github.com/sheldongomes1/scoring-pipeline" target="_blank" rel="noopener" title="Three-pillar anomaly scoring → conviction scores">scoring-pipeline</a>
+              <span class="repo-arrow">→</span>
+              <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-eval-suite" target="_blank" rel="noopener" title="LLM eval suite — binary judges, golden dataset">qqq-eval-suite</a>
+              <span class="repo-arrow">→</span>
+              <a class="repo-chip" href="https://github.com/sheldongomes1/redink-ui" target="_blank" rel="noopener" title="Analyst UI — React/Next.js (powers the live app)">redink-ui</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

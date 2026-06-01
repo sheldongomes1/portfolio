@@ -2,7 +2,7 @@
 
 Personal portfolio of **Sheldon Gomes** — Senior Product Manager (Societe Generale, CFA) building eval-first AI products.
 
-**Live:** https://sheldongomes.vercel.app  ·  **Stack:** single static `index.html`, no build step, deployed on Vercel.
+**Live:** https://sheldongomes1.github.io/portfolio/  ·  **Stack:** single static `index.html`, no build step, deployed on GitHub Pages via Actions.
 
 ---
 

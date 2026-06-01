@@ -1,8 +1,8 @@
-# sheldongomes.com — portfolio
+# sheldongomes.dev — portfolio
 
 Personal portfolio of **Sheldon Gomes** — Senior Product Manager (Societe Generale, CFA) building eval-first AI products.
 
-**Live:** https://sheldongomes1.github.io/portfolio/  ·  **Stack:** single static `index.html`, no build step, deployed on GitHub Pages via Actions.
+**Live:** https://sheldongomes.dev/  ·  **Stack:** single static `index.html`, no build step, deployed on GitHub Pages via Actions.
 
 ---
 

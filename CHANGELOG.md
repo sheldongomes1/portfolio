@@ -9,6 +9,10 @@ Every CTA now resolves to a live product; nothing dead-ends. Source of truth mov
 surge CDN into this git repo.
 
 ### Added
+- **Brand images** — an editorial `og-card.png` (1200×630) share thumbnail in the site's own
+  Fraunces/forest-green identity, and a full favicon set (`favicon.svg`, `favicon-16/32.png`,
+  `favicon.ico`, `apple-touch-icon.png`) — an "SG" monogram replacing the placeholder tab icon.
+  Plus `theme-color`. Generator: `_meta/make-brand-assets.py`.
 - **RedInk multi-repo architecture strip** — the flagship card now shows the four public repos
   in data-flow order (`qqq-anomaly-lab → scoring-pipeline → qqq-eval-suite → redink-ui`), each
   clickable. (Superseded the single "Code ↗" link once all four RedInk repos went public 2026-05-31.)

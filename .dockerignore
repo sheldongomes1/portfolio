@@ -1,0 +1,9 @@
+.git
+.github
+.claude
+archive
+_meta
+*.md
+vercel.json
+CNAME
+.nojekyll

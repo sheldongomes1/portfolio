@@ -3,27 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sheldon Gomes — Senior PM building eval-first AI products</title>
+  <title>Sheldon Gomes — Senior PM building multi-agent, eval-first AI products</title>
 
   <!--
-    Design system (unchanged from v1 — it's good):
+    Design system:
     - Fraunces (variable serif, italic display) + Plus Jakarta Sans (body)
-    - Warm cream #f8f6f2 / deep forest green #155e45 / near-black ink #0e0e0e
+    - RedInk product palette: indigo/blurple #635bff on clean white + neutral grays.
+      Dark bands use a deep indigo-navy (#0e1020) so the accent carries through.
     Constraint: single self-contained HTML file, no build step, no binary assets.
-    v2 (2026-05-31): RedInk hero, real metrics, live CTAs, maturity ladder, AI-PM matrix.
+    v3 (2026-06-27): re-skinned to RedInk indigo; Pain Signal Intelligence promoted to
+      flagship (multi-agent on Google ADK); RedInk now secondary featured; "No Black Boxes"
+      newsletter added as a hero ribbon + dedicated section.
   -->
 
   <!-- SEO + social share -->
-  <meta name="description" content="Senior Product Manager (15 years, Societe Generale, CFA) shipping eval-first AI products end to end — from grounded RAG to multi-repo financial anomaly detection across the Nasdaq-100." />
+  <meta name="description" content="Senior Product Manager (15 years, Societe Generale, CFA) shipping eval-first AI products end to end — multi-agent systems on Google ADK, Gemini and BigQuery, grounded RAG, and LLM-as-judge eval suites." />
   <meta name="author" content="Sheldon Gomes" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Sheldon Gomes — Senior PM building eval-first AI products" />
-  <meta property="og:description" content="From user problem to shipped product. Eval-first AI products: grounded RAG, LLM-as-judge eval suites, and Nasdaq-100 anomaly detection." />
+  <meta property="og:title" content="Sheldon Gomes — Senior PM building multi-agent, eval-first AI products" />
+  <meta property="og:description" content="From user problem to shipped product. Multi-agent AI on Google ADK with a cross-model judge, grounded RAG, and eval suites — built and shipped end to end." />
   <meta property="og:url" content="https://sheldongomes.dev/" />
   <meta property="og:image" content="https://sheldongomes.dev/og-card.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sheldon Gomes — Senior PM building eval-first AI products" />
-  <meta name="twitter:description" content="From user problem to shipped product. Eval-first AI products built and shipped end to end." />
+  <meta name="twitter:title" content="Sheldon Gomes — Senior PM building multi-agent, eval-first AI products" />
+  <meta name="twitter:description" content="From user problem to shipped product. Multi-agent AI on Google Cloud, grounded RAG, and eval suites — built and shipped end to end." />
   <link rel="canonical" href="https://sheldongomes.dev/" />
 
   <!-- Favicons / app icons -->
@@ -32,25 +35,34 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <meta name="theme-color" content="#155e45" />
+  <meta name="theme-color" content="#635bff" />
 
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:            #f8f6f2;
+      /* RedInk product palette — indigo/blurple on clean white + neutral grays */
+      --bg:            #ffffff;
       --surface:       #ffffff;
-      --surface2:      #f2f0ec;
-      --ink:           #0e0e0e;
-      --muted:         #6b6560;
-      --muted2:        #a09890;
-      --border:        #e4dfd9;
-      --accent:        #155e45;
-      --accent-light:  #e2f0ea;
-      --accent-mid:    #1a7a59;
+      --surface2:      #f9fafb;
+      --ink:           #111827;
+      --muted:         #6b7280;
+      --muted2:        #9ca3af;
+      --border:        #e5e7eb;
+      --accent:        #635bff;
+      --accent-mid:    #4f46e5;
+      --accent-light:  #ede9fe;
+      --accent-border: #c4b5fd;
+      --accent-soft:   #818cf8;
       --warn:          #b4541f;
-      --warn-light:    #f6e7dc;
-      --dark:          #0c1a14;
-      --dark-surface:  #132010;
+      --warn-light:    #fef2e9;
+      --pass:          #15803d;
+      --pass-light:    #dcfce7;
+      /* deep indigo-navy for dark bands */
+      --dark:          #0e1020;
+      --dark-surface:  #171a2e;
+      --dark-border:   #262a44;
+      --dark-muted:    #8b90b5;
+      --dark-bright:   #c7cbf0;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -71,7 +83,7 @@
     nav {
       position: sticky; top: 0; z-index: 100;
       height: 60px;
-      background: rgba(248,246,242,0.95);
+      background: rgba(255,255,255,0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
@@ -83,7 +95,7 @@
       letter-spacing: -0.01em;
     }
     .nav-links {
-      display: flex; gap: 2.25rem;
+      display: flex; gap: 2rem;
       font-size: 0.85rem; color: var(--muted);
     }
     .nav-links a { transition: color 0.15s; }
@@ -95,12 +107,12 @@
       font-size: 0.8rem; font-weight: 500;
       transition: border-color 0.15s, background 0.15s;
     }
-    .nav-btn:hover { border-color: var(--ink); background: var(--surface); }
+    .nav-btn:hover { border-color: var(--accent); background: var(--accent-light); }
 
     /* ─── HERO ─── */
     .hero {
       max-width: 1160px; margin: 0 auto;
-      padding: 6rem 2.5rem 5.5rem;
+      padding: 6rem 2.5rem 4rem;
       display: grid; grid-template-columns: 1fr 400px;
       gap: 5rem; align-items: start;
     }
@@ -120,6 +132,7 @@
       font-style: italic;
       font-weight: 700;
       font-variation-settings: 'opsz' 72;
+      color: var(--accent);
     }
     .hero-sub {
       font-size: 1.05rem; line-height: 1.8; color: var(--muted);
@@ -135,7 +148,7 @@
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-primary:hover { background: var(--accent-mid); transform: translateY(-1px); }
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
     /* PM Philosophy card — sits top-right in hero */
     .philosophy-card {
@@ -144,6 +157,7 @@
       border-radius: 14px;
       padding: 1.75rem;
       margin-top: 0.5rem;
+      box-shadow: 0 1px 2px rgba(17,24,39,0.04);
     }
     .card-label {
       font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
@@ -168,10 +182,34 @@
     }
     .principle p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; padding-left: 1.75rem; }
 
+    /* ─── NEWSLETTER RIBBON ─── */
+    .news-ribbon {
+      max-width: 1160px; margin: 0 auto 1rem;
+      padding: 0 2.5rem;
+    }
+    .news-ribbon-inner {
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+    }
+    .news-ribbon-text { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; }
+    .news-pill {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; background: var(--accent); border-radius: 5px; padding: 0.22rem 0.55rem;
+      white-space: nowrap;
+    }
+    .news-ribbon-copy { font-size: 0.9rem; color: var(--ink); font-weight: 500; }
+    .news-ribbon-copy b { color: var(--accent-mid); font-weight: 700; }
+    .news-ribbon-copy span { color: var(--muted); font-weight: 400; }
+
     /* ─── IMPACT STRIP ─── */
     .impact {
       background: var(--dark);
       padding: 3rem 2.5rem;
+      margin-top: 1.5rem;
     }
     .impact-inner {
       max-width: 1160px; margin: 0 auto;
@@ -184,8 +222,8 @@
       font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em;
       color: #fff; line-height: 1;
     }
-    .impact-num sub { font-size: 1rem; font-style: italic; color: var(--accent-mid); font-family: 'Fraunces', serif; }
-    .impact-label { font-size: 0.78rem; color: #6b8075; margin-top: 0.35rem; font-weight: 400; }
+    .impact-num sub { font-size: 1rem; font-style: italic; color: var(--accent-soft); font-family: 'Fraunces', serif; }
+    .impact-label { font-size: 0.78rem; color: var(--dark-muted); margin-top: 0.35rem; font-weight: 400; }
 
     /* ─── SHARED SECTION LAYOUT ─── */
     .section { max-width: 1160px; margin: 0 auto; padding: 5rem 2.5rem; }
@@ -199,7 +237,7 @@
       font-weight: 800; letter-spacing: -0.025em; line-height: 1.1;
       margin-bottom: 0.5rem;
     }
-    .section-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.4rem; font-weight: 300; max-width: 640px; }
+    .section-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.4rem; font-weight: 300; max-width: 660px; }
     .section-header { margin-bottom: 2.75rem; }
 
     .divider { border: none; border-top: 1px solid var(--border); }
@@ -210,15 +248,16 @@
       border-radius: 16px;
       background: var(--surface);
       overflow: hidden;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 2px rgba(17,24,39,0.04);
     }
-    .featured:hover { border-color: #a8d5be; }
+    .featured:hover { border-color: var(--accent-border); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
 
     .featured-body {
       display: grid; grid-template-columns: 1.05fr 0.95fr;
     }
 
-    /* CSS-rendered product demo (replaces the old video asset) */
+    /* CSS-rendered product demo */
     .featured-visual {
       background: var(--dark);
       padding: 2.25rem;
@@ -227,11 +266,11 @@
     }
     .visual-cap {
       font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: #6b8075; margin-bottom: 0.35rem;
+      text-transform: uppercase; color: var(--dark-muted); margin-bottom: 0.35rem;
     }
     .label-row {
       background: var(--dark-surface);
-      border: 1px solid #1f3328;
+      border: 1px solid var(--dark-border);
       border-radius: 10px;
       padding: 0.9rem 1rem;
       display: flex; flex-direction: column; gap: 0.4rem;
@@ -242,10 +281,12 @@
       padding: 0.18rem 0.55rem; border-radius: 5px; width: fit-content;
     }
     .chip-contradicts { background: var(--warn-light); color: var(--warn); }
-    .chip-neutral     { background: #21302a; color: #9bb3a8; }
-    .chip-corroborates{ background: var(--accent-light); color: var(--accent); }
-    .label-text { font-size: 0.74rem; color: #aebfb6; line-height: 1.5; font-weight: 300; }
-    .label-text b { color: #e8efeb; font-weight: 600; }
+    .chip-neutral     { background: #21263f; color: #9aa0c9; }
+    .chip-corroborates{ background: var(--accent-light); color: var(--accent-mid); }
+    .chip-pass        { background: var(--pass-light); color: var(--pass); }
+    .chip-retry       { background: var(--warn-light); color: var(--warn); }
+    .label-text { font-size: 0.74rem; color: #aab0d6; line-height: 1.5; font-weight: 300; }
+    .label-text b { color: #eef0fb; font-weight: 600; }
 
     .featured-info {
       padding: 2.25rem;
@@ -254,12 +295,12 @@
     }
     .featured-badge {
       display: inline-flex; align-items: center; gap: 0.45rem;
-      background: var(--accent-light); color: var(--accent);
+      background: var(--accent-light); color: var(--accent-mid);
       border-radius: 5px; padding: 0.2rem 0.65rem;
       font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
       width: fit-content; margin-bottom: 1rem;
     }
-    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(99,91,255,0.18); }
     .featured-title {
       font-family: 'Fraunces', serif;
       font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;
@@ -278,14 +319,14 @@
 
     .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
     .tag {
-      background: var(--accent-light); color: var(--accent);
+      background: var(--accent-light); color: var(--accent-mid);
       border-radius: 5px; padding: 0.2rem 0.6rem;
       font-size: 0.68rem; font-weight: 500;
     }
-    .tag-neutral { background: var(--surface2); color: var(--muted); }
-    .featured-links { display: flex; gap: 0.5rem; }
+    .tag-neutral { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .featured-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
-    /* Multi-repo architecture strip on the RedInk card */
+    /* Architecture / repo strip */
     .repo-strip { margin-top: 1.25rem; }
     .repo-strip-label {
       display: block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
@@ -293,12 +334,13 @@
     }
     .repo-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
     .repo-chip {
-      font-size: 0.72rem; font-weight: 500; color: var(--accent);
+      font-size: 0.72rem; font-weight: 500; color: var(--accent-mid);
       background: var(--accent-light); border: 1px solid transparent;
       border-radius: 5px; padding: 0.22rem 0.55rem;
       transition: border-color 0.15s;
     }
     .repo-chip:hover { border-color: var(--accent); }
+    .repo-chip.plain { color: var(--muted); background: var(--surface2); border: 1px solid var(--border); }
     .repo-arrow { color: var(--muted2); font-size: 0.72rem; user-select: none; }
 
     .featured-stats {
@@ -315,6 +357,9 @@
     .stat-label { font-size: 0.78rem; font-weight: 500; margin-top: 0.3rem; }
     .stat-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
 
+    /* secondary featured — slightly quieter */
+    .featured.secondary { background: var(--surface2); }
+
     /* ─── PROJECTS GRID ─── */
     .projects-grid {
       display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem;
@@ -324,10 +369,10 @@
       border: 1px solid var(--border); border-radius: 12px;
       padding: 1.6rem;
       display: flex; flex-direction: column; justify-content: space-between;
-      cursor: pointer; transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       min-height: 240px;
     }
-    .proj-card:hover { border-color: #a8d5be; transform: translateY(-3px); }
+    .proj-card:hover { border-color: var(--accent-border); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
     .proj-type { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 0.6rem; }
     .proj-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.55rem; }
     .proj-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-weight: 300; flex-grow: 1; }
@@ -355,7 +400,7 @@
     .rung-product .flag-tag {
       font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.6rem; font-weight: 600;
       letter-spacing: 0.06em; text-transform: uppercase; vertical-align: middle;
-      background: var(--accent-light); color: var(--accent);
+      background: var(--accent-light); color: var(--accent-mid);
       padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem;
     }
     .rung-concept { font-size: 0.86rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
@@ -383,15 +428,53 @@
     .matrix-legend { font-size: 0.74rem; color: var(--muted2); margin-top: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; }
     .matrix-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
 
-    /* ─── BUILD IN PUBLIC / WRITING ─── */
+    /* ─── NEWSLETTER SECTION ─── */
+    .newsletter-card {
+      background: var(--dark);
+      border-radius: 16px;
+      padding: 3rem 3.25rem;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center;
+    }
+    .newsletter-card .nl-eyebrow {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent-soft); margin-bottom: 0.7rem;
+    }
+    .newsletter-card h2 { color: #fff; margin-bottom: 0.75rem; }
+    .newsletter-card h2 em { font-style: italic; color: var(--accent-soft); }
+    .nl-sub { font-size: 0.95rem; color: var(--dark-bright); font-weight: 300; line-height: 1.75; margin-bottom: 1.5rem; }
+    .nl-points { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.75rem; }
+    .nl-point { font-size: 0.85rem; color: var(--dark-muted); display: flex; gap: 0.6rem; align-items: baseline; }
+    .nl-point b { color: #fff; font-weight: 600; }
+    .nl-point::before { content: "→"; color: var(--accent-soft); font-weight: 700; flex-shrink: 0; }
+    .nl-meta { font-size: 0.72rem; color: var(--dark-muted); margin-top: 1rem; letter-spacing: 0.02em; }
+    .nl-cta-wrap { display: flex; flex-direction: column; gap: 0.75rem; }
+    .btn-news {
+      background: var(--accent); color: #fff; justify-content: center;
+      font-size: 0.9rem; padding: 0.8rem 1.5rem;
+    }
+    .btn-news:hover { background: var(--accent-mid); transform: translateY(-1px); }
+    .nl-issues {
+      background: var(--dark-surface); border: 1px solid var(--dark-border);
+      border-radius: 12px; padding: 1.5rem;
+    }
+    .nl-issues-label {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--dark-muted); margin-bottom: 1rem;
+    }
+    .nl-issue { padding: 0.7rem 0; border-top: 1px solid var(--dark-border); }
+    .nl-issue:first-of-type { border-top: none; padding-top: 0; }
+    .nl-issue-title { font-size: 0.82rem; color: #fff; font-weight: 500; line-height: 1.4; }
+    .nl-issue-meta { font-size: 0.68rem; color: var(--dark-muted); margin-top: 0.2rem; }
+
+    /* ─── WRITING / POSTS ─── */
     .writing { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; }
     .write-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px; padding: 1.6rem 1.7rem;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       display: flex; flex-direction: column;
     }
-    .write-card:hover { border-color: #a8d5be; transform: translateY(-3px); }
+    .write-card:hover { border-color: var(--accent-border); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
     .write-topic {
       font-size: 0.64rem; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
@@ -407,7 +490,7 @@
       padding-top: 0.85rem; border-top: 1px solid var(--border);
       letter-spacing: 0.02em;
     }
-    .writing-cta { margin-top: 1.6rem; }
+    .writing-cta { margin-top: 1.6rem; display: flex; gap: 0.65rem; flex-wrap: wrap; }
 
     /* ─── HOW I THINK ─── */
     .manifesto { display: flex; flex-direction: column; gap: 0; }
@@ -420,7 +503,7 @@
     .manifesto-item:first-child { border-top: 1px solid var(--border); }
     .manifesto-num {
       font-family: 'Fraunces', serif;
-      font-size: 3rem; font-weight: 800; color: var(--border);
+      font-size: 3rem; font-weight: 800; color: var(--accent-border);
       line-height: 1; letter-spacing: -0.04em; margin-top: -0.15rem;
       user-select: none;
     }
@@ -451,15 +534,15 @@
       display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center;
     }
     .contact-card h2 { color: #fff; margin-bottom: 0.75rem; }
-    .contact-sub { font-size: 0.95rem; color: #5a7a6a; font-weight: 300; line-height: 1.7; }
+    .contact-sub { font-size: 0.95rem; color: var(--dark-muted); font-weight: 300; line-height: 1.7; }
     .contact-btns { display: flex; flex-direction: column; gap: 0.65rem; min-width: 180px; }
     .btn-white { background: #fff; color: var(--ink); justify-content: center; }
     .btn-white:hover { background: #f0f0ef; }
     .btn-dark-ghost {
-      background: transparent; border: 1px solid #263c30; color: #5a7a6a;
+      background: transparent; border: 1px solid var(--dark-border); color: var(--dark-muted);
       justify-content: center; transition: all 0.15s;
     }
-    .btn-dark-ghost:hover { border-color: #5a7a6a; color: #a8c8b8; }
+    .btn-dark-ghost:hover { border-color: var(--accent-soft); color: var(--dark-bright); }
 
     footer {
       text-align: center; padding: 2rem;
@@ -477,6 +560,8 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 860px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
       .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 4rem; }
       .philosophy-card { display: none; }
       .featured-body { grid-template-columns: 1fr; }
@@ -486,6 +571,7 @@
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .contact-card { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem; }
       .contact-btns { flex-direction: row; }
+      .newsletter-card { grid-template-columns: 1fr; padding: 2.25rem; gap: 2rem; }
       .impact-inner { grid-template-columns: 1fr 1fr; padding-left: 1.5rem; }
       .manifesto-item { grid-template-columns: 48px 1fr; gap: 1.25rem; }
       .manifesto-num { font-size: 2rem; }
@@ -502,7 +588,7 @@
   <div class="nav-links">
     <a href="#projects">Work</a>
     <a href="#arc">The Arc</a>
-    <a href="#writing">Writing</a>
+    <a href="#newsletter">Newsletter</a>
     <a href="#thinking">How I Think</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
@@ -513,14 +599,15 @@
 <!-- HERO -->
 <div class="hero">
   <div>
-    <div class="hero-eyebrow">Senior PM · 15 Years · CFA · Now Building AI Products</div>
+    <div class="hero-eyebrow">Senior PM · 15 Years · CFA · Building multi-agent AI on Google Cloud</div>
     <h1>
       From user problem<br/>
       <em>to shipped product.</em>
     </h1>
     <p class="hero-sub">
       Senior PM (Societe Generale, CFA) shipping eval-first AI products end to end —
-      from grounded RAG to multi-repo anomaly detection across the Nasdaq-100.
+      from grounded RAG to multi-agent systems on Google ADK, Gemini, and BigQuery,
+      with a cross-model judge that verifies every claim before it ships.
     </p>
     <div class="hero-ctas">
       <a href="#projects" class="btn btn-primary">See my work →</a>
@@ -539,14 +626,25 @@
     </div>
 
     <div class="principle">
-      <div class="principle-title" data-n="2.">Ship to learn, not to finish</div>
-      <p>Every release is a question to the market. I design for fast feedback loops — not for perfect launches.</p>
+      <div class="principle-title" data-n="2.">Determinism where correctness matters</div>
+      <p>LLMs only where judgment is genuinely required; fixed code and fixed order everywhere else. The cheapest, most reliable parts of a system have no model at all.</p>
     </div>
 
     <div class="principle">
       <div class="principle-title" data-n="3.">PMs who build earn trust</div>
-      <p>I write code, ship prototypes, and build tooling. Engineers respect PMs who understand what they're asking for.</p>
+      <p>I write code, ship prototypes, and stand up multi-agent pipelines. Engineers respect PMs who understand what they're asking for.</p>
     </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER RIBBON -->
+<div class="news-ribbon reveal">
+  <div class="news-ribbon-inner">
+    <div class="news-ribbon-text">
+      <span class="news-pill">New · Newsletter</span>
+      <span class="news-ribbon-copy"><b>No Black Boxes</b> — <span>building AI you can actually trust, in public.</span></span>
+    </div>
+    <a href="https://www.linkedin.com/newsletters/no-black-boxes-7472113158434934784/" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.5rem 1.1rem;">Subscribe ↗</a>
   </div>
 </div>
 
@@ -572,15 +670,117 @@
   </div>
 </div>
 
-<!-- FEATURED PROJECT — RedInk (new hero) -->
+<!-- FEATURED PROJECT — Pain Signal Intelligence (new flagship) -->
 <div class="section reveal" id="projects">
   <div class="section-header">
-    <div class="section-eyebrow">Featured Project</div>
+    <div class="section-eyebrow">Featured Project · Live on Google Cloud</div>
+    <h2>Pain Signal Intelligence</h2>
+    <p class="section-sub">A multi-agent system on Google's Agent Development Kit that mines real enterprise-AI pain from live public sources, scores it deterministically, and has a cross-model judge verify every claim before it writes a PRD.</p>
+  </div>
+
+  <div class="featured">
+    <div class="featured-body">
+      <!-- CSS-rendered product demo: cross-model judge verdict -->
+      <div class="featured-visual">
+        <div class="visual-cap">Cross-model judge verdict · per-criterion · before any PRD</div>
+
+        <div class="label-row">
+          <span class="label-chip chip-pass">● GROUNDED</span>
+          <span class="label-text">Every pain traces to a <b>real scored row</b>; every cited number matches the data. No fabrication, no inflation.</span>
+        </div>
+        <div class="label-row">
+          <span class="label-chip chip-pass">● ACTIONABLE</span>
+          <span class="label-text">Each pain's rating is justified with a <b>specific product reason</b> — not boilerplate, not vibes.</span>
+        </div>
+        <div class="label-row">
+          <span class="label-chip chip-retry">● RETRY FIRES</span>
+          <span class="label-text">When the writer invented a pain, <b>grounded failed</b> and the gate forced a rewrite — which has happened on a live run.</span>
+        </div>
+      </div>
+
+      <div class="featured-info">
+        <div>
+          <div class="featured-badge">
+            <span class="live-dot"></span>
+            Live · Multi-agent · Google ADK 2.0
+          </div>
+          <div class="featured-title">From raw signal to a judge-verified PRD</div>
+          <div class="pitr">
+            <p class="pitr-row"><b>Problem</b>Teams decide what to build from anecdotes — so the <em>loudest</em> pain wins, not the most <em>buildable</em> one.</p>
+            <p class="pitr-row"><b>Insight</b>A pain you can't act on is a backlog, not a signal. Score it <em>frequency × intensity × addressability²</em> so an unbuildable pain is vetoed, not masked.</p>
+            <p class="pitr-row"><b>Tradeoff</b>A fixed-order ADK graph, not an autonomous LLM coordinator — the pipeline has exactly one correct order, so determinism owns correctness and the LLM only judges.</p>
+            <p class="pitr-row"><b>Result</b>A cross-family Claude judge verifies grounding before any PRD is written. It caught a planted hallucination on the first run; the same-family control flagged nothing.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Google ADK 2.0</span>
+            <span class="tag">Gemini Flash + Pro</span>
+            <span class="tag">Claude (Judge)</span>
+            <span class="tag">BigQuery</span>
+            <span class="tag tag-neutral">Cloud Run + Trace</span>
+          </div>
+        </div>
+        <div>
+          <div class="featured-links">
+            <a href="https://paintoprd.dev" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
+            <a href="https://github.com/sheldongomes1/signal-intelligence-system" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">GitHub ↗</a>
+          </div>
+          <div class="repo-strip">
+            <span class="repo-strip-label">The pipeline — a deterministic graph, LLMs only where judgment is needed</span>
+            <div class="repo-chips">
+              <span class="repo-chip plain" title="GitHub · Hacker News · Stack Overflow · Reddit · G2 · Discourse — parallel fan-out, graceful degradation">6 sources</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip" title="Gemini Flash — high-volume taxonomy mapping">classify · Flash</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip plain" title="Deterministic Python — fixed formula, cannot drift">score · Python</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip plain" title="Persist before the LLM tail so a crash never loses the run">BigQuery</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip" title="Gemini Pro — high-reasoning synthesis, a different family from the Judge">synthesize · Pro</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip" title="Claude — cross-family grounding check, retry gate">judge · Claude</span>
+              <span class="repo-arrow">→</span>
+              <span class="repo-chip" title="Claude — PRD + LinkedIn draft, only after the judge passes">PRD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="featured-stats">
+      <div class="stat-box">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Live sources</div>
+        <div class="stat-desc">Parallel fan-out · graceful degradation</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">Cross-family</div>
+        <div class="stat-label">LLM judge</div>
+        <div class="stat-desc">Caught a planted hallucination 1st try</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Ungrounded PRDs</div>
+        <div class="stat-desc">Retry gate blocks unverified output</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">Monthly</div>
+        <div class="stat-label">On GCP</div>
+        <div class="stat-desc">Cloud Run · Cloud Trace · BigQuery</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- SECONDARY FEATURED — RedInk -->
+<div class="section reveal">
+  <div class="section-header">
+    <div class="section-eyebrow">Also Featured · Live</div>
     <h2>RedInk</h2>
     <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100 — where the signal isn't the anomaly, it's the gap between the numbers and the story management tells about them.</p>
   </div>
 
-  <div class="featured">
+  <div class="featured secondary">
     <div class="featured-body">
       <!-- CSS-rendered product demo: narrative-divergence labels -->
       <div class="featured-visual">
@@ -667,7 +867,7 @@
 
 <hr class="divider" />
 
-<!-- MORE PROJECTS — all real, all live, Problem → Result framing -->
+<!-- MORE PROJECTS -->
 <div class="section reveal">
   <div class="section-header">
     <div class="section-eyebrow">More Work</div>
@@ -722,7 +922,7 @@
   <div class="section-header">
     <div class="section-eyebrow">The Arc</div>
     <h2>A deliberate progression</h2>
-    <p class="section-sub">Each product taught the next. Read top to bottom: the capability ladder from shipping to systems to agents.</p>
+    <p class="section-sub">Each product taught the next. Read top to bottom: the capability ladder from shipping to systems to self-verifying agents.</p>
   </div>
   <div class="ladder">
     <div class="rung">
@@ -737,13 +937,13 @@
     </div>
     <div class="rung">
       <div class="rung-phase">Eval-first Systems</div>
-      <div class="rung-product flagship">RedInk<span class="flag-tag">Flagship</span></div>
+      <div class="rung-product">RedInk</div>
       <div class="rung-concept">Multi-repo architecture; LLM-judge eval suite; narrative divergence; telemetry.</div>
     </div>
     <div class="rung">
-      <div class="rung-phase">Agentic</div>
-      <div class="rung-product">RedInk v2 <span style="font-weight:400;font-size:0.8rem;color:var(--muted2)">(in progress)</span></div>
-      <div class="rung-concept">Multi-step call-vs-filing agent; labelling a golden set <em>before</em> building.</div>
+      <div class="rung-phase">Multi-agent · Self-verifying</div>
+      <div class="rung-product flagship">Pain Signal Intelligence<span class="flag-tag">Flagship</span></div>
+      <div class="rung-concept">Fixed-order ADK graph; deterministic scoring with an addressability veto; a cross-family judge that gates the output — monthly on Google Cloud.</div>
     </div>
     <div class="rung">
       <div class="rung-phase">Meta / Infra</div>
@@ -751,7 +951,7 @@
       <div class="rung-concept">Building the system that builds the products — and learning in public.</div>
     </div>
   </div>
-  <p class="arc-caption">Learned to ship <span>→</span> learned to measure <span>→</span> learned to build systems <span>→</span> learned to make them agentic — in public.</p>
+  <p class="arc-caption">Learned to ship <span>→</span> to measure <span>→</span> to build systems <span>→</span> to make them agentic and self-verifying — in public.</p>
 </div>
 
 <hr class="divider" />
@@ -777,7 +977,15 @@
       </thead>
       <tbody>
         <tr>
-          <td class="product flagship">RedInk</td>
+          <td class="product flagship">Pain Signal Intelligence</td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+          <td><span class="dot dot-full"></span></td>
+        </tr>
+        <tr>
+          <td class="product">RedInk</td>
           <td><span class="dot dot-full"></span></td>
           <td><span class="dot dot-full"></span></td>
           <td><span class="dot dot-part"></span></td>
@@ -820,7 +1028,49 @@
 
 <hr class="divider" />
 
-<!-- BUILD IN PUBLIC — curated from LinkedIn (source: _meta/linkedin-posts.txt) -->
+<!-- NEWSLETTER — No Black Boxes (centerpiece) -->
+<div class="section reveal" id="newsletter">
+  <div class="newsletter-card">
+    <div>
+      <div class="nl-eyebrow">Newsletter · On LinkedIn</div>
+      <h2><em>No Black Boxes</em></h2>
+      <p class="nl-sub">Building AI you can actually trust — grounding, evals, and cross-model verification, with the receipts. The how and the why behind every product on this page, written as I build it.</p>
+      <div class="nl-points">
+        <div class="nl-point"><span><b>The decisions, not just the demos</b> — ADRs, tradeoffs, and the calls that would survive a design review.</span></div>
+        <div class="nl-point"><span><b>What broke and how I caught it</b> — the planted hallucination, the routing bug, the 403 mid-run.</span></div>
+        <div class="nl-point"><span><b>Evals over vibes</b> — turning "it feels better" into a number you can defend.</span></div>
+      </div>
+      <div class="nl-cta-wrap">
+        <a href="https://www.linkedin.com/newsletters/no-black-boxes-7472113158434934784/" target="_blank" rel="noopener" class="btn btn-news">Subscribe to No Black Boxes ↗</a>
+      </div>
+      <div class="nl-meta">Published on LinkedIn · new issues as the products ship</div>
+    </div>
+
+    <div class="nl-issues">
+      <div class="nl-issues-label">What's inside · recent threads</div>
+      <div class="nl-issue">
+        <div class="nl-issue-title">My cross-family LLM judge caught a planted hallucination on the first try</div>
+        <div class="nl-issue-meta">Pain Signal Intelligence · the same-family control caught nothing</div>
+      </div>
+      <div class="nl-issue">
+        <div class="nl-issue-title">The cheapest agent in my pipeline has no model at all</div>
+        <div class="nl-issue-meta">Determinism where correctness matters</div>
+      </div>
+      <div class="nl-issue">
+        <div class="nl-issue-title">A 4.9/5 became 42% FAIL the moment I switched to binary</div>
+        <div class="nl-issue-meta">RedInk · why numerical rubrics hide the failures you need</div>
+      </div>
+      <div class="nl-issue">
+        <div class="nl-issue-title">I was calling an LLM because I could — not because every query needed it</div>
+        <div class="nl-issue-meta">PM Confessional · a 56× latency cut by judgment, not a faster model</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- BUILD IN PUBLIC — curated posts -->
 <div class="section reveal" id="writing">
   <div class="section-header">
     <div class="section-eyebrow">Build in Public</div>
@@ -830,17 +1080,24 @@
   <div class="writing">
 
     <div class="write-card">
+      <div class="write-topic">Cross-model evals</div>
+      <div class="write-quote">"My cross-family judge caught a planted hallucination on the first try."</div>
+      <p class="write-take">An LLM judging its own family shares its blind spots — correlated error. So Pain Signal Intelligence judges Gemini's synthesis with <b>Claude, from a different model family</b>. I planted a fabricated pain to test it; Claude failed it on <code>grounded</code> and forced a rewrite. <b>A same-family control run flagged nothing.</b></p>
+      <div class="write-meta">Pain Signal Intelligence · No Black Boxes</div>
+    </div>
+
+    <div class="write-card">
+      <div class="write-topic">Architecture</div>
+      <div class="write-quote">"The cheapest agent in my pipeline has no model at all."</div>
+      <p class="write-take">Collectors hit source APIs that already return structured data, and scoring is a fixed formula. Neither needs inference. <b>LLMs only where judgment is genuinely required</b> — classify with Flash, synthesize with Pro, judge with Claude — and deterministic Python everywhere correctness has to be provable.</p>
+      <div class="write-meta">Pain Signal Intelligence · No Black Boxes</div>
+    </div>
+
+    <div class="write-card">
       <div class="write-topic">Evals</div>
       <div class="write-quote">"A 4.9/5 became 42% FAIL the moment I switched to binary."</div>
       <p class="write-take">Numerical rubrics smooth over the failures you most need to see. Moving RedInk's eval suite to binary PASS/FAIL (per Hamel Husain's method) surfaced a routing bug — the model pointing analysts to the wrong filing artifact — and <b>cut the failure rate 41% in one iteration, with no prompt change.</b></p>
       <div class="write-meta">RedInk · 3,585 impressions</div>
-    </div>
-
-    <div class="write-card">
-      <div class="write-topic">Precision</div>
-      <div class="write-quote">"I built a gate, not a filter."</div>
-      <p class="write-take">Three independent anomaly signals — including teaching the system to notice what management chose <b>not</b> to address. ALERT fires only when all three agree. Set one false positive and an analyst forgives you; three and they stop opening your alerts. <b>Precision is a trust problem before it's a technical one.</b></p>
-      <div class="write-meta">RedInk · 687 impressions</div>
     </div>
 
     <div class="write-card">
@@ -850,15 +1107,9 @@
       <div class="write-meta">PM Confessional · 1,084 impressions</div>
     </div>
 
-    <div class="write-card">
-      <div class="write-topic">Prompting</div>
-      <div class="write-quote">"Too bullshitty. Trash. Wordy vomit."</div>
-      <p class="write-take">My manager's review of an exec-summary agent I built over our org's goals, repos, and sprints. Tightening the instructions didn't fix it. Feeding it five summaries he'd <b>actually written</b> did — one pass later it learned the audience cares about clients onboarded and CSAT, not plumbing. <b>Few-shot beat instruction-tuning.</b></p>
-      <div class="write-meta">Internal agent · build-in-public</div>
-    </div>
-
   </div>
   <div class="writing-cta">
+    <a href="https://www.linkedin.com/newsletters/no-black-boxes-7472113158434934784/" target="_blank" rel="noopener" class="btn btn-primary">Subscribe to No Black Boxes ↗</a>
     <a href="https://www.linkedin.com/in/sheldongomes/recent-activity/all/" target="_blank" rel="noopener" class="btn btn-ghost">Read all posts on LinkedIn ↗</a>
   </div>
 </div>
@@ -886,15 +1137,15 @@
       <div class="manifesto-num">02</div>
       <div class="manifesto-body">
         <div class="manifesto-title">Quality is a number, not a vibe</div>
-        <p class="manifesto-desc">For AI products especially, "it feels better" isn't shippable. I put an eval harness around the thing — precision, TPR/TNR, an LLM-as-judge with a golden set — so I can tell whether a prompt change helped, regressed, or just moved the demo. Metrics inform; judgment decides; but I refuse to fly blind.</p>
+        <p class="manifesto-desc">For AI products especially, "it feels better" isn't shippable. I put an eval harness around the thing — precision, TPR/TNR, an LLM-as-judge with a golden set, a cross-family judge for the calls that matter — so I can tell whether a prompt change helped, regressed, or just moved the demo. Metrics inform; judgment decides; but I refuse to fly blind.</p>
       </div>
     </div>
 
     <div class="manifesto-item">
       <div class="manifesto-num">03</div>
       <div class="manifesto-body">
-        <div class="manifesto-title">Build the smallest thing that proves the point</div>
-        <p class="manifesto-desc">Momentum beats perfection. I bias toward shipping a prototype that answers the key risk question over writing a detailed spec for a product no one has validated — then I iterate fast on real signal. Scoping RedInk to the top anomalies instead of all 1,371 filings was exactly this call.</p>
+        <div class="manifesto-title">Determinism where correctness matters</div>
+        <p class="manifesto-desc">An LLM is the most expensive, least predictable component in any system — so I reach for it last, not first. Fixed formulas, fixed order, and plain code own the parts that have to be provable; the model is reserved for genuine judgment. Scoring a pain as <em>frequency × intensity × addressability²</em> in Python — not asking a model to "rate it" — is exactly this call.</p>
       </div>
     </div>
 
@@ -903,7 +1154,7 @@
 
 <hr class="divider" />
 
-<!-- SKILLS — curated, junior signals removed -->
+<!-- SKILLS -->
 <div class="section reveal" id="skills">
   <div class="section-header">
     <div class="section-eyebrow">Skills</div>
@@ -923,9 +1174,9 @@
     <div class="skill-group">
       <div class="skill-group-title">AI &amp; Evals</div>
       <div class="skill-list">
-        <div class="skill-item">Evals &amp; Measurement</div>
+        <div class="skill-item">Multi-agent Systems</div>
+        <div class="skill-item">Evals &amp; LLM-as-judge</div>
         <div class="skill-item">Grounding / RAG</div>
-        <div class="skill-item">Agentic Workflows</div>
         <div class="skill-item">Prompt Engineering</div>
       </div>
     </div>
@@ -933,9 +1184,9 @@
       <div class="skill-group-title">Build &amp; Cloud</div>
       <div class="skill-list">
         <div class="skill-item">Google Cloud (GCP)</div>
-        <div class="skill-item">Claude API</div>
-        <div class="skill-item">MCP Protocol</div>
-        <div class="skill-item">Python</div>
+        <div class="skill-item">Google ADK · Gemini</div>
+        <div class="skill-item">Claude API · MCP</div>
+        <div class="skill-item">BigQuery · Python</div>
       </div>
     </div>
   </div>
@@ -947,7 +1198,7 @@
 <div class="section reveal" id="contact">
   <div class="contact-card">
     <div>
-      <div class="section-eyebrow" style="color:#4a9e7a;margin-bottom:0.6rem">Get in touch</div>
+      <div class="section-eyebrow" style="color:var(--accent-soft);margin-bottom:0.6rem">Get in touch</div>
       <h2>Let's build something worth trusting.</h2>
       <p class="contact-sub" style="margin-top:0.75rem">I'm looking for senior AI PM roles where grounding, evals, and shipping matter. If that's the bar you're hiring for, let's talk.</p>
     </div>
@@ -963,12 +1214,29 @@
 
 <script>
   // Subtle fade-in on scroll (P3). Respects prefers-reduced-motion via CSS.
+  // Defense-in-depth so content is NEVER permanently hidden (deep links, hash
+  // jumps, fast scroll, print): observer for the fade + load/hashchange sweep +
+  // a hard failsafe that reveals everything after a few seconds no matter what.
+  const reveals = Array.from(document.querySelectorAll('.reveal'));
+  const show = (el) => el.classList.add('in');
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  }, { threshold: 0.08, rootMargin: '0px 0px -2% 0px' });
+  reveals.forEach((el) => io.observe(el));
+
+  // Reveal anything already at/above the viewport (covers hash navigation).
+  const revealInView = () => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    reveals.forEach((el) => {
+      if (el.getBoundingClientRect().top < vh * 0.95) show(el);
+    });
+  };
+  window.addEventListener('load', revealInView);
+  window.addEventListener('hashchange', () => requestAnimationFrame(revealInView));
+  // Ultimate failsafe — guarantee no section can stay invisible.
+  setTimeout(() => reveals.forEach(show), 4000);
 </script>
 </body>
 </html>

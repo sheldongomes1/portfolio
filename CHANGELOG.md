@@ -2,6 +2,40 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [3.0.0] — 2026-06-27 — RedInk-palette re-skin + Pain Signal Intelligence flagship
+
+Re-skinned the site to the RedInk product palette and reframed the work around the most
+"googly" build (multi-agent on Google ADK). Tuned for an ICP of a Google hiring manager.
+
+### Changed
+- **Full palette re-skin to the RedInk product system** — indigo/blurple `#635bff` accent
+  (hover `#4f46e5`, tint `#ede9fe`) on clean white + neutral grays (`#111827` ink,
+  `#f9fafb` surfaces, `#e5e7eb` borders). Dark bands moved from forest-green-black to a deep
+  indigo-navy (`#0e1020`). Kept the Fraunces + Plus Jakarta type system. All ~15 design
+  tokens remapped; hardcoded greens inside the dark bands hand-converted to the navy family.
+- **New flagship: Pain Signal Intelligence** (`paintoprd.dev`) — multi-agent system on Google
+  ADK 2.0, promoted to the featured slot. CSS-rendered cross-model judge verdict
+  (GROUNDED / ACTIONABLE / RETRY-FIRES), Problem→Insight→Tradeoff→Result, a deterministic-graph
+  pipeline strip (6 sources → classify·Flash → score·Python → BigQuery → synthesize·Pro →
+  judge·Claude → PRD), and stats. Links to the live app + the public repo.
+- **RedInk demoted to secondary featured** ("Also Featured") — same content, quieter surface.
+- **The Arc + AI-PM matrix** updated — Pain Signal Intelligence added as the flagship rung
+  (Multi-agent · Self-verifying) and the top matrix row (full marks across all five capabilities).
+- **Skills** refreshed toward the Google stack — Multi-agent Systems, Google ADK · Gemini,
+  BigQuery, LLM-as-judge.
+
+### Added
+- **"No Black Boxes" newsletter as a centerpiece** — a hero subscribe ribbon under the hero,
+  plus a dedicated dark section (`#newsletter`) with a subscribe CTA, what's-inside points,
+  and a recent-threads list. Nav gains a Newsletter link; the Writing section's CTA leads with
+  Subscribe. Newsletter URL:
+  `linkedin.com/newsletters/no-black-boxes-7472113158434934784/`.
+
+### Fixed
+- **Scroll-reveal robustness** — the `IntersectionObserver` fade now has defense-in-depth so
+  content can never stay permanently hidden after a hash/deep-link jump or fast scroll: a
+  load/hashchange "reveal what's in view" sweep plus a hard `setTimeout` failsafe.
+
 ## [2.0.0] — 2026-05-31 — "Google-PM-grade" overhaul
 
 The site was redesigned from a generic PM portfolio into a focused, eval-first AI-PM case.

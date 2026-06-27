@@ -1,38 +1,54 @@
 # Deploying & maintaining the portfolio
 
-The site is a single static `index.html` deployed on **GitHub Pages** via a GitHub Actions
-workflow (`.github/workflows/deploy.yml`), git-backed, auto-deployed on every push to `main`.
+The site is a single static `index.html` served by an **nginx container on Google Cloud Run**
+(`Dockerfile` + `nginx.conf`). Custom domain `sheldongomes.dev` maps to the service.
 
-**Live URL:** https://sheldongomes1.github.io/portfolio/
+**Live URL:** https://sheldongomes.dev  (Cloud Run URL: https://portfolio-spsl4xr2hq-uc.a.run.app)
+
+(History: previously GitHub Pages, before that surge. Migrated to Cloud Run 2026-06-27, commit
+52413c4 — Pages workflow/CNAME and `vercel.json` removed.)
 
 ---
 
 ## How it's wired (already set up)
 
 - Repo: https://github.com/sheldongomes1/portfolio (public — private planning is git-ignored).
-- Pages source: **GitHub Actions** (not the legacy "deploy from branch").
-- The workflow checks out the repo and publishes it as-is to Pages, so only tracked files ship.
-- Path note: this is a **project** Pages site served at the `/portfolio/` subpath, so in-page
-  asset links are **relative** (`Resume.pdf`, not `/Resume.pdf`). Keep new asset links relative,
-  or they'll 404 on Pages.
+- **Cloud Run service `portfolio`**, project **`sheldongomes-web`**, region **`us-central1`**.
+- `Dockerfile` builds `nginx:1.27-alpine` and copies the tracked static files in; nginx listens
+  on `$PORT` 8080 (see `nginx.conf`).
+- Domain mappings: `sheldongomes.dev` and `www.sheldongomes.dev` → service `portfolio`.
+- Path note: a custom domain serves at the **root**, so in-page asset links are **absolute**
+  (`/Resume.pdf`, `/favicon.svg`). Keep new asset links absolute.
 
 ## Day-to-day: making a change
 
 ```bash
-# edit index.html
+# edit index.html, then:
 git add -A
 git commit -m "Describe the change"
-git push            # the Pages Action redeploys main in ~1 min
+git push
+
+# deploy to Cloud Run (builds the container from source via Cloud Build):
+gcloud run deploy portfolio \
+  --source . \
+  --project sheldongomes-web \
+  --region us-central1 \
+  --allow-unauthenticated
 ```
-Watch the deploy: repo → **Actions** tab → latest "Deploy to GitHub Pages" run
-(or `gh run watch` locally).
+The new revision serves at https://sheldongomes.dev within ~1–2 min of the deploy finishing.
+(`git push` only updates the repo — it does NOT auto-deploy; run the `gcloud run deploy`.)
 
 ## Rolling back
 
-`git revert <bad-commit> && git push` — the Action redeploys the reverted state.
-(Or re-run an older successful workflow run from the Actions tab.)
+```bash
+# list revisions, then route 100% traffic back to a known-good one:
+gcloud run revisions list --service portfolio --project sheldongomes-web --region us-central1
+gcloud run services update-traffic portfolio --to-revisions <REVISION>=100 \
+  --project sheldongomes-web --region us-central1
+```
+(Or `git revert <bad-commit>` and re-run the deploy.)
 
-## If the Pages URL ever changes (e.g. repo rename or custom domain)
+## If the live URL ever changes (e.g. repo rename or custom domain)
 
 Update the canonical/OG URLs in `index.html` — they're absolute and must match the live origin:
 - `<meta property="og:url" …>`

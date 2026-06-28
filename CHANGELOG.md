@@ -2,6 +2,28 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [3.1.0] — 2026-06-28 — Pain Signal Intelligence accuracy + depth pass
+
+Reconciled the flagship section against the source-of-truth product repo
+(`signal-intelligence-system`) and enriched it with real specifics.
+
+### Fixed
+- **Source count 6 → 5.** Active sources are GitHub, Hacker News, Stack Overflow, Discourse, G2.
+  **Reddit was dropped at go-live** (API onboarding wasn't worth it) — removed from the count,
+  pipeline tooltip, and the stats box; tooltip now notes the drop.
+- **ADK 2.0 → 2.2** (the deployed system runs the ADK 2.2 graph `Workflow`).
+- Confirmed `frequency × intensity × addressability²` is correct — the scorer raises
+  addressability to a 2.0 exponent (`tools/score_tools.py`), so the square stays.
+
+### Changed (richer)
+- **Insight** now explains the multiplicative *veto* (a near-zero pillar kills the score vs.
+  being averaged away) and why addressability carries the highest exponent.
+- **Tradeoff** adds per-stage BigQuery persistence / crash-resume; model reserved for judgment.
+- **Result** names the two planted lies (count inflated 12→80, fabricated "users want dark mode")
+  caught first-run with row-level evidence; same-family control flagged nothing.
+- **Stack tags** specified: Gemini 2.5 Flash + Pro · Vertex AI, Claude Sonnet (Judge),
+  Cloud Run · Scheduler · Trace. Pipeline tooltips enriched (formula, retry max 2, model tiers).
+
 ## [3.0.0] — 2026-06-27 — RedInk-palette re-skin + Pain Signal Intelligence flagship
 
 Re-skinned the site to the RedInk product palette and reframed the work around the most

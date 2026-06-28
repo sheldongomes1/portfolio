@@ -360,6 +360,31 @@
     /* secondary featured — slightly quieter */
     .featured.secondary { background: var(--surface2); }
 
+    /* RedInk — three-pillar conviction model */
+    .pillars { border-top: 1px solid var(--border); padding: 1.75rem 2.25rem; }
+    .pillars-label {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted2); margin-bottom: 1rem;
+    }
+    .pillar-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .pillar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .pillar-pts {
+      font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .pillar-pts::after {
+      content: " pts"; font-size: 0.7rem; font-weight: 500;
+      color: var(--muted2); font-family: 'Inter', system-ui, sans-serif;
+    }
+    .pillar-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-top: 0.45rem; }
+    .pillar-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.5; font-weight: 300; margin-top: 0.3rem; }
+    .pillar-note { font-size: 0.8rem; color: var(--muted); line-height: 1.65; font-weight: 300; margin-top: 1.1rem; }
+    .pillar-note b { color: var(--accent-mid); font-weight: 600; }
+    @media (max-width: 720px) { .pillar-grid { grid-template-columns: 1fr; } }
+
     /* ─── PROJECTS GRID ─── */
     .projects-grid {
       display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem;
@@ -675,7 +700,7 @@
   <div class="section-header">
     <div class="section-eyebrow">Featured Project · Live on Google Cloud</div>
     <h2>Pain Signal Intelligence</h2>
-    <p class="section-sub">A multi-agent system on Google's Agent Development Kit that mines real enterprise-AI pain from live public sources, scores it deterministically, and has a cross-model judge verify every claim before it writes a PRD.</p>
+    <p class="section-sub">A multi-agent system on Google's Agent Development Kit that mines real enterprise-AI pain from five live public sources, scores it deterministically, and has a cross-family judge verify every claim before it writes a PRD — gated on evals, with the receipts in BigQuery.</p>
   </div>
 
   <div class="featured">
@@ -702,21 +727,21 @@
         <div>
           <div class="featured-badge">
             <span class="live-dot"></span>
-            Live · Multi-agent · Google ADK 2.0
+            Live · Multi-agent · Google ADK 2.2
           </div>
           <div class="featured-title">From raw signal to a judge-verified PRD</div>
           <div class="pitr">
             <p class="pitr-row"><b>Problem</b>Teams decide what to build from anecdotes — so the <em>loudest</em> pain wins, not the most <em>buildable</em> one.</p>
-            <p class="pitr-row"><b>Insight</b>A pain you can't act on is a backlog, not a signal. Score it <em>frequency × intensity × addressability²</em> so an unbuildable pain is vetoed, not masked.</p>
-            <p class="pitr-row"><b>Tradeoff</b>A fixed-order ADK graph, not an autonomous LLM coordinator — the pipeline has exactly one correct order, so determinism owns correctness and the LLM only judges.</p>
-            <p class="pitr-row"><b>Result</b>A cross-family Claude judge verifies grounding before any PRD is written. It caught a planted hallucination on the first run; the same-family control flagged nothing.</p>
+            <p class="pitr-row"><b>Insight</b>A pain you can't act on is a backlog, not a signal. Score it <em>frequency × intensity × addressability²</em> in deterministic Python — a multiplicative veto, so one near-zero pillar kills the score instead of being averaged away. Addressability carries the highest exponent because it decides whether a pain belongs on the roadmap at all.</p>
+            <p class="pitr-row"><b>Tradeoff</b>A fixed-order ADK graph, not an autonomous LLM coordinator. The pipeline has exactly one correct order, so determinism owns the control flow and every stage persists to BigQuery — a crash resumes only the stage that failed. The model is reserved for judgment, never routing.</p>
+            <p class="pitr-row"><b>Result</b>A cross-family Claude judge verifies grounding before any PRD is written. I planted two lies in a synthesis — a count inflated from 12 to 80, and a fabricated "users want dark mode" with no signal behind it — and Claude failed both on the first run with the row-level evidence, then the gate forced a rewrite. A same-family control flagged nothing.</p>
           </div>
           <div class="tags">
-            <span class="tag">Google ADK 2.0</span>
-            <span class="tag">Gemini Flash + Pro</span>
-            <span class="tag">Claude (Judge)</span>
+            <span class="tag">Google ADK 2.2</span>
+            <span class="tag">Gemini 2.5 Flash + Pro · Vertex AI</span>
+            <span class="tag">Claude Sonnet (Judge)</span>
             <span class="tag">BigQuery</span>
-            <span class="tag tag-neutral">Cloud Run + Trace</span>
+            <span class="tag tag-neutral">Cloud Run · Scheduler · Trace</span>
           </div>
         </div>
         <div>
@@ -727,17 +752,17 @@
           <div class="repo-strip">
             <span class="repo-strip-label">The pipeline — a deterministic graph, LLMs only where judgment is needed</span>
             <div class="repo-chips">
-              <span class="repo-chip plain" title="GitHub · Hacker News · Stack Overflow · Reddit · G2 · Discourse — parallel fan-out, graceful degradation">6 sources</span>
+              <span class="repo-chip plain" title="GitHub · Hacker News · Stack Overflow · Discourse · G2 — parallel fan-out, graceful degradation (Reddit dropped at go-live: API onboarding wasn't worth it)">5 sources</span>
               <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Gemini Flash — high-volume taxonomy mapping">classify · Flash</span>
+              <span class="repo-chip" title="Gemini 2.5 Flash — high-volume taxonomy + buildability rating">classify · Flash</span>
               <span class="repo-arrow">→</span>
-              <span class="repo-chip plain" title="Deterministic Python — fixed formula, cannot drift">score · Python</span>
+              <span class="repo-chip plain" title="Deterministic Python — frequency × intensity × addressability², a multiplicative veto that can't drift">score · Python</span>
               <span class="repo-arrow">→</span>
               <span class="repo-chip plain" title="Persist before the LLM tail so a crash never loses the run">BigQuery</span>
               <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Gemini Pro — high-reasoning synthesis, a different family from the Judge">synthesize · Pro</span>
+              <span class="repo-chip" title="Gemini 2.5 Pro — high-reasoning synthesis, a different family from the Judge">synthesize · Pro</span>
               <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Claude — cross-family grounding check, retry gate">judge · Claude</span>
+              <span class="repo-chip" title="Claude Sonnet — cross-family grounding check; fail forces a rewrite, max 2 retries">judge · Claude</span>
               <span class="repo-arrow">→</span>
               <span class="repo-chip" title="Claude — PRD + LinkedIn draft, only after the judge passes">PRD</span>
             </div>
@@ -747,9 +772,9 @@
     </div>
     <div class="featured-stats">
       <div class="stat-box">
-        <div class="stat-num">6</div>
+        <div class="stat-num">5</div>
         <div class="stat-label">Live sources</div>
-        <div class="stat-desc">Parallel fan-out · graceful degradation</div>
+        <div class="stat-desc">GitHub · HN · Stack Overflow · Discourse · G2</div>
       </div>
       <div class="stat-box">
         <div class="stat-num">Cross-family</div>
@@ -777,7 +802,7 @@
   <div class="section-header">
     <div class="section-eyebrow">Also Featured · Live</div>
     <h2>RedInk</h2>
-    <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100 — where the signal isn't the anomaly, it's the gap between the numbers and the story management tells about them.</p>
+    <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100. Three independent signals — statistical outliers, earnings-quality red flags, and narrative spin — roll into one conviction score, and an LLM-as-judge suite gates every explanation before an analyst sees it. The signal isn't the anomaly; it's the gap between the numbers and the story management tells about them.</p>
   </div>
 
   <div class="featured secondary">
@@ -808,15 +833,16 @@
           </div>
           <div class="featured-title">Narrative-divergence detection</div>
           <div class="pitr">
-            <p class="pitr-row"><b>Problem</b>Analysts can't manually catch when a company's numbers diverge from its own history <em>and</em> the narrative glosses over it.</p>
-            <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them.</p>
-            <p class="pitr-row"><b>Tradeoff</b>Scoped divergence to top anomalies (not all 1,371 filings) to ship a trustworthy demo over a boil-the-ocean one.</p>
-            <p class="pitr-row"><b>Result</b>CONTRADICTS / NEUTRAL / CORROBORATES labels with cited MD&amp;A passages, behind an LLM-as-judge eval suite.</p>
+            <p class="pitr-row"><b>Problem</b>An analyst covering 90+ names can't read every 10-Q line by line — and the filings that matter most are the ones where the numbers turn but the narrative doesn't.</p>
+            <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them. When three independent signals agree, a false positive becomes unlikely.</p>
+            <p class="pitr-row"><b>Tradeoff</b>Graded explanations on a hard binary PASS/FAIL, not a 1–5 scale — a 4.9/5 average was hiding a 42% fail rate. Failure visibility over a flattering number.</p>
+            <p class="pitr-row"><b>Result</b>32 ALERT-tier filings surfaced from 1,352 scored — each one a cited MD&amp;A passage behind an LLM-as-judge gate that lifted the champion prompt to 4.72/5 with 100% label match.</p>
           </div>
           <div class="tags">
             <span class="tag">Python</span>
-            <span class="tag">RAG</span>
+            <span class="tag">Claude Sonnet 4.6</span>
             <span class="tag">LLM-as-judge</span>
+            <span class="tag">BigQuery</span>
             <span class="tag">GCP</span>
             <span class="tag tag-neutral">Telemetry</span>
           </div>
@@ -840,26 +866,47 @@
         </div>
       </div>
     </div>
+    <div class="pillars">
+      <div class="pillars-label">How a conviction score is built · 0–100</div>
+      <div class="pillar-grid">
+        <div class="pillar">
+          <div class="pillar-pts">40</div>
+          <div class="pillar-name">Statistical anomaly</div>
+          <div class="pillar-desc">Robust multivariate outlier vs. the company's own history — MCD / Mahalanobis on median &amp; IQR, so one-off spikes don't dominate.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-pts">30</div>
+          <div class="pillar-name">Earnings quality</div>
+          <div class="pillar-desc">Beneish M-Score across 8 accrual &amp; margin components — the classic accounting-manipulation screen.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-pts">30</div>
+          <div class="pillar-name">Narrative transparency</div>
+          <div class="pillar-desc">An LLM reads the MD&amp;A and scores whether management names the signal — or quietly steps around it.</div>
+        </div>
+      </div>
+      <div class="pillar-note">Three independent methods on three different data sources roll into one score, then split into <b>ALERT</b> · <b>FLAG</b> · <b>WATCH</b>. The highest-conviction flags are where all three fire together — weak numbers, a manipulation signal, <em>and</em> a management narrative that looks the other way.</div>
+    </div>
     <div class="featured-stats">
       <div class="stat-box">
-        <div class="stat-num">1,900+</div>
+        <div class="stat-num">1,352</div>
         <div class="stat-label">Filings scored</div>
-        <div class="stat-desc">Nasdaq-100 universe</div>
+        <div class="stat-desc">94 Nasdaq-100 companies</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num">96.2%</div>
-        <div class="stat-label">Code-eval pass</div>
-        <div class="stat-desc">Automated correctness checks</div>
+        <div class="stat-num">4.72/5</div>
+        <div class="stat-label">Champion eval score</div>
+        <div class="stat-desc">+0.62 vs v1 · 100% label match</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Divergence labels</div>
-        <div class="stat-desc">Numbers vs. management narrative</div>
+        <div class="stat-num">93.2%</div>
+        <div class="stat-label">Judge–human agreement</div>
+        <div class="stat-desc">LLM judge vs. hand-labeled golden set</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num">v2</div>
-        <div class="stat-label">In progress</div>
-        <div class="stat-desc">Earnings-call vs. filing agent</div>
+        <div class="stat-num">Next</div>
+        <div class="stat-label">Earnings-call agent</div>
+        <div class="stat-desc">Transcript vs. filing divergence</div>
       </div>
     </div>
   </div>

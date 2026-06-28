@@ -252,6 +252,17 @@
       box-shadow: 0 1px 2px rgba(17,24,39,0.04);
     }
     .featured:hover { border-color: var(--accent-border); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
+    .project-banner {
+      display: block; width: 100%; height: auto;
+      border: 1px solid var(--border); border-radius: 16px;
+      margin: 0 0 1.75rem; box-shadow: 0 1px 2px rgba(17,24,39,0.04);
+    }
+    .project-banner:hover { border-color: var(--accent-border); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
+    .proj-card-wide { grid-column: 1 / -1; }
+    .card-banner {
+      display: block; width: 100%; height: auto;
+      border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1.1rem;
+    }
 
     .featured-body {
       display: grid; grid-template-columns: 1.05fr 0.95fr;
@@ -703,6 +714,8 @@
     <p class="section-sub">A multi-agent system on Google's Agent Development Kit that mines real enterprise-AI pain from five live public sources, scores it deterministically, and has a cross-family judge verify every claim before it writes a PRD — gated on evals, with the receipts in BigQuery.</p>
   </div>
 
+  <img class="project-banner" src="/psis-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="Pain Signal Intelligence overview: deterministic pipeline (collectors, classifier, scorer, synthesizer, cross-family Claude judge, PRD), the frequency × intensity × addressability² scoring formula, and the ADK 2.2 / Gemini / Claude / BigQuery / Cloud Run stack." />
+
   <div class="featured">
     <div class="featured-body">
       <!-- CSS-rendered product demo: cross-model judge verdict -->
@@ -804,6 +817,8 @@
     <h2>RedInk</h2>
     <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100. Three independent signals — statistical outliers, earnings-quality red flags, and narrative spin — roll into one conviction score, and an LLM-as-judge suite gates every explanation before an analyst sees it. The signal isn't the anomaly; it's the gap between the numbers and the story management tells about them.</p>
   </div>
+
+  <img class="project-banner" src="/redink-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="RedInk overview: CONTRADICTS / NEUTRAL / CORROBORATES narrative-divergence labels, 1,352 filings scored, 93.2% judge–human agreement, 32 ALERT-tier filings, and the Claude / BigQuery / Python / SEC EDGAR stack." />
 
   <div class="featured secondary">
     <div class="featured-body">
@@ -923,7 +938,8 @@
   </div>
   <div class="projects-grid">
 
-    <div class="proj-card" onclick="window.open('https://pm-confessional-359562560246.us-central1.run.app','_blank')">
+    <div class="proj-card proj-card-wide" onclick="window.open('https://pm-confessional-359562560246.us-central1.run.app','_blank')">
+      <img class="card-banner" src="/pm-confessional-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="PM Confessional overview: a grounded RAG Decision Coach over 701 PM regrets, three-tier retrieval (high/medium/low confidence) that refuses rather than guesses, 56× latency cut by removing the reranker, and the Claude / Gemini Embed / pgvector / PostgreSQL / Cloud Run stack." />
       <div>
         <div class="proj-type">Grounded RAG · Live on Cloud Run</div>
         <div class="proj-title">PM Confessional</div>

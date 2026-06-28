@@ -19,6 +19,8 @@ Re-skinned the site to the RedInk product palette and reframed the work around t
   pipeline strip (6 sources → classify·Flash → score·Python → BigQuery → synthesize·Pro →
   judge·Claude → PRD), and stats. Links to the live app + the public repo.
 - **RedInk demoted to secondary featured** ("Also Featured") — same content, quieter surface.
+- **Featured-visual demo panels** (judge verdict + divergence labels) moved from dark navy to
+  the light lilac `#ede9fe` surface with white inner cards — lighter, matches the newsletter ribbon.
 - **The Arc + AI-PM matrix** updated — Pain Signal Intelligence added as the flagship rung
   (Multi-agent · Self-verifying) and the top matrix row (full marks across all five capabilities).
 - **Skills** refreshed toward the Google stack — Multi-agent Systems, Google ADK · Gemini,

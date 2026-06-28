@@ -257,20 +257,20 @@
       display: grid; grid-template-columns: 1.05fr 0.95fr;
     }
 
-    /* CSS-rendered product demo */
+    /* CSS-rendered product demo — light lilac surface (matches the newsletter ribbon) */
     .featured-visual {
-      background: var(--dark);
+      background: var(--accent-light);
       padding: 2.25rem;
       display: flex; flex-direction: column; gap: 0.85rem;
       justify-content: center;
     }
     .visual-cap {
       font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--dark-muted); margin-bottom: 0.35rem;
+      text-transform: uppercase; color: var(--accent-mid); margin-bottom: 0.35rem;
     }
     .label-row {
-      background: var(--dark-surface);
-      border: 1px solid var(--dark-border);
+      background: var(--surface);
+      border: 1px solid var(--accent-border);
       border-radius: 10px;
       padding: 0.9rem 1rem;
       display: flex; flex-direction: column; gap: 0.4rem;
@@ -281,12 +281,12 @@
       padding: 0.18rem 0.55rem; border-radius: 5px; width: fit-content;
     }
     .chip-contradicts { background: var(--warn-light); color: var(--warn); }
-    .chip-neutral     { background: #21263f; color: #9aa0c9; }
+    .chip-neutral     { background: var(--surface2); color: var(--muted); }
     .chip-corroborates{ background: var(--accent-light); color: var(--accent-mid); }
     .chip-pass        { background: var(--pass-light); color: var(--pass); }
     .chip-retry       { background: var(--warn-light); color: var(--warn); }
-    .label-text { font-size: 0.74rem; color: #aab0d6; line-height: 1.5; font-weight: 300; }
-    .label-text b { color: #eef0fb; font-weight: 600; }
+    .label-text { font-size: 0.74rem; color: var(--muted); line-height: 1.5; font-weight: 300; }
+    .label-text b { color: var(--ink); font-weight: 600; }
 
     .featured-info {
       padding: 2.25rem;

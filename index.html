@@ -273,7 +273,7 @@
       background: var(--accent-light);
       padding: 2.25rem;
       display: flex; flex-direction: column; gap: 0.85rem;
-      justify-content: center;
+      justify-content: space-between;
     }
     .visual-cap {
       font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
@@ -302,7 +302,7 @@
     .featured-info {
       padding: 2.25rem;
       border-left: 1px solid var(--border);
-      display: flex; flex-direction: column; justify-content: space-between;
+      display: flex; flex-direction: column; justify-content: flex-start;
     }
     .featured-badge {
       display: inline-flex; align-items: center; gap: 0.45rem;
@@ -319,7 +319,7 @@
     }
 
     /* Problem → Insight → Tradeoff → Result block */
-    .pitr { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; }
+    .pitr { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0; }
     .pitr-row { font-size: 0.84rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
     .pitr-row b {
       display: inline-block; min-width: 4.6rem;
@@ -328,7 +328,7 @@
       color: var(--accent); margin-right: 0.5rem;
     }
 
-    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0; }
     .tag {
       background: var(--accent-light); color: var(--accent-mid);
       border-radius: 5px; padding: 0.2rem 0.6rem;
@@ -338,7 +338,7 @@
     .featured-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
     /* Architecture / repo strip */
-    .repo-strip { margin-top: 1.25rem; }
+    .repo-strip { margin-top: 0; }
     .repo-strip-label {
       display: block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--muted2); margin-bottom: 0.6rem;
@@ -354,6 +354,15 @@
     .repo-chip.plain { color: var(--muted); background: var(--surface2); border: 1px solid var(--border); }
     .repo-arrow { color: var(--muted2); font-size: 0.72rem; user-select: none; }
 
+    .featured-foot {
+      padding: 1.4rem 2.25rem 1.75rem; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .featured-footrow {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1.2rem; flex-wrap: wrap;
+    }
+    @media (max-width: 720px) { .featured-footrow { flex-direction: column; align-items: flex-start; } }
     .featured-stats {
       border-top: 1px solid var(--border);
       display: grid; grid-template-columns: repeat(4,1fr);
@@ -737,49 +746,49 @@
       </div>
 
       <div class="featured-info">
-        <div>
-          <div class="featured-badge">
-            <span class="live-dot"></span>
-            Live · Multi-agent · Google ADK 2.2
-          </div>
-          <div class="featured-title">From raw signal to a judge-verified PRD</div>
-          <div class="pitr">
-            <p class="pitr-row"><b>Problem</b>Teams decide what to build from anecdotes — so the <em>loudest</em> pain wins, not the most <em>buildable</em> one.</p>
-            <p class="pitr-row"><b>Insight</b>A pain you can't act on is a backlog, not a signal. Score it <em>frequency × intensity × addressability²</em> in deterministic Python — a multiplicative veto, so one near-zero pillar kills the score instead of being averaged away. Addressability carries the highest exponent because it decides whether a pain belongs on the roadmap at all.</p>
-            <p class="pitr-row"><b>Tradeoff</b>A fixed-order ADK graph, not an autonomous LLM coordinator. The pipeline has exactly one correct order, so determinism owns the control flow and every stage persists to BigQuery — a crash resumes only the stage that failed. The model is reserved for judgment, never routing.</p>
-            <p class="pitr-row"><b>Result</b>A cross-family Claude judge verifies grounding before any PRD is written. I planted two lies in a synthesis — a count inflated from 12 to 80, and a fabricated "users want dark mode" with no signal behind it — and Claude failed both on the first run with the row-level evidence, then the gate forced a rewrite. A same-family control flagged nothing.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Google ADK 2.2</span>
-            <span class="tag">Gemini 2.5 Flash + Pro · Vertex AI</span>
-            <span class="tag">Claude Sonnet (Judge)</span>
-            <span class="tag">BigQuery</span>
-            <span class="tag tag-neutral">Cloud Run · Scheduler · Trace</span>
-          </div>
+        <div class="featured-badge">
+          <span class="live-dot"></span>
+          Live · Multi-agent · Google ADK 2.2
         </div>
-        <div>
-          <div class="featured-links">
-            <a href="https://paintoprd.dev" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
-            <a href="https://github.com/sheldongomes1/signal-intelligence-system" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">GitHub ↗</a>
-          </div>
-          <div class="repo-strip">
-            <span class="repo-strip-label">The pipeline — a deterministic graph, LLMs only where judgment is needed</span>
-            <div class="repo-chips">
-              <span class="repo-chip plain" title="GitHub · Hacker News · Stack Overflow · Discourse · G2 — parallel fan-out, graceful degradation (Reddit dropped at go-live: API onboarding wasn't worth it)">5 sources</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Gemini 2.5 Flash — high-volume taxonomy + buildability rating">classify · Flash</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip plain" title="Deterministic Python — frequency × intensity × addressability², a multiplicative veto that can't drift">score · Python</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip plain" title="Persist before the LLM tail so a crash never loses the run">BigQuery</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Gemini 2.5 Pro — high-reasoning synthesis, a different family from the Judge">synthesize · Pro</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Claude Sonnet — cross-family grounding check; fail forces a rewrite, max 2 retries">judge · Claude</span>
-              <span class="repo-arrow">→</span>
-              <span class="repo-chip" title="Claude — PRD + LinkedIn draft, only after the judge passes">PRD</span>
-            </div>
-          </div>
+        <div class="featured-title">From raw signal to a judge-verified PRD</div>
+        <div class="pitr">
+          <p class="pitr-row"><b>Problem</b>Teams decide what to build from anecdotes — so the <em>loudest</em> pain wins, not the most <em>buildable</em> one.</p>
+          <p class="pitr-row"><b>Insight</b>A pain you can't act on is a backlog, not a signal. Score it <em>frequency × intensity × addressability²</em> in deterministic Python — a multiplicative veto, so one near-zero pillar kills the score instead of being averaged away. Addressability carries the highest exponent because it decides whether a pain belongs on the roadmap at all.</p>
+          <p class="pitr-row"><b>Tradeoff</b>A fixed-order ADK graph, not an autonomous LLM coordinator. The pipeline has exactly one correct order, so determinism owns the control flow and every stage persists to BigQuery — a crash resumes only the stage that failed. The model is reserved for judgment, never routing.</p>
+          <p class="pitr-row"><b>Result</b>A cross-family Claude judge verifies grounding before any PRD is written. I planted two lies in a synthesis — a count inflated from 12 to 80, and a fabricated "users want dark mode" with no signal behind it — and Claude failed both on the first run with the row-level evidence, then the gate forced a rewrite. A same-family control flagged nothing.</p>
+        </div>
+      </div>
+    </div>
+    <div class="featured-foot">
+      <div class="repo-strip">
+        <span class="repo-strip-label">The pipeline — a deterministic graph, LLMs only where judgment is needed</span>
+        <div class="repo-chips">
+          <span class="repo-chip plain" title="GitHub · Hacker News · Stack Overflow · Discourse · G2 — parallel fan-out, graceful degradation (Reddit dropped at go-live: API onboarding wasn't worth it)">5 sources</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip" title="Gemini 2.5 Flash — high-volume taxonomy + buildability rating">classify · Flash</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip plain" title="Deterministic Python — frequency × intensity × addressability², a multiplicative veto that can't drift">score · Python</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip plain" title="Persist before the LLM tail so a crash never loses the run">BigQuery</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip" title="Gemini 2.5 Pro — high-reasoning synthesis, a different family from the Judge">synthesize · Pro</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip" title="Claude Sonnet — cross-family grounding check; fail forces a rewrite, max 2 retries">judge · Claude</span>
+          <span class="repo-arrow">→</span>
+          <span class="repo-chip" title="Claude — PRD + LinkedIn draft, only after the judge passes">PRD</span>
+        </div>
+      </div>
+      <div class="featured-footrow">
+        <div class="tags">
+          <span class="tag">Google ADK 2.2</span>
+          <span class="tag">Gemini 2.5 Flash + Pro · Vertex AI</span>
+          <span class="tag">Claude Sonnet (Judge)</span>
+          <span class="tag">BigQuery</span>
+          <span class="tag tag-neutral">Cloud Run · Scheduler · Trace</span>
+        </div>
+        <div class="featured-links">
+          <a href="https://paintoprd.dev" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
+          <a href="https://github.com/sheldongomes1/signal-intelligence-system" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:0.8rem;padding:0.55rem 1rem;">GitHub ↗</a>
         </div>
       </div>
     </div>
@@ -841,43 +850,43 @@
       </div>
 
       <div class="featured-info">
-        <div>
-          <div class="featured-badge">
-            <span class="live-dot"></span>
-            Live · Eval-first
-          </div>
-          <div class="featured-title">Narrative-divergence detection</div>
-          <div class="pitr">
-            <p class="pitr-row"><b>Problem</b>An analyst covering 90+ names can't read every 10-Q line by line — and the filings that matter most are the ones where the numbers turn but the narrative doesn't.</p>
-            <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them. When three independent signals agree, a false positive becomes unlikely.</p>
-            <p class="pitr-row"><b>Tradeoff</b>Graded explanations on a hard binary PASS/FAIL, not a 1–5 scale — a 4.9/5 average was hiding a 42% fail rate. Failure visibility over a flattering number.</p>
-            <p class="pitr-row"><b>Result</b>32 ALERT-tier filings surfaced from 1,352 scored — each one a cited MD&amp;A passage behind an LLM-as-judge gate that lifted the champion prompt to 4.72/5 with 100% label match.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Python</span>
-            <span class="tag">Claude Sonnet 4.6</span>
-            <span class="tag">LLM-as-judge</span>
-            <span class="tag">BigQuery</span>
-            <span class="tag">GCP</span>
-            <span class="tag tag-neutral">Telemetry</span>
-          </div>
+        <div class="featured-badge">
+          <span class="live-dot"></span>
+          Live · Eval-first
         </div>
-        <div>
-          <div class="featured-links">
-            <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
-          </div>
-          <div class="repo-strip">
-            <span class="repo-strip-label">The architecture — built across 4 repos</span>
-            <div class="repo-chips">
-              <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-anomaly-lab" target="_blank" rel="noopener" title="Data layer — SEC EDGAR ingestion, features → BigQuery">qqq-anomaly-lab</a>
-              <span class="repo-arrow">→</span>
-              <a class="repo-chip" href="https://github.com/sheldongomes1/scoring-pipeline" target="_blank" rel="noopener" title="Three-pillar anomaly scoring → conviction scores">scoring-pipeline</a>
-              <span class="repo-arrow">→</span>
-              <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-eval-suite" target="_blank" rel="noopener" title="LLM eval suite — binary judges, golden dataset">qqq-eval-suite</a>
-              <span class="repo-arrow">→</span>
-              <a class="repo-chip" href="https://github.com/sheldongomes1/redink-ui" target="_blank" rel="noopener" title="Analyst UI — React/Next.js (powers the live app)">redink-ui</a>
-            </div>
-          </div>
+        <div class="featured-title">Narrative-divergence detection</div>
+        <div class="pitr">
+          <p class="pitr-row"><b>Problem</b>An analyst covering 90+ names can't read every 10-Q line by line — and the filings that matter most are the ones where the numbers turn but the narrative doesn't.</p>
+          <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them. When three independent signals agree, a false positive becomes unlikely.</p>
+          <p class="pitr-row"><b>Tradeoff</b>Graded explanations on a hard binary PASS/FAIL, not a 1–5 scale — a 4.9/5 average was hiding a 42% fail rate. Failure visibility over a flattering number.</p>
+          <p class="pitr-row"><b>Result</b>32 ALERT-tier filings surfaced from 1,352 scored — each one a cited MD&amp;A passage behind an LLM-as-judge gate that lifted the champion prompt to 4.72/5 with 100% label match.</p>
+        </div>
+      </div>
+    </div>
+    <div class="featured-foot">
+      <div class="repo-strip">
+        <span class="repo-strip-label">The architecture — built across 4 repos</span>
+        <div class="repo-chips">
+          <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-anomaly-lab" target="_blank" rel="noopener" title="Data layer — SEC EDGAR ingestion, features → BigQuery">qqq-anomaly-lab</a>
+          <span class="repo-arrow">→</span>
+          <a class="repo-chip" href="https://github.com/sheldongomes1/scoring-pipeline" target="_blank" rel="noopener" title="Three-pillar anomaly scoring → conviction scores">scoring-pipeline</a>
+          <span class="repo-arrow">→</span>
+          <a class="repo-chip" href="https://github.com/sheldongomes1/qqq-eval-suite" target="_blank" rel="noopener" title="LLM eval suite — binary judges, golden dataset">qqq-eval-suite</a>
+          <span class="repo-arrow">→</span>
+          <a class="repo-chip" href="https://github.com/sheldongomes1/redink-ui" target="_blank" rel="noopener" title="Analyst UI — React/Next.js (powers the live app)">redink-ui</a>
+        </div>
+      </div>
+      <div class="featured-footrow">
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">Claude Sonnet 4.6</span>
+          <span class="tag">LLM-as-judge</span>
+          <span class="tag">BigQuery</span>
+          <span class="tag">GCP</span>
+          <span class="tag tag-neutral">Telemetry</span>
+        </div>
+        <div class="featured-links">
+          <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
         </div>
       </div>
     </div>

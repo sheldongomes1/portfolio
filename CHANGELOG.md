@@ -2,6 +2,15 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [4.0.1] — 2026-08-19 — Copy de-slop: kill the "not X — it's Y" reveal formula
+
+Rewrote every dramatic-negation contrast as a direct claim. Hero is now
+"Enterprise AI has a proof problem. / I build the proof."; the wedge line ties the four
+gaps together instead of restating the aphorism; the activation-gap card, Problem Map sub,
+RedInk tagline (×2), and OG/Twitter descriptions all state the point directly. Kept the
+site's established compact contrasts ("quality is a number, not a vibe", "version the
+judgment, not the model") — those carry content on both sides and are the owner's voice.
+
 ## [4.0.0] — 2026-08-19 — Problem-first repositioning: the Problem Map + Agent Frontier
 
 Reframed the whole site around the problems that stall enterprise AI, distilled from the

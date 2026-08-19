@@ -27,12 +27,12 @@
   <meta name="author" content="Sheldon Gomes" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Sheldon Gomes — Problem-first AI PM · evals, model churn, agents that run unattended" />
-  <meta property="og:description" content="Enterprise AI doesn't stall on capability — it stalls on proof. Two years of building the proof discipline: eval gates, regression suites that survive model churn, and agents engineered to run unattended." />
+  <meta property="og:description" content="Enterprise AI has a proof problem: pilots stall because nobody trusts the evaluations. Two years of building the proof discipline: eval gates, regression suites that survive model churn, and agents engineered to run unattended." />
   <meta property="og:url" content="https://sheldongomes.dev/" />
   <meta property="og:image" content="https://sheldongomes.dev/og-card.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Sheldon Gomes — Problem-first AI PM · evals, model churn, agents that run unattended" />
-  <meta name="twitter:description" content="Enterprise AI doesn't stall on capability — it stalls on proof. Eval gates, regression suites that survive model churn, and agents engineered to run unattended." />
+  <meta name="twitter:description" content="Enterprise AI has a proof problem. Eval gates, regression suites that survive model churn, and agents engineered to run unattended — shipped end to end." />
   <link rel="canonical" href="https://sheldongomes.dev/" />
 
   <!-- Favicons / app icons -->
@@ -720,11 +720,11 @@
   <div>
     <div class="hero-eyebrow">Senior PM · 15 Years · CFA · Building multi-agent AI on Google Cloud</div>
     <h1>
-      AI doesn't stall on capability.<br/>
-      <em>It stalls on proof.</em>
+      Enterprise AI has a proof problem.<br/>
+      <em>I build the proof.</em>
     </h1>
     <p class="hero-sub">
-      Enterprise AI pilots stall because nobody trusts the evaluations. I'm a senior PM
+      Pilots stall because nobody trusts the evaluations. I'm a senior PM
       (Societe Generale, CFA) who has spent two years building that missing proof discipline:
       eval gates that catch what demos hide, regression suites that make model upgrades an
       afternoon instead of a quarter, and agents engineered to run unattended — on Google ADK,
@@ -796,8 +796,8 @@
 <div class="section reveal" id="problem-map">
   <div class="section-header">
     <div class="section-eyebrow">The Problem Map</div>
-    <h2>I build against what actually stalls enterprise AI</h2>
-    <p class="section-sub">2026 industry surveys put it plainly: about seven in ten enterprises are piloting AI agents, and roughly one in ten has put a single agent into live production. The blocker isn't capability — it's proof. Four named gaps, and what I've shipped against each.</p>
+    <h2>I build against what stalls enterprise AI</h2>
+    <p class="section-sub">In 2026 surveys, about seven in ten enterprises are piloting AI agents. Roughly one in ten has put a single agent into live production. Proof is what separates the two groups — four named gaps, and what I've shipped against each.</p>
   </div>
 
   <div class="gap-grid">
@@ -849,14 +849,14 @@
       </div>
       <div class="gap-built-wrap">
         <div class="gap-label">What I've shipped against it</div>
-        <p class="gap-built">At Societe Generale, a working summary agent was rejected by its own first user for sounding fluent but generic. The fix wasn't a better model — it was <b>few-shot prompting on the user's own previously accepted artifacts</b>, so the agent learned the house voice from work already blessed. Adoption gets fixed one skeptical user at a time.</p>
+        <p class="gap-built">At Societe Generale, a working summary agent was rejected by its own first user for sounding fluent but generic. <b>Few-shot prompting on the user's own previously accepted artifacts</b> fixed it: the agent learned the house voice from work the user had already blessed. Adoption gets fixed one skeptical user at a time.</p>
         <p class="gap-refs">Lived in: Societe Generale · production AI in a regulated bank</p>
       </div>
     </div>
 
   </div>
 
-  <div class="wedge">Enterprises don't have an AI capability problem — they have a <b>proof problem</b>. I've spent two years building the proof discipline, in public, with the receipts on this page.</div>
+  <div class="wedge">All four gaps trace back to missing <b>proof</b>. I've spent two years building that discipline, in public, with the receipts on this page.</div>
 </div>
 
 <hr class="divider" />
@@ -883,7 +883,7 @@
         </div>
         <div class="label-row">
           <span class="label-chip chip-pass">● ACTIONABLE</span>
-          <span class="label-text">Each pain's rating is justified with a <b>specific product reason</b> — not boilerplate, not vibes.</span>
+          <span class="label-text">Each pain's rating is justified with a <b>specific product reason</b> an engineer could push back on.</span>
         </div>
         <div class="label-row">
           <span class="label-chip chip-retry">● RETRY FIRES</span>
@@ -970,7 +970,7 @@
   <div class="section-header">
     <div class="section-eyebrow">Also Featured · Live</div>
     <h2>RedInk</h2>
-    <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100. Three independent signals — statistical outliers, earnings-quality red flags, and narrative spin — roll into one conviction score, and an LLM-as-judge suite gates every explanation before an analyst sees it. The signal isn't the anomaly; it's the gap between the numbers and the story management tells about them.</p>
+    <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100. Three independent signals — statistical outliers, earnings-quality red flags, and narrative spin — roll into one conviction score, and an LLM-as-judge suite gates every explanation before an analyst sees it. The signal it hunts is the gap between the numbers and the story management tells about them.</p>
   </div>
 
   <img class="project-banner" src="/redink-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="RedInk overview: CONTRADICTS / NEUTRAL / CORROBORATES narrative-divergence labels, 1,352 filings scored, 93.2% judge–human agreement, 32 ALERT-tier filings, and the Claude / BigQuery / Python / SEC EDGAR stack." />
@@ -1003,7 +1003,7 @@
         <div class="featured-title">Narrative-divergence detection</div>
         <div class="pitr">
           <p class="pitr-row"><b>Problem</b>An analyst covering 90+ names can't read every 10-Q line by line — and the filings that matter most are the ones where the numbers turn but the narrative doesn't.</p>
-          <p class="pitr-row"><b>Insight</b>The signal isn't the anomaly — it's the gap between the numbers and the story management tells about them. When three independent signals agree, a false positive becomes unlikely.</p>
+          <p class="pitr-row"><b>Insight</b>The signal worth an analyst's time is the gap between the numbers and the story management tells about them. When three independent signals agree, a false positive becomes unlikely.</p>
           <p class="pitr-row"><b>Tradeoff</b>Graded explanations on a hard binary PASS/FAIL, not a 1–5 scale — a 4.9/5 average was hiding a 42% fail rate. Failure visibility over a flattering number.</p>
           <p class="pitr-row"><b>Result</b>32 ALERT-tier filings surfaced from 1,352 scored — each one a cited MD&amp;A passage behind an LLM-as-judge gate that lifted the champion prompt to 4.72/5 with 100% label match.</p>
         </div>

@@ -106,6 +106,7 @@
     }
     .nav-links a { transition: color 0.15s; }
     .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--accent); font-weight: 500; }
     .nav-btn {
       padding: 0.45rem 1.1rem;
       border: 1px solid var(--border);
@@ -232,7 +233,7 @@
     .impact-label { font-size: 0.78rem; color: var(--dark-muted); margin-top: 0.35rem; font-weight: 400; }
 
     /* ─── SHARED SECTION LAYOUT ─── */
-    .section { max-width: 1160px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .section { max-width: 1160px; margin: 0 auto; padding: 5rem 2.5rem; scroll-margin-top: 60px; }
     .section-eyebrow {
       font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em;
       text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem;
@@ -412,8 +413,9 @@
     @media (max-width: 720px) { .pillar-grid { grid-template-columns: 1fr; } }
 
     /* ─── PROJECTS GRID ─── */
+    /* 2 columns so the row under the wide card fills cleanly (3 cards total) */
     .projects-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem;
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem;
     }
     .proj-card {
       background: var(--surface);
@@ -680,6 +682,8 @@
       .featured-body { grid-template-columns: 1fr; }
       .featured-info { border-left: none; border-top: 1px solid var(--border); }
       .featured-stats { grid-template-columns: 1fr 1fr; }
+      .featured-stats .stat-box:nth-child(even) { border-right: none; }
+      .featured-stats .stat-box:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
       .projects-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .contact-card { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem; }
@@ -720,12 +724,11 @@
       <em>It stalls on proof.</em>
     </h1>
     <p class="hero-sub">
-      Roughly one in ten enterprise AI pilots ever reaches production — not because the models
-      can't, but because nobody trusts the evaluations. I'm a senior PM (Societe Generale, CFA)
-      who has spent two years building that missing proof discipline: eval gates that catch what
-      demos hide, regression suites that turn a model upgrade from a quarter of churn into an
-      afternoon, and agents engineered to run unattended — on Google ADK, Gemini, and BigQuery,
-      shipped end to end.
+      Enterprise AI pilots stall because nobody trusts the evaluations. I'm a senior PM
+      (Societe Generale, CFA) who has spent two years building that missing proof discipline:
+      eval gates that catch what demos hide, regression suites that make model upgrades an
+      afternoon instead of a quarter, and agents engineered to run unattended — on Google ADK,
+      Gemini, and BigQuery, shipped end to end.
     </p>
     <div class="hero-ctas">
       <a href="#problem-map" class="btn btn-primary">The problem map →</a>
@@ -1029,7 +1032,7 @@
           <span class="tag tag-neutral">Telemetry</span>
         </div>
         <div class="featured-links">
-          <a href="https://redink-ui-prod.web.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
+          <a href="https://tryredink.dev" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.8rem;padding:0.55rem 1rem;">Open app ↗</a>
         </div>
       </div>
     </div>
@@ -1503,6 +1506,26 @@
   window.addEventListener('hashchange', () => requestAnimationFrame(revealInView));
   // Ultimate failsafe — guarantee no section can stay invisible.
   setTimeout(() => reveals.forEach(show), 4000);
+
+  // Nav scrollspy — highlight the section currently in view.
+  // Picks the last section whose top has passed the nav line; cheap rAF-throttled scroll.
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+  const navTargets = navLinks
+    .map((a) => ({ a, el: document.querySelector(a.getAttribute('href')) }))
+    .filter((t) => t.el);
+  let spyTick = false;
+  const spy = () => {
+    spyTick = false;
+    let current = null;
+    for (const t of navTargets) {
+      if (t.el.getBoundingClientRect().top <= 120) current = t;
+    }
+    navTargets.forEach((t) => t.a.classList.toggle('active', t === current));
+  };
+  window.addEventListener('scroll', () => {
+    if (!spyTick) { spyTick = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+  spy();
 </script>
 </body>
 </html>

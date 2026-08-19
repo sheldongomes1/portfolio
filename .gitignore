@@ -1,6 +1,9 @@
 # Private planning / maintenance docs — live locally, never published.
 # (These would otherwise be web-served at /_meta/... and visible on a public repo.)
 _meta/
+# Interview-prep source brief — distilled into the site's Problem Map section,
+# but the PDF itself stays private (it's framed as Google-interview prep).
+google-problem-map-brief.pdf
 
 # Local backups / superseded snapshots — git history is the real record.
 archive/

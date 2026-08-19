@@ -2,6 +2,42 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [4.0.0] — 2026-08-19 — Problem-first repositioning: the Problem Map + Agent Frontier
+
+Reframed the whole site around the problems that stall enterprise AI, distilled from the
+private problem-map brief (`google-problem-map-brief.pdf` — kept **unpublished** on purpose:
+it's framed as interview prep and stays out of the Docker image and off the page).
+
+### Added
+- **"The Problem Map" section** (`#problem-map`, after the impact strip): four named gaps —
+  Evaluation Gap, Model Upgrade Tax, Agent Operations Gap, Activation Gap — each as
+  pain → shipped-receipt cards, closed by the wedge pull-quote ("a proof problem, not a
+  capability problem"). New `.gap-*` / `.wedge` CSS on existing tokens.
+- **"Agent Frontier / Now Building" section** (`#frontier`, after the Arc): the three open
+  agent problems — memory & context management, continuous learning, planning & long
+  horizons — each with a position earned from shipped systems plus an "In progress" item:
+  the weekly reconciliation agent, the draft-vs-accepted error-discovery loop, the PSIS
+  workflow→agent coordinator, and LangGraph routed chat. Platform-depth footer
+  (ADK 2.2 in production · LangGraph · deterministic Python).
+- **Arc rung "Unattended · Long-running"** — the two agents already running without
+  supervision (daily hiring-signal job, weekly repo reconciler); caption extended.
+
+### Changed
+- **Hero**: h1 now "AI doesn't stall on capability. It stalls on proof."; sub leads with the
+  pilot-to-production stat and the proof-discipline value prop; primary CTA → `#problem-map`.
+- Philosophy card principle 2 adds "workflow when the order is known; agent when the order
+  depends on findings."
+- Nav: added Problem Map + Now Building (dropped Skills/The Arc links to keep six).
+- `<title>` / meta / OG / Twitter descriptions moved to the problem-first framing.
+- Skills: added Agent Memory & Context, Continuous Learning · Golden Sets, LangGraph.
+- Contact sub now names the four problem areas as the roadmap being hired for.
+
+### Facts discipline
+- Survey stats attributed generically ("2026 industry surveys"); Gartner named only for its
+  public 2027 decommission prediction. All product numbers (42% fail rate, 5/13→12/13,
+  21.4-h hang → 240-s deadline, silent 7-day outage) trace to the owner's own writeups in
+  `linkedin-coach/interview-prep/` and `signal-intelligence-system` docs.
+
 ## [3.1.0] — 2026-06-28 — Pain Signal Intelligence accuracy + depth pass
 
 Reconciled the flagship section against the source-of-truth product repo

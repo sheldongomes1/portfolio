@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sheldon Gomes — Senior PM building multi-agent, eval-first AI products</title>
+  <title>Sheldon Gomes — Problem-first AI PM · evals, model churn, agents that run unattended</title>
 
   <!--
     Design system:
@@ -14,19 +14,25 @@
     v3 (2026-06-27): re-skinned to RedInk indigo; Pain Signal Intelligence promoted to
       flagship (multi-agent on Google ADK); RedInk now secondary featured; "No Black Boxes"
       newsletter added as a hero ribbon + dedicated section.
+    v4 (2026-08-19): problem-first repositioning. Hero leads with the proof problem;
+      new "Problem Map" section (evaluation gap / upgrade tax / agent-ops gap / activation
+      gap, distilled from the private problem-map brief — the PDF itself stays unpublished);
+      new "Agent Frontier" section (memory & context, continuous learning, long-horizon
+      planning) covering in-progress work: PSIS workflow→agent coordinator, LangGraph
+      routed chat, and two unattended agents already running.
   -->
 
   <!-- SEO + social share -->
-  <meta name="description" content="Senior Product Manager (15 years, Societe Generale, CFA) shipping eval-first AI products end to end — multi-agent systems on Google ADK, Gemini and BigQuery, grounded RAG, and LLM-as-judge eval suites." />
+  <meta name="description" content="Senior Product Manager (15 years, Societe Generale, CFA) building against the problems that stall enterprise AI — the evaluation gap, the model upgrade tax, and agents that can't run unattended. Multi-agent systems on Google ADK, Gemini and BigQuery, shipped end to end." />
   <meta name="author" content="Sheldon Gomes" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Sheldon Gomes — Senior PM building multi-agent, eval-first AI products" />
-  <meta property="og:description" content="From user problem to shipped product. Multi-agent AI on Google ADK with a cross-model judge, grounded RAG, and eval suites — built and shipped end to end." />
+  <meta property="og:title" content="Sheldon Gomes — Problem-first AI PM · evals, model churn, agents that run unattended" />
+  <meta property="og:description" content="Enterprise AI doesn't stall on capability — it stalls on proof. Two years of building the proof discipline: eval gates, regression suites that survive model churn, and agents engineered to run unattended." />
   <meta property="og:url" content="https://sheldongomes.dev/" />
   <meta property="og:image" content="https://sheldongomes.dev/og-card.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sheldon Gomes — Senior PM building multi-agent, eval-first AI products" />
-  <meta name="twitter:description" content="From user problem to shipped product. Multi-agent AI on Google Cloud, grounded RAG, and eval suites — built and shipped end to end." />
+  <meta name="twitter:title" content="Sheldon Gomes — Problem-first AI PM · evals, model churn, agents that run unattended" />
+  <meta name="twitter:description" content="Enterprise AI doesn't stall on capability — it stalls on proof. Eval gates, regression suites that survive model churn, and agents engineered to run unattended." />
   <link rel="canonical" href="https://sheldongomes.dev/" />
 
   <!-- Favicons / app icons -->
@@ -473,6 +479,68 @@
     .matrix-legend { font-size: 0.74rem; color: var(--muted2); margin-top: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; }
     .matrix-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
 
+    /* ─── PROBLEM MAP ─── */
+    .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .gap-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 0.85rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .gap-card:hover { border-color: var(--accent-border); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
+    .gap-head { display: flex; align-items: baseline; gap: 0.8rem; }
+    .gap-num {
+      font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800;
+      color: var(--accent-border); line-height: 1; user-select: none;
+    }
+    .gap-name { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.015em; }
+    .gap-label {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted2); margin-bottom: 0.25rem;
+    }
+    .gap-pain, .gap-built { font-size: 0.84rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+    .gap-pain b, .gap-built b { color: var(--ink); font-weight: 600; }
+    .gap-built-wrap { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+    .gap-refs { font-size: 0.7rem; color: var(--muted2); margin-top: 0.15rem; letter-spacing: 0.02em; }
+    .gap-refs a { color: var(--accent); font-weight: 500; }
+    .gap-refs a:hover { text-decoration: underline; }
+    .wedge {
+      margin-top: 1.75rem; padding: 1.4rem 2rem;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-light); border-radius: 0 12px 12px 0;
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+      font-size: 1.1rem; line-height: 1.55; color: var(--ink);
+    }
+    .wedge b { color: var(--accent-mid); font-weight: 700; }
+
+    /* ─── AGENT FRONTIER (now building) ─── */
+    .frontier-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem; }
+    .frontier-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.6rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .frontier-card:hover { border-color: var(--accent-border); box-shadow: 0 8px 24px rgba(99,91,255,0.08); }
+    .frontier-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+    .frontier-pos { font-size: 0.82rem; color: var(--muted); line-height: 1.65; font-weight: 300; flex-grow: 1; }
+    .frontier-pos b { color: var(--ink); font-weight: 600; }
+    .frontier-now { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+    .now-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--accent-light); color: var(--accent-mid);
+      border-radius: 5px; padding: 0.16rem 0.55rem;
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .frontier-now p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+    .frontier-now p b { color: var(--ink); font-weight: 600; }
+    .frontier-foot {
+      margin-top: 1.5rem; font-size: 0.8rem; color: var(--muted);
+      line-height: 1.7; font-weight: 300;
+    }
+    .frontier-foot b { color: var(--ink); font-weight: 600; }
+
     /* ─── NEWSLETTER SECTION ─── */
     .newsletter-card {
       background: var(--dark);
@@ -622,6 +690,8 @@
       .manifesto-num { font-size: 2rem; }
       .rung { grid-template-columns: 1fr; gap: 0.4rem; padding: 1.25rem 0; }
       .writing { grid-template-columns: 1fr; }
+      .gap-grid { grid-template-columns: 1fr; }
+      .frontier-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -631,11 +701,11 @@
 <nav>
   <div class="nav-name">Sheldon Gomes</div>
   <div class="nav-links">
+    <a href="#problem-map">Problem Map</a>
     <a href="#projects">Work</a>
-    <a href="#arc">The Arc</a>
+    <a href="#frontier">Now Building</a>
     <a href="#newsletter">Newsletter</a>
     <a href="#thinking">How I Think</a>
-    <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </div>
   <a href="/Resume.pdf" target="_blank" rel="noopener" class="nav-btn">Résumé ↗</a>
@@ -646,16 +716,20 @@
   <div>
     <div class="hero-eyebrow">Senior PM · 15 Years · CFA · Building multi-agent AI on Google Cloud</div>
     <h1>
-      From user problem<br/>
-      <em>to shipped product.</em>
+      AI doesn't stall on capability.<br/>
+      <em>It stalls on proof.</em>
     </h1>
     <p class="hero-sub">
-      Senior PM (Societe Generale, CFA) shipping eval-first AI products end to end —
-      from grounded RAG to multi-agent systems on Google ADK, Gemini, and BigQuery,
-      with a cross-model judge that verifies every claim before it ships.
+      Roughly one in ten enterprise AI pilots ever reaches production — not because the models
+      can't, but because nobody trusts the evaluations. I'm a senior PM (Societe Generale, CFA)
+      who has spent two years building that missing proof discipline: eval gates that catch what
+      demos hide, regression suites that turn a model upgrade from a quarter of churn into an
+      afternoon, and agents engineered to run unattended — on Google ADK, Gemini, and BigQuery,
+      shipped end to end.
     </p>
     <div class="hero-ctas">
-      <a href="#projects" class="btn btn-primary">See my work →</a>
+      <a href="#problem-map" class="btn btn-primary">The problem map →</a>
+      <a href="#projects" class="btn btn-ghost">See my work</a>
       <a href="/Resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost">Résumé ↗</a>
       <a href="https://www.linkedin.com/in/sheldongomes/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
     </div>
@@ -672,7 +746,7 @@
 
     <div class="principle">
       <div class="principle-title" data-n="2.">Determinism where correctness matters</div>
-      <p>LLMs only where judgment is genuinely required; fixed code and fixed order everywhere else. The cheapest, most reliable parts of a system have no model at all.</p>
+      <p>Workflow when the order is known; agent when the order depends on findings. LLMs only where judgment is genuinely required — the cheapest, most reliable parts of a system have no model at all.</p>
     </div>
 
     <div class="principle">
@@ -714,6 +788,75 @@
     </div>
   </div>
 </div>
+
+<!-- PROBLEM MAP — the four gaps this portfolio was built against -->
+<div class="section reveal" id="problem-map">
+  <div class="section-header">
+    <div class="section-eyebrow">The Problem Map</div>
+    <h2>I build against what actually stalls enterprise AI</h2>
+    <p class="section-sub">2026 industry surveys put it plainly: about seven in ten enterprises are piloting AI agents, and roughly one in ten has put a single agent into live production. The blocker isn't capability — it's proof. Four named gaps, and what I've shipped against each.</p>
+  </div>
+
+  <div class="gap-grid">
+
+    <div class="gap-card">
+      <div class="gap-head"><span class="gap-num">01</span><span class="gap-name">The Evaluation Gap</span></div>
+      <div>
+        <div class="gap-label">The pain</div>
+        <p class="gap-pain">Teams can't verify their AI works, so it stalls before production. In surveys, <b>half of enterprises shipped something that passed internal evals and then failed a customer</b> — because a passing eval is not the same as a working product.</p>
+      </div>
+      <div class="gap-built-wrap">
+        <div class="gap-label">What I've shipped against it</div>
+        <p class="gap-built">Binary PASS/FAIL evals against human labels — <b>a 4.9/5 self-grade was hiding a 42% failure rate</b>. Judges structurally separated from generators. An auditor that caught its own passing pipeline lying. And a documented NO-GO on an A/B the judge had passed clean — because the real failure was one the eval didn't measure yet.</p>
+        <p class="gap-refs">Lived in: <a href="#projects">Pain Signal Intelligence</a> · RedInk</p>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-head"><span class="gap-num">02</span><span class="gap-name">The Model Upgrade Tax</span></div>
+      <div>
+        <div class="gap-label">The pain</div>
+        <p class="gap-pain">Every model release invalidates every customer's validation — thresholds, judge calibrations, and golden sets are <b>properties of a specific model, and that model has a retirement date</b>. Without eval infrastructure, the choice is pin-and-break or upgrade blind.</p>
+      </div>
+      <div class="gap-built-wrap">
+        <div class="gap-label">What I've shipped against it</div>
+        <p class="gap-built"><b>Version the judgment, not the model.</b> A formula version on every score row so retuning never rewrites history, and a release gate that went <b>5/13 → 12/13 golden cases across four rubric versions</b> with the model held constant. When a platform release deprecated my pipeline's agent family mid-build, the migration took an afternoon — because the decision records were separate from the primitives.</p>
+        <p class="gap-refs">Lived in: <a href="#projects">Pain Signal Intelligence</a> · RedInk</p>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-head"><span class="gap-num">03</span><span class="gap-name">The Agent Operations Gap</span></div>
+      <div>
+        <div class="gap-label">The pain</div>
+        <p class="gap-pain">Evaluation asks whether the output is good. Operations asks whether the agent <b>stays alive, on budget, and observable when nobody is watching</b>. Gartner predicts 40% of enterprises will demote or decommission autonomous agents by 2027 — over governance gaps found only after production incidents.</p>
+      </div>
+      <div class="gap-built-wrap">
+        <div class="gap-label">What I've shipped against it</div>
+        <p class="gap-built">Checkpointing, idempotency, and liveness — <b>each learned from a real failure</b>: a silent seven-day outage (now silence itself is the alarm), a day-one crash mid-run (state persists before the LLM tail, so a crash resumes instead of restarting), and a <b>21.4-hour hang on a single filing</b> (fixed with an out-of-band 240-second deadline).</p>
+        <p class="gap-refs">Lived in: two unattended agents in production · <a href="#frontier">see Now Building</a></p>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-head"><span class="gap-num">04</span><span class="gap-name">The Activation Gap</span></div>
+      <div>
+        <div class="gap-label">The pain</div>
+        <p class="gap-pain">Seats get bought; usage stays shallow. Enterprise AI adoption <b>fails on voice and trust before it ever fails on capability</b> — and renewal risk hides in idle seats, not in headline penetration numbers.</p>
+      </div>
+      <div class="gap-built-wrap">
+        <div class="gap-label">What I've shipped against it</div>
+        <p class="gap-built">At Societe Generale, a working summary agent was rejected by its own first user for sounding fluent but generic. The fix wasn't a better model — it was <b>few-shot prompting on the user's own previously accepted artifacts</b>, so the agent learned the house voice from work already blessed. Adoption gets fixed one skeptical user at a time.</p>
+        <p class="gap-refs">Lived in: Societe Generale · production AI in a regulated bank</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="wedge">Enterprises don't have an AI capability problem — they have a <b>proof problem</b>. I've spent two years building the proof discipline, in public, with the receipts on this page.</div>
+</div>
+
+<hr class="divider" />
 
 <!-- FEATURED PROJECT — Pain Signal Intelligence (new flagship) -->
 <div class="section reveal" id="projects">
@@ -1018,12 +1161,61 @@
       <div class="rung-concept">Fixed-order ADK graph; deterministic scoring with an addressability veto; a cross-family judge that gates the output — monthly on Google Cloud.</div>
     </div>
     <div class="rung">
+      <div class="rung-phase">Unattended · Long-running</div>
+      <div class="rung-product">Two agents, no supervisor</div>
+      <div class="rung-concept">A daily Cloud Run job watching hiring signals and a weekly agent reconciling five repos against last week's report — checkpointing, idempotency, and silence-is-alarm reporting, running without me.</div>
+    </div>
+    <div class="rung">
       <div class="rung-phase">Meta / Infra</div>
       <div class="rung-product">Product Management OS</div>
       <div class="rung-concept">Building the system that builds the products — and learning in public.</div>
     </div>
   </div>
-  <p class="arc-caption">Learned to ship <span>→</span> to measure <span>→</span> to build systems <span>→</span> to make them agentic and self-verifying — in public.</p>
+  <p class="arc-caption">Learned to ship <span>→</span> to measure <span>→</span> to build systems <span>→</span> to make them agentic, self-verifying, and unattended — in public.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- AGENT FRONTIER — the open problems, and what's in progress now -->
+<div class="section reveal" id="frontier">
+  <div class="section-header">
+    <div class="section-eyebrow">Now Building · The Agent Frontier</div>
+    <h2>The three problems everyone building agents is circling</h2>
+    <p class="section-sub">Memory and context, continuous learning, and planning over long horizons — the open problems of the agent era. A position on each, earned from shipped systems, and what I'm building against it right now.</p>
+  </div>
+
+  <div class="frontier-grid">
+
+    <div class="frontier-card">
+      <div class="frontier-title">Memory &amp; context management</div>
+      <p class="frontier-pos"><b>I split memory by grain:</b> session state for the run, an append-only history table for trends, and a persisted registry as institutional memory — deciding per stage whether context gets <em>injected</em> or <em>fetched</em>. And I've hit the classic failure: storing volatile upstream state as a durable fact.</p>
+      <div class="frontier-now">
+        <span class="now-chip"><span class="live-dot"></span>In progress</span>
+        <p>An unattended weekly agent that reads git facts across five repos, <b>compares against its own prior report to compute deltas</b>, and reports drift — its memory-access failures logged and carried as open issues. Plus conversation memory in a routed LangGraph chat agent.</p>
+      </div>
+    </div>
+
+    <div class="frontier-card">
+      <div class="frontier-title">Continuous learning</div>
+      <p class="frontier-pos"><b>Version the judgment, not the model.</b> Golden sets, per-attempt per-criterion judge verdicts logged to BigQuery, and a formula version on every score row so retuning never rewrites history. The release gate improved 5/13 → 12/13 with the model held constant — <b>the learning lives in the rubric</b>, so it survives model churn.</p>
+      <div class="frontier-now">
+        <span class="now-chip"><span class="live-dot"></span>In progress</span>
+        <p>An error-discovery loop for content: an agent drafts, a human edits, and <b>the deltas between draft and accepted version</b> become the next round's few-shot examples — the same accepted-artifact pattern that fixed adoption at the bank.</p>
+      </div>
+    </div>
+
+    <div class="frontier-card">
+      <div class="frontier-title">Planning &amp; long horizons</div>
+      <p class="frontier-pos"><b>Workflow when the order is known; agent when the order depends on findings.</b> My flagship is a fixed-order graph by deliberate, ADR-defended choice — its pipeline has exactly one correct order. And long-running means checkpointing, idempotency, and liveness, each learned from a real production failure.</p>
+      <div class="frontier-now">
+        <span class="now-chip"><span class="live-dot"></span>In progress</span>
+        <p>Crossing from workflow to agent: <b>a coordinator that owns data-dependent control flow</b> — "this pain looks big → spawn a deeper sub-investigation; this week's signal is weak → skip the PRD." In parallel: routed chat agents in LangGraph, deciding who owns the tool decision — a classifier route in code, or the model's own tool calls.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="frontier-foot"><b>Platform depth:</b> Google ADK 2.2 in production — Sequential, Parallel and Loop agents, with a cross-family Claude judge reached over the LiteLLM bridge · <b>LangGraph</b> for routed conversational agents · deterministic Python wherever correctness has to be provable.</p>
 </div>
 
 <hr class="divider" />
@@ -1248,8 +1440,9 @@
       <div class="skill-list">
         <div class="skill-item">Multi-agent Systems</div>
         <div class="skill-item">Evals &amp; LLM-as-judge</div>
+        <div class="skill-item">Agent Memory &amp; Context</div>
+        <div class="skill-item">Continuous Learning · Golden Sets</div>
         <div class="skill-item">Grounding / RAG</div>
-        <div class="skill-item">Prompt Engineering</div>
       </div>
     </div>
     <div class="skill-group">
@@ -1257,6 +1450,7 @@
       <div class="skill-list">
         <div class="skill-item">Google Cloud (GCP)</div>
         <div class="skill-item">Google ADK · Gemini</div>
+        <div class="skill-item">LangGraph</div>
         <div class="skill-item">Claude API · MCP</div>
         <div class="skill-item">BigQuery · Python</div>
       </div>
@@ -1272,7 +1466,7 @@
     <div>
       <div class="section-eyebrow" style="color:var(--accent-soft);margin-bottom:0.6rem">Get in touch</div>
       <h2>Let's build something worth trusting.</h2>
-      <p class="contact-sub" style="margin-top:0.75rem">I'm looking for senior AI PM roles where grounding, evals, and shipping matter. If that's the bar you're hiring for, let's talk.</p>
+      <p class="contact-sub" style="margin-top:0.75rem">I'm looking for senior AI PM roles that own the hard problems on this page — evaluation, model churn, agent reliability, adoption. If that's the roadmap you're hiring for, let's talk.</p>
     </div>
     <div class="contact-btns">
       <a href="mailto:sheldon.gomes@gmail.com" class="btn btn-white">Email me ↗</a>

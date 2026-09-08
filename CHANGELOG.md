@@ -2,6 +2,32 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [4.0.2] — 2026-09-08 — RedInk banner: stats card → architecture diagram
+
+The RedInk hero banner was a facts card (label chips + four stat tiles). Replaced it with an
+**architecture diagram** in the same visual grammar as `psis-banner.webp`, so both featured
+products argue their design rather than repeat their numbers.
+
+### Changed
+- **`redink-banner.webp` rebuilt** — six-stage pipeline row (EDGAR Ingest → Anomaly Scorer →
+  Narrative Divergence → Conviction → Eval Gate → Analyst UI), the conviction formula
+  (`statistical 40 + earnings quality 30 + narrative 30 → ALERT · FLAG · WATCH`), three claim
+  cards (Layer 0 gates the judges · Binary, not Likert · Live on GCP), the stack chips, and a
+  closing claim. Border colour carries the argument, as on the PSIS card: gray = deterministic,
+  purple = LLM, cyan = gated output. The two LLM steps both sit *downstream* of the number.
+- `index.html` — banner `alt` rewritten to describe the architecture, not the old stats.
+
+### Added
+- **`banner-src/redink-banner.html`** (+ `banner-src/README.md`) — the diagram source, committed this time so the banner
+  is regenerable. Render headless at 1600×904, `--force-device-scale-factor=2`, then downsample
+  to 1600×904 and encode WebP q88. (The original banners' sources were never committed.)
+
+### Facts discipline
+Every element traces to the product repos: the 7-step pipeline and three-pillar weights to
+`scoring-pipeline/README.md`; the Layer 0 → 1 → 2 gating, binary PASS/FAIL/ABSTAIN judges, and
+the 4.9/5-masking-42%-FAIL finding to `qqq-eval-suite/README.md`; Cloud Run API + Firebase UI,
+1,352 filings, and the 4-repo split to `redink/README.md`.
+
 ## [4.0.1] — 2026-08-19 — Copy de-slop: kill the "not X — it's Y" reveal formula
 
 Rewrote every dramatic-negation contrast as a direct claim. Hero is now

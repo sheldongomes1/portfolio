@@ -973,7 +973,7 @@
     <p class="section-sub">Eval-first financial anomaly detection across the Nasdaq-100. Three independent signals — statistical outliers, earnings-quality red flags, and narrative spin — roll into one conviction score, and an LLM-as-judge suite gates every explanation before an analyst sees it. The signal it hunts is the gap between the numbers and the story management tells about them.</p>
   </div>
 
-  <img class="project-banner" src="/redink-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="RedInk overview: CONTRADICTS / NEUTRAL / CORROBORATES narrative-divergence labels, 1,352 filings scored, 93.2% judge–human agreement, 32 ALERT-tier filings, and the Claude / BigQuery / Python / SEC EDGAR stack." />
+  <img class="project-banner" src="/redink-banner.webp" width="1600" height="904" loading="lazy" decoding="async" alt="RedInk architecture: eval-gated pipeline from EDGAR ingest to anomaly scorer (MCD, Beneish M) to narrative divergence (Claude reads the MD&amp;A) to conviction synthesis to a binary eval gate (Layer 0 → 1 → 2) to the analyst UI; the conviction score is statistical 40 + earnings quality 30 + narrative 30, split into ALERT / FLAG / WATCH; Claude Sonnet 4.6 / BigQuery / Python / SEC EDGAR / Cloud Run / scikit-learn stack." />
 
   <div class="featured secondary">
     <div class="featured-body">

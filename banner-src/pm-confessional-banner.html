@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PM Confessional — product design diagram (source for /pm-confessional-diagram.webp)</title>
+<link rel="stylesheet" href="banner.css" />
+<style>
+  h1{font-size:70px}                 /* longer title than RedInk */
+  .band{width:1240px;padding-bottom:24px}
+  /* six rows of content here vs RedInk's five — tighten the rhythm to fit 904px */
+  .wrap{padding-top:48px}
+  .bandlabel{margin-top:36px}
+  .flow{margin-top:28px}
+  .band{margin-top:34px}
+  .cards{margin-top:34px}
+  .chips{margin-top:32px}
+  .kicker{margin-top:28px}
+  .card h3{font-size:16px;letter-spacing:1px}   /* keep every title on one line */
+</style>
+</head>
+<body>
+  <div class="guide g1"></div><div class="guide g2"></div>
+  <div class="rule" style="top:292px"></div>
+  <div class="rule" style="top:546px"></div>
+  <div class="capbar top"></div><div class="capbar bot"></div>
+
+  <div class="wrap">
+    <div class="eyebrow">Sheldon Gomes &middot; PM Confessional &middot; Grounded RAG</div>
+    <h1>PM Confessional</h1>
+    <div class="sub">701 PM regrets from Lenny's archive &mdash; searchable by situation, not keyword.</div>
+
+    <div class="bandlabel">Confidence routes the spend &middot; refuse rather than guess</div>
+
+    <div class="flow">
+      <div class="step"><div class="n">Lenny's Archive</div><div class="d">298 episodes &middot; 800-word chunks</div></div>
+      <div class="arr">&#8594;</div>
+      <div class="step llm"><div class="n">Extractor</div><div class="d">Claude &middot; first-person only</div></div>
+      <div class="arr">&#8594;</div>
+      <div class="step llm"><div class="n">Audit Gate</div><div class="d">Claude &middot; 701 of 776 kept</div></div>
+      <div class="arr">&#8594;</div>
+      <div class="step"><div class="n">pgvector</div><div class="d">768-dim &middot; HNSW cosine<br/>no LLM</div></div>
+      <div class="arr">&#8594;</div>
+      <div class="step"><div class="n">Confidence Router</div><div class="d">top-1 cosine<br/>no LLM</div></div>
+      <div class="arr">&#8594;</div>
+      <div class="step out"><div class="n">Decision Coach</div><div class="d">cited &mdash; or refuses</div></div>
+    </div>
+
+    <div class="band">
+      <div class="cap">Retrieval policy &middot; top-1 cosine decides how much model to spend</div>
+      <div class="router">
+        <div class="tier hi"><div class="t">&#8805; 0.70 &nbsp;skip the rerank</div><div class="b">~200 ms &middot; no LLM cost</div></div>
+        <div class="tier mid"><div class="t">0.45&ndash;0.70 &nbsp;Flash Lite</div><div class="b">~1.5 s &middot; 7&times; faster than Flash</div></div>
+        <div class="tier lo"><div class="t">&lt; 0.55 &nbsp;refuse</div><div class="b">out of scope &middot; 0 tokens</div></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card c1">
+        <h3>A router, not a faster model</h3>
+        <p>15 s &#8594; 200 ms, <b>56&times;</b><br/><b>removed the rerank, didn't upgrade it</b></p>
+      </div>
+      <div class="card c2">
+        <h3>Refusal is deterministic</h3>
+        <p>a template, not a prompt<br/><b>it cannot hallucinate advice</b></p>
+      </div>
+      <div class="card c3">
+        <h3>Grounded or silent</h3>
+        <p>every claim carries <b>[#regret_id]</b><br/><b>33% &#8594; 90% extraction precision</b></p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">Claude Sonnet 4.6</span>
+      <span class="chip">Gemini Embed</span>
+      <span class="chip">pgvector</span>
+      <span class="chip">PostgreSQL</span>
+      <span class="chip">Cloud Run</span>
+      <span class="chip">TypeScript</span>
+    </div>
+
+    <div class="kicker">Instrumented before optimised &mdash; <b>X-Search-Timing</b> showed the rerank cost <span class="hot">40&times; the embedding</span></div>
+  </div>
+</body>
+</html>

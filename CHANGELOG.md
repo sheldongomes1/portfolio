@@ -2,6 +2,45 @@
 
 All notable changes to the portfolio site. Newest first.
 
+## [4.1.0] — 2026-09-08 — Product design diagrams for RedInk and PM Confessional
+
+Both banners were facts cards — label chips and stat tiles that repeated numbers already in the
+section text. Replaced both with **architecture diagrams** in the PSIS banner's visual grammar,
+so all three featured products argue their design instead of restating their metrics.
+
+### Changed
+- **`redink-banner.webp` → `redink-diagram.webp`** — six-stage pipeline (EDGAR Ingest → Anomaly
+  Scorer → Narrative Divergence → Conviction → Eval Gate → Analyst UI), the conviction formula
+  (`statistical 40 + earnings quality 30 + narrative 30 → ALERT · FLAG · WATCH`), three claim
+  cards (Layer 0 gates the judges · Binary, not Likert · Live on GCP).
+- **`pm-confessional-banner.webp` → `pm-confessional-diagram.webp`** — six-stage pipeline
+  (Lenny's Archive → Extractor → Audit Gate → pgvector → Confidence Router → Decision Coach),
+  the retrieval policy as a three-way router (`≥0.70 skip the rerank` · `0.45–0.70 Flash Lite` ·
+  `<0.55 refuse`), three claim cards (A router, not a faster model · Refusal is deterministic ·
+  Grounded or silent).
+- Both `alt` texts rewritten to describe the architecture, not the old stats.
+- `Dockerfile` COPY list points at the new filenames; the old ones are deleted.
+
+### Why the files were renamed
+`nginx.conf` hard-caches `*.webp` for 24h (`max-age=86400`). Republishing under the same name
+left browsers serving the old image for a day — which is exactly what happened on the first
+attempt at this change. Banner assets are now versioned by filename; rename on every redesign.
+
+### Added
+- **`banner-src/`** — the diagram sources, tracked in git but excluded from the container (the
+  `Dockerfile` COPY list is explicit), so they are regenerable but never web-served.
+  `banner.css` holds the shared grammar: gray border = deterministic step, purple = LLM,
+  cyan = gated output, amber = refusal path. `README.md` documents the render command.
+
+### Facts discipline
+RedInk elements trace to `scoring-pipeline/README.md` (pipeline stages, pillar weights),
+`qqq-eval-suite/README.md` (Layer 0→1→2 gating, binary PASS/FAIL/ABSTAIN, the 4.9/5-masking-42%-FAIL
+finding) and `redink/README.md` (Cloud Run API + Firebase UI, 1,352 filings, 4 repos).
+PM Confessional elements trace to `pm-confessional/replit.md`: 298 episodes, 800-word chunks,
+701 visible of 776 after the May 2026 audit, `vector(768)` HNSW cosine, the three-tier rerank
+policy and its thresholds, the deterministic (templated) low-confidence refusal, `[#regret_id]`
+citation grounding, 33%→90% extraction precision, and the `X-Search-Timing` instrumentation.
+
 ## [4.0.2] — 2026-09-08 — RedInk banner: stats card → architecture diagram
 
 The RedInk hero banner was a facts card (label chips + four stat tiles). Replaced it with an

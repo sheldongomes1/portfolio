@@ -1,0 +1,87 @@
+/* Shared visual grammar for the product hero banners (1600x904).
+   Border colour is the argument, not decoration:
+     gray   = deterministic step, no model involved
+     purple = LLM step
+     cyan   = gated / verified output
+     amber  = refusal / stop path
+   Render headless at 1600x904 with --force-device-scale-factor=2, then
+   downsample to 1600x904 and encode WebP. See README.md. */
+:root{
+  --bg:#f4f3fe; --ink:#171a2e; --muted:#4b5169; --muted2:#767c96;
+  --box:#ffffff; --boxline:#dcdaef; --guide:#e6e4f7;
+  --accent:#635bff; --accent-mid:#4f46e5; --accent2:#7c5cff;
+  --accent-border:#c4b5fd; --cyan:#12c2d8; --amber:#e08a12;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1600px;height:904px;background:var(--bg);
+     font-family:Helvetica,Arial,"Liberation Sans",sans-serif;color:var(--ink);
+     position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
+
+.guide{position:absolute;top:0;bottom:0;width:1px;background:var(--guide)}
+.guide.g1{left:524px} .guide.g2{left:1050px}
+.rule{position:absolute;left:0;right:0;height:1px;background:var(--guide)}
+
+.capbar{position:absolute;left:50%;transform:translateX(-50%);width:700px;height:7px;
+        border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--accent2))}
+.capbar.top{top:0} .capbar.bot{bottom:0}
+
+.wrap{position:relative;z-index:2;padding:58px 60px 0}
+
+.eyebrow{text-align:center;font-size:19px;font-weight:700;letter-spacing:3.6px;
+         color:var(--accent);text-transform:uppercase}
+.eyebrow .dom{text-transform:lowercase;letter-spacing:2.6px}
+h1{text-align:center;font-size:78px;font-weight:700;letter-spacing:-2px;margin-top:6px;line-height:1.02}
+.sub{text-align:center;font-size:23px;color:var(--muted);margin-top:12px}
+.bandlabel{text-align:center;font-size:16px;font-weight:700;letter-spacing:2.6px;
+           color:var(--muted);text-transform:uppercase;margin-top:44px}
+
+/* pipeline row */
+.flow{display:flex;align-items:stretch;justify-content:center;margin-top:32px}
+.step{flex:1;background:var(--box);border:2px solid var(--boxline);border-radius:11px;
+      padding:16px 8px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.step.llm{border-color:var(--accent2)}
+.step.out{border-color:var(--cyan)}
+.step.stop{border-color:var(--amber)}
+.step .n{font-size:19px;font-weight:700;line-height:1.15}
+.step .d{font-size:14px;color:var(--muted);margin-top:5px;line-height:1.32}
+.step.llm .d,.step.out .d{color:var(--accent)}
+.step.stop .d{color:var(--amber)}
+.arr{width:34px;display:flex;align-items:center;justify-content:center;
+     color:var(--accent2);font-size:22px;font-weight:700}
+
+/* centre band — an equation or a router policy */
+.band{margin:40px auto 0;width:1190px;border:2px solid var(--accent-border);
+      border-radius:13px;background:rgba(255,255,255,.62);padding:19px 24px 21px;text-align:center}
+.band .cap{font-size:15px;font-weight:700;letter-spacing:2.2px;color:var(--muted);text-transform:uppercase}
+.band .eq{margin-top:9px;font-size:30px;font-weight:700;letter-spacing:-.3px}
+.band .eq .p1{color:var(--accent)} .band .eq .p2{color:var(--accent2)} .band .eq .p3{color:var(--amber)}
+.band .eq .op{color:var(--muted2);font-weight:400;margin:0 4px}
+.band .eq .tail{font-size:22px;font-weight:400;color:var(--ink);margin-left:8px}
+
+.router{display:flex;margin-top:12px}
+.tier{flex:1;padding:0 14px;position:relative}
+.tier + .tier{border-left:1px solid var(--guide)}
+.tier .t{font-size:22px;font-weight:700;letter-spacing:-.2px}
+.tier .b{font-size:16px;color:var(--muted);margin-top:5px}
+.tier.hi .t{color:var(--cyan)} .tier.mid .t{color:var(--accent2)} .tier.lo .t{color:var(--amber)}
+
+/* claim cards */
+.cards{display:flex;gap:26px;justify-content:center;margin-top:40px}
+.card{width:352px;background:var(--box);border:2px solid var(--boxline);
+      border-radius:11px;padding:20px 18px 19px;text-align:center;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
+.card.c1::before{background:var(--cyan)}
+.card.c2::before{background:var(--accent2)}
+.card.c3::before{background:var(--accent-mid)}
+.card h3{font-size:18px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-top:4px}
+.card p{font-size:16px;color:var(--muted);margin-top:8px;line-height:1.45}
+.card p b{color:var(--ink)}
+
+/* stack chips + closing claim */
+.chips{display:flex;gap:14px;justify-content:center;margin-top:40px}
+.chip{border:2px solid var(--boxline);border-radius:9px;background:rgba(255,255,255,.6);
+      padding:9px 17px;font-size:16px;font-weight:700;color:var(--accent-mid)}
+.kicker{margin:34px auto 0;width:max-content;max-width:1200px;border:2px solid var(--accent2);
+        border-radius:11px;background:rgba(255,255,255,.62);padding:12px 30px;
+        font-size:21px;color:var(--muted);text-align:center}
+.kicker b{color:var(--ink)} .kicker .hot{color:var(--amber);font-weight:700}

@@ -3,6 +3,6 @@ FROM nginx:1.27-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY index.html favicon.ico favicon.svg favicon-16.png favicon-32.png \
      apple-touch-icon.png og-card.png Resume.pdf \
-     psis-banner.webp redink-banner.webp pm-confessional-banner.webp \
+     psis-banner.webp redink-diagram.webp pm-confessional-diagram.webp \
      /usr/share/nginx/html/
 EXPOSE 8080

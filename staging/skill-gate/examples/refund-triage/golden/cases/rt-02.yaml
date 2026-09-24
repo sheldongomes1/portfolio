@@ -1,0 +1,27 @@
+id: rt-02
+input:
+  text: '@Refund Triage Please triage this refund request.
+
+
+    Customer message:
+
+    I''d like to return the camping stove I bought in July. I''ve used it twice and don''t need it anymore.
+
+    '
+  files:
+  - inputs/orders/ORD-1002.md
+expectations:
+- id: E1
+  text: The late, used return is denied under P2.
+  kind: detect
+  traces_to:
+  - k74780885
+  check:
+    type: regex
+    pattern: '^Decision: DENY\s*\n\s*Policy: P2\b'
+tags:
+- late_return
+source: expert
+confirmed_by: Example maintainer (fictional fixture)
+confirmed_at: '2026-09-24'
+split: dev

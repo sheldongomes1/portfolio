@@ -1,0 +1,517 @@
+{
+  "api_note": null,
+  "calibration": {
+    "reason": "every check was deterministic; no model judged anything",
+    "status": "NOT APPLICABLE"
+  },
+  "calls": {
+    "cost_usd": 0.0,
+    "input_tokens": 0,
+    "model_calls": 0,
+    "output_tokens": 0
+  },
+  "capture": {
+    "complete": true,
+    "notes": "Outputs were written by hand to exercise PASS, FAIL, FLAKY, a miss and a false flag.",
+    "operator": "Skill Gate maintainers",
+    "run_date": "2026-09-24",
+    "surface": "hand-written fixture; no model was run"
+  },
+  "consistency_sha256": "30c5050934994186cc18dbc7e84b5a37fc1e5dc16fc4ccc662c2f5bdd57414ab",
+  "coverage": {
+    "dangling_traces": [],
+    "rules": 8,
+    "uncovered": 1,
+    "uncovered_rules": [
+      "R07 (line 22)"
+    ]
+  },
+  "criteria": {
+    "path": "golden/criteria.yaml",
+    "ratified_at": "2026-09-24T22:47:04Z",
+    "ratified_by": "Example maintainer (fictional)",
+    "sha256": "10f2985722dd6cd1a7cf1b9056b5eead6026fbde177c5d2f8c770e798e55c100"
+  },
+  "executor": {
+    "kind": "manual",
+    "note": "Outputs pasted by a person; Skill Gate did not call the model.",
+    "operator": "Skill Gate maintainers",
+    "run_date": "2026-09-24",
+    "surface": "hand-written fixture; no model was run"
+  },
+  "failing_cases": [
+    {
+      "case_id": "rt-02",
+      "checks": [
+        {
+          "check_id": "C3",
+          "check_kind": "criterion",
+          "reasons": [
+            {
+              "evidence": "I used it a couple of times",
+              "reason": "1 of 1 quote(s) are not verbatim: \"I used it a couple of times\" (not in the input).",
+              "repeat": 2,
+              "verdict": "FAIL"
+            }
+          ],
+          "text": null
+        }
+      ],
+      "repeats": 2,
+      "repeats_passed": 1,
+      "split": "dev",
+      "status": "FLAKY"
+    },
+    {
+      "case_id": "rt-05",
+      "checks": [
+        {
+          "check_id": "E1",
+          "details": "redacted (holdout)"
+        }
+      ],
+      "repeats": 2,
+      "repeats_passed": 1,
+      "split": "holdout",
+      "status": "FLAKY"
+    },
+    {
+      "case_id": "rt-06",
+      "checks": [
+        {
+          "check_id": "E1",
+          "details": "redacted (holdout)"
+        },
+        {
+          "check_id": "E2",
+          "details": "redacted (holdout)"
+        }
+      ],
+      "repeats": 2,
+      "repeats_passed": 0,
+      "split": "holdout",
+      "status": "FAIL"
+    }
+  ],
+  "false_flags": [
+    {
+      "case_id": "rt-06",
+      "expectation_id": "E1",
+      "failed_repeats": [
+        1,
+        2
+      ],
+      "of_repeats": 2,
+      "split": "holdout",
+      "text": "redacted (holdout)"
+    }
+  ],
+  "flags": [],
+  "generated_at": "2026-09-24T22:50:12Z",
+  "golden_set": {
+    "blockers": [
+      "6 cases; VERIFIED requires at least 10"
+    ],
+    "edge_or_should_not_flag": 4,
+    "holdout_share": 0.3,
+    "seeds": [
+      860165454
+    ],
+    "size": 6,
+    "sources": {
+      "expert": 6,
+      "generated": 0
+    },
+    "splits": {
+      "dev": 4,
+      "holdout": 2
+    },
+    "tags": {
+      "defect_after_window": 1,
+      "edge": 3,
+      "happy_path": 1,
+      "injection": 1,
+      "late_return": 1,
+      "over_limit": 1,
+      "should_not_flag": 1,
+      "under_limit": 1
+    },
+    "warnings": [
+      "6 cases; at least 12 are recommended"
+    ]
+  },
+  "judge": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "served_models": [],
+    "settings": {
+      "effort": "high",
+      "max_tokens": 16000
+    },
+    "used": false
+  },
+  "manifest": [
+    {
+      "path": "skillgate.yaml",
+      "role": "config",
+      "sha256": "6bccd117f8e7ed8f536706a556d765485b9bbb6fe247bd6465cfe3b47a3fbff4"
+    },
+    {
+      "path": "skill/skill.md",
+      "role": "skill",
+      "sha256": "4b7348940b1d90a2dcf50366d3b38fc50b8469cdb92d01e32a6468add721b93e"
+    },
+    {
+      "path": "skill/reference/refund-policy.md",
+      "role": "reference",
+      "sha256": "9bbf024fc27611fc851555db7371cfaafdca490a35275168eebaaa0a9abafbc6"
+    },
+    {
+      "path": "golden/golden.yaml",
+      "role": "golden",
+      "sha256": "b3483235ab1679f2f745303ab14f33afe562244aed697c38c6c817330ffe83db"
+    },
+    {
+      "path": "golden/cases/rt-01.yaml",
+      "role": "case",
+      "sha256": "41cf296c58547d0e1e4498c0f2726ce0d4474a1ff6612df18f5287c6150d3e86"
+    },
+    {
+      "path": "golden/cases/rt-02.yaml",
+      "role": "case",
+      "sha256": "4bb26151687553390f7edc26b4eb821021e8055c0a1de1475b6a43428283c4fe"
+    },
+    {
+      "path": "golden/cases/rt-03.yaml",
+      "role": "case",
+      "sha256": "033db4a13d95a900b9c287636c8b374f9a29edc31f819acc7f4af30706d7124d"
+    },
+    {
+      "path": "golden/cases/rt-04.yaml",
+      "role": "case",
+      "sha256": "9cdfd771844bedb2d75f95ca1a9acd0bf0384ef52c8ccde3733ea919d4c9453d"
+    },
+    {
+      "path": "golden/cases/rt-05.yaml",
+      "role": "case",
+      "sha256": "820c512346da29f950850c7524b30729fac3770f93cfb72509719080e4f625c5"
+    },
+    {
+      "path": "golden/cases/rt-06.yaml",
+      "role": "case",
+      "sha256": "b1d18409138c3b63c059ea8edcb175198654b343c10b3bbd0f2421fa96381631"
+    },
+    {
+      "path": "inputs/orders/ORD-1001.md",
+      "role": "case_input",
+      "sha256": "7a6a4d7cf4991bba20a9cba3b1fa2d51eb4c774e54d9b17b832c705a0138aa86"
+    },
+    {
+      "path": "inputs/orders/ORD-1002.md",
+      "role": "case_input",
+      "sha256": "7a3cc39f711028d03488c802e0dbbcd4bc7d99eb1cee186238400242af18e5bd"
+    },
+    {
+      "path": "inputs/orders/ORD-1003.md",
+      "role": "case_input",
+      "sha256": "a5aab35644072a46dff87718888710f32c2e379f72df980b76e3a8b487dc2d22"
+    },
+    {
+      "path": "inputs/orders/ORD-1004.md",
+      "role": "case_input",
+      "sha256": "42534a68388883a0b8de65b1ae5a503778def7c3a3b2f7db45226cf60d0f94fa"
+    },
+    {
+      "path": "inputs/orders/ORD-1005.md",
+      "role": "case_input",
+      "sha256": "d2af368abcca628366438c5d87f11ac7edc99b7cc2a61899db1a55a80d108457"
+    },
+    {
+      "path": "inputs/orders/ORD-1006.md",
+      "role": "case_input",
+      "sha256": "e03c131dfa225ca2bb85e459372d27bec3dd9ee0da3420bbf1dc354186e46838"
+    },
+    {
+      "path": "golden/criteria.yaml",
+      "role": "criteria",
+      "sha256": "10f2985722dd6cd1a7cf1b9056b5eead6026fbde177c5d2f8c770e798e55c100"
+    },
+    {
+      "path": "golden/criteria.ratification.json",
+      "role": "ratification",
+      "sha256": "66c7d2e1132bd4ebbb9ed2d65f856644d2a1a694455ccdcf318337b46df970bd"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/run.json",
+      "role": "run",
+      "sha256": "7f2b5ea7a83d9b2a88bc1265e4bee8a07e00458abc6b94c0205daf2cc0602462"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/capture.yaml",
+      "role": "capture",
+      "sha256": "c22948b2aa11c9fdd961b180744612e0e83f3ad63c053dc31873140a22c684e4"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-01/1.md",
+      "role": "output",
+      "sha256": "3772249a1f2b6d8af1d41e30fd29e98fc06549bd19163893054712c404ab25f7"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-01/2.md",
+      "role": "output",
+      "sha256": "e8d8e93c4b15af0b152e6f104dfc5917a5b0e29be3a54fe7bc1d0452958ea60a"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-02/1.md",
+      "role": "output",
+      "sha256": "56aaa8226aa309a1276cf7f8ada83c6025fbc239f260b823df67e7490054ad01"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-02/2.md",
+      "role": "output",
+      "sha256": "537fbb1fa388c82b32a1072b139d9ded6283f9edaa82f0011a63a0156983bea1"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-03/1.md",
+      "role": "output",
+      "sha256": "c4925929b093f93fc88c8935b5516e26d41fc15dd2764b91a7ab89273275331b"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-03/2.md",
+      "role": "output",
+      "sha256": "80e94f18c43f43df03ec4bdc1e1992ebb71899275cdc11cfe31d69133cf3be69"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-04/1.md",
+      "role": "output",
+      "sha256": "c74e0d75ebb1e24a30c81b5d33d9d4c9f2c9c123420b745849d4668988882115"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-04/2.md",
+      "role": "output",
+      "sha256": "3172b089562dd6fa08cb4126e4a2707a39efb2f4804e25cefb18967be8611431"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-05/1.md",
+      "role": "output",
+      "sha256": "99447d90799e548c1ce82d85c28e8741f07fb289edc897beb7f03401f066b541"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-05/2.md",
+      "role": "output",
+      "sha256": "f5a75632e1728f543849305729ba3be6ed7b7afae83e6de25ae1810078cd9a3d"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-06/1.md",
+      "role": "output",
+      "sha256": "e500b4e3030f7bfbcfe57fbbec78b169b740082e29bb2d593fa2a8cb56a51d59"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/outputs/rt-06/2.md",
+      "role": "output",
+      "sha256": "896bad66f6c6d54566437802f37a06579d70c041caf01920ae077534f7ec91e8"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judge.json",
+      "role": "judge",
+      "sha256": "f55c4e7097548710abf61becd3d9b0fc4b24d8640b398744fc77462e725517c3"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/summary.json",
+      "role": "summary",
+      "sha256": "e599fe84869b0573099db68c5c9b42192611e39dd906387c1a189a571d78f649"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/log.jsonl",
+      "role": "log",
+      "sha256": "71a8b38a7417677d12596fefba76be451a22c22ca7ad430c9e7bb72fea461b4a"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-01/1.json",
+      "role": "judgment",
+      "sha256": "1b61c496b13de8159d0dde114240b89f1b87d4ba797004d77350bcf63d80b660"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-01/2.json",
+      "role": "judgment",
+      "sha256": "1f14dc760581116312c0cc19d807e6a3f0af46834c84993c108c7f6166ca94c4"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-02/1.json",
+      "role": "judgment",
+      "sha256": "0540572f7e21fec3b49e9ef0b6ea56b49d4b78db5d41ac6b19754d59f1d7a937"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-02/2.json",
+      "role": "judgment",
+      "sha256": "168bc7ff4b99a043bc3cde85499d8fd07165cfae8158557d419802520812f7bc"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-03/1.json",
+      "role": "judgment",
+      "sha256": "71a4adec89304aa0d52acdb76103eb73e009c8148812245c01e883eb9a41292f"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-03/2.json",
+      "role": "judgment",
+      "sha256": "2e3a53b395c86d59f9530682e3dbd6ddc9509921157a26433f9ccc3a9402bf36"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-04/1.json",
+      "role": "judgment",
+      "sha256": "f86180335967d6e69024e2f3474fbad554ea1f1dd55d2ac0fa3fbd7424163776"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-04/2.json",
+      "role": "judgment",
+      "sha256": "b8a041cd171f516c7d718321f048c863025fef84e8888c9f175bff59ee7cb84f"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-05/1.json",
+      "role": "judgment",
+      "sha256": "b86d4005ee971dde2c696afc74a9bb0a818c1636d49fb4cc3e41f91173756b7f"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-05/2.json",
+      "role": "judgment",
+      "sha256": "ec66dde695efea96d52fd8b9048d070395fd4d369d7c298e7837d91fceeb7c57"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-06/1.json",
+      "role": "judgment",
+      "sha256": "d9562e476d927d4fcbf905427404dd75c557666f08c42263f987a80a143f8205"
+    },
+    {
+      "path": "runs/20260924T225012Z-manual/judge-20260924T225012Z/judgments/rt-06/2.json",
+      "role": "judgment",
+      "sha256": "ac9b14a315f821a4c1bc0f92fbb617f85e99baa1a649964b942b7d027f921920"
+    }
+  ],
+  "misses": [
+    {
+      "case_id": "rt-05",
+      "expectation_id": "E1",
+      "failed_repeats": [
+        2
+      ],
+      "of_repeats": 2,
+      "split": "holdout",
+      "text": "redacted (holdout)"
+    }
+  ],
+  "mode": "manual",
+  "project": {
+    "root_marker": "skillgate.yaml"
+  },
+  "prompts": {
+    "judge.v1": "b21566561723da9c6ecc89694ed211b1ed72d0eb8f2cc95d25eaf3f668414f2d"
+  },
+  "reasons": [
+    "6 cases; VERIFIED requires at least 10",
+    "dev: 3 of 4 cases passed on every repeat (0 failed, 1 flaky, 0 ERROR)",
+    "holdout: 0 of 2 cases passed on every repeat (1 failed, 1 flaky, 0 ERROR)"
+  ],
+  "references": [
+    {
+      "path": "skill/reference/refund-policy.md",
+      "sha256": "9bbf024fc27611fc851555db7371cfaafdca490a35275168eebaaa0a9abafbc6"
+    }
+  ],
+  "results": {
+    "by_split": {
+      "dev": {
+        "cases": 4,
+        "error_cases": 0,
+        "error_judgments": 0,
+        "failed": 0,
+        "flaky": 1,
+        "passed": 3
+      },
+      "holdout": {
+        "cases": 2,
+        "error_cases": 0,
+        "error_judgments": 0,
+        "failed": 1,
+        "flaky": 1,
+        "passed": 0
+      }
+    },
+    "per_criterion": {
+      "C1": {
+        "ERROR": 0,
+        "FAIL": 0,
+        "PASS": 12,
+        "failing_cases": []
+      },
+      "C2": {
+        "ERROR": 0,
+        "FAIL": 0,
+        "PASS": 12,
+        "failing_cases": []
+      },
+      "C3": {
+        "ERROR": 0,
+        "FAIL": 1,
+        "PASS": 11,
+        "failing_cases": [
+          "rt-02"
+        ]
+      }
+    },
+    "totals": {
+      "ERROR": 0,
+      "FAIL": 6,
+      "PASS": 46,
+      "judgments": 52
+    }
+  },
+  "run": {
+    "cases": [
+      {
+        "id": "rt-01",
+        "split": "dev"
+      },
+      {
+        "id": "rt-02",
+        "split": "dev"
+      },
+      {
+        "id": "rt-03",
+        "split": "dev"
+      },
+      {
+        "id": "rt-04",
+        "split": "dev"
+      },
+      {
+        "id": "rt-05",
+        "split": "holdout"
+      },
+      {
+        "id": "rt-06",
+        "split": "holdout"
+      }
+    ],
+    "created_at": "2026-09-24T22:50:12Z",
+    "judge_id": "judge-20260924T225012Z",
+    "judged_at": "2026-09-24T22:50:12Z",
+    "k": 2,
+    "run_id": "20260924T225012Z-manual"
+  },
+  "run_coverage": {
+    "golden_cases": 6,
+    "in_run": 6
+  },
+  "schema_version": 1,
+  "skill": {
+    "name": "refund-triage",
+    "path": "skill/skill.md",
+    "sha256": "4b7348940b1d90a2dcf50366d3b38fc50b8469cdb92d01e32a6468add721b93e",
+    "version": "1.0.0"
+  },
+  "split_problems": [],
+  "verdict": "NOT VERIFIED",
+  "warnings": [
+    "6 cases; at least 12 are recommended"
+  ]
+}

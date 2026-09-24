@@ -1,0 +1,16 @@
+schema_version: 1
+draws:
+- drawn_at: '2026-09-24T22:47:04Z'
+  seed: 860165454
+  pool:
+  - rt-01
+  - rt-02
+  - rt-03
+  - rt-04
+  - rt-05
+  - rt-06
+  holdout_count: 2
+  holdout:
+  - rt-05
+  - rt-06
+holdout_share: 0.3

@@ -1,0 +1,54 @@
+{
+ "updates": {
+  "U01": "Team morale is fantastic and we closed out another energetic sprint! Huge shout-out to the integration squad. One item to note: the vendor has paused all interface development until the revised data-residency contract is signed, and legal has not given us a date. We are using the pause to polish documentation. Overall trajectory feels really strong and we remain confident in the program's momentum!",
+  "U02": "Declaring Red this week. The nightly reconciliation job corrupted the partition index on Tuesday and we lost four days of processed history; recovery from cold storage is running but will not finish before the 1 September cutover rehearsal. We have slipped the rehearsal by two weeks and informed downstream consumers. Root-cause review is booked for Friday.",
+  "U03": "All good this period. Tracking to plan.",
+  "U04": "Progressing, but the device-enrollment API still rejects bulk batches, so the team is enrolling handsets manually at roughly 40 per day, which consumes about half of the squad's capacity every week. Vendor fix promised in their September release. Depot training is otherwise on schedule.",
+  "U05": "Keeping us at Red for a third week out of caution. In practice the blocking auditor findings were cleared on Monday, the restated balances loaded cleanly, and the parallel run has matched to the penny for five consecutive days. Remaining work is documentation.",
+  "U06": "Phase 2 completed on schedule; adoption at 78% of the sales org against a 70% target for this quarter. Next milestone (territory rebalancing) starts 8 September with no known risks. Considering a lighter weekly report format."
+ },
+ "rows": [
+  {
+   "id": "U01",
+   "quotes": [
+    "legal has not given us a date",
+    "the vendor has paused all interface development until the revised data-residency contract is signed, and legal has not given us a date"
+   ]
+  },
+  {
+   "id": "U02",
+   "quotes": [
+    "Declaring Red this week.",
+    "We have slipped the rehearsal by two weeks",
+    "We have slipped the rehearsal by two weeks and informed downstream consumers.",
+    "will not finish before the 1 September cutover rehearsal"
+   ]
+  },
+  {
+   "id": "U03",
+   "quotes": [
+    "All good this period. Tracking to plan."
+   ]
+  },
+  {
+   "id": "U04",
+   "quotes": [
+    "the team is enrolling handsets manually at roughly 40 per day, which consumes about half of the squad's capacity every week"
+   ]
+  },
+  {
+   "id": "U05",
+   "quotes": [
+    "the blocking auditor findings were cleared on Monday, the restated balances loaded cleanly, and the parallel run has matched to the penny for five consecutive days",
+    "the parallel run has matched to the penny for five consecutive days"
+   ]
+  },
+  {
+   "id": "U06",
+   "quotes": [
+    "Phase 2 completed on schedule; adoption at 78% of the sales org against a 70% target for this quarter.",
+    "adoption at 78% of the sales org against a 70% target for this quarter"
+   ]
+  }
+ ]
+}

@@ -23,6 +23,7 @@ vercel.json       Clean URLs + security headers + cache policy
 CHANGELOG.md      What changed and why, newest first
 DEPLOY.md         How to deploy, roll back, and add a custom domain
 README.md         This file
+staging/          Work in progress for other repos; not deployed (see staging/README.md)
 ```
 
 > Private planning docs (goals, internal notes, owner to-dos) live in a git-ignored

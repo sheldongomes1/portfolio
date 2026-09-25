@@ -1,0 +1,31 @@
+# CI for the skill-gate repository: unit tests, every committed receipt re-verified,
+# and the demo receipts checked for staleness.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Unit tests (every model call is faked)
+        run: pytest
+      - name: Verify every committed receipt
+        run: |
+          set -euo pipefail
+          receipts=$(find . -path ./.venv -prune -o -path '*/receipts/*/receipt.json' -print)
+          test -n "$receipts"
+          for r in $receipts; do skillgate verify-receipt "$r"; done
+      - name: Check the demo receipts are not stale
+        run: |
+          set -euo pipefail
+          for d in examples/refund-triage; do (cd "$d" && skillgate check-stale); done

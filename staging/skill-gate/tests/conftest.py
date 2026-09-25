@@ -54,7 +54,9 @@ def write_config(root: Path, **overrides: Any) -> Path:
         "skill": {"name": "echo", "path": "skill.md", "references": []},
         "judge": {"provider": "anthropic", "model": "claude-opus-5", "settings": {"effort": "high"}},
         "repeats": 2,
-        "pricing": {"claude-opus-5": {"input_per_mtok": 5.0, "output_per_mtok": 25.0}},
+        "budget": {"max_usd": 5.0},
+        "pricing": {"claude-opus-5": {"input_per_mtok": 5.0, "output_per_mtok": 25.0},
+                    "gemini-test-001": {"input_per_mtok": 1.0, "output_per_mtok": 4.0}},
     }
     cfg.update(overrides)
     path = root / "skillgate.yaml"
@@ -62,7 +64,7 @@ def write_config(root: Path, **overrides: Any) -> Path:
     return path
 
 
-def make_project(root: Path, n: int = 10, edge: int = 4, model_expectation: bool = False) -> Path:
+def make_project(root: Path, n: int = 10, edge: int = 4, model_expectation: bool = False, model_checks: int = 0) -> Path:
     """A synthetic project: n cases, each expecting the output 'OK <id>'."""
     root.mkdir(parents=True, exist_ok=True)
     (root / "skill.md").write_text(SKILL, encoding="utf-8")
@@ -75,6 +77,8 @@ def make_project(root: Path, n: int = 10, edge: int = 4, model_expectation: bool
                  "check": {"type": "regex", "pattern": rf"^OK {cid}$"}}]
         if model_expectation:
             exps.append({"id": "E2", "text": "The output is a single line.", "kind": "other"})
+        for m in range(model_checks):
+            exps.append({"id": f"M{m + 1}", "text": f"Model-judged property number {m + 1} holds.", "kind": "other"})
         tags = ["edge"] if i <= edge else ["plain"]
         data = {"id": cid, "input": {"text": f"case {cid}"}, "expectations": exps, "tags": tags,
                 "source": "expert", "confirmed_by": "Tester", "confirmed_at": "2026-09-24", "notes": f"SECRET-NOTE-{cid}"}
@@ -112,3 +116,34 @@ def example_copy(tmp_path: Path) -> Path:
     dest = tmp_path / "refund-triage"
     shutil.copytree(EXAMPLE, dest, ignore=shutil.ignore_patterns("runs", "receipts", "reports"))
     return dest
+
+
+class FakeExecutor:
+    """Scripted stand-in for the Gemini executor. `fn(user_message)` returns text or raises."""
+
+    def __init__(self, fn: Callable[[str], Any] | None = None, model: str = "gemini-test-001"):
+        self.model = model
+        self.settings = {"temperature": 1.0}
+        self.fn = fn or (lambda user: "OK " + user.split("case ")[-1].split()[0])
+        self.calls = 0
+
+    def describe(self) -> dict:
+        return {"name": f"models/{self.model}", "version": "001", "display_name": "Test model"}
+
+    def run(self, *, system: str, user: str):
+        from skillgate.executor import ExecResult
+
+        self.calls += 1
+        out = self.fn(user)
+        if isinstance(out, Exception):
+            raise out
+        return ExecResult(text=out, served_model=self.model, finish_reason="STOP",
+                          input_tokens=200, output_tokens=10, thinking_tokens=5)
+
+
+def add_executor(root: Path, **settings: Any) -> None:
+    path = root / "skillgate.yaml"
+    cfg = yaml.safe_load(path.read_text())
+    cfg["executor"] = {"provider": "gemini", "model": "gemini-test-001",
+                       "settings": settings or {"temperature": 1.0, "max_output_tokens": 500}}
+    path.write_text(yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8")

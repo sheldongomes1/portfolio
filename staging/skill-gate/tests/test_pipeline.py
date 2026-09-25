@@ -5,7 +5,6 @@ import re
 import shutil
 
 import pytest
-import yaml
 
 from skillgate.cases import assign_splits
 from skillgate.config import load_config

@@ -5,7 +5,7 @@
     "medium": 0
   },
   "findings": [],
-  "generated_at": "2026-09-24T22:50:12Z",
+  "generated_at": "2026-09-25T12:23:24Z",
   "passes": {
     "deterministic": "run",
     "model": "not run (--deterministic-only)"

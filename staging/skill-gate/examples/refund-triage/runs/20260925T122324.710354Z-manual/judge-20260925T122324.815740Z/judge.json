@@ -14,7 +14,7 @@
     "ratified_by": "Example maintainer (fictional)",
     "sha256": "10f2985722dd6cd1a7cf1b9056b5eead6026fbde177c5d2f8c770e798e55c100"
   },
-  "finished_at": "2026-09-24T22:50:12Z",
+  "finished_at": "2026-09-25T12:23:24Z",
   "judge": {
     "max_retries": 4,
     "model": "claude-opus-5",
@@ -26,7 +26,7 @@
     },
     "used": false
   },
-  "judge_id": "judge-20260924T225012Z",
+  "judge_id": "judge-20260925T122324.815740Z",
   "outputs": {
     "rt-01/1": "3772249a1f2b6d8af1d41e30fd29e98fc06549bd19163893054712c404ab25f7",
     "rt-01/2": "e8d8e93c4b15af0b152e6f104dfc5917a5b0e29be3a54fe7bc1d0452958ea60a",
@@ -47,7 +47,7 @@
       "sha256": "b21566561723da9c6ecc89694ed211b1ed72d0eb8f2cc95d25eaf3f668414f2d"
     }
   },
-  "run_id": "20260924T225012Z-manual",
+  "run_id": "20260925T122324.710354Z-manual",
   "schema_version": 1,
-  "started_at": "2026-09-24T22:50:12Z"
+  "started_at": "2026-09-25T12:23:24Z"
 }

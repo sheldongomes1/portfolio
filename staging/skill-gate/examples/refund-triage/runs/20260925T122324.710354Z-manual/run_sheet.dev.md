@@ -1,6 +1,6 @@
 # Run sheet: refund-triage, dev split
 
-Run `20260924T225012Z-manual`. 4 case(s), 2 repeat(s) each.
+Run `20260925T122324.710354Z-manual`. 4 case(s), 2 repeat(s) each.
 
 For each case and each repeat:
 

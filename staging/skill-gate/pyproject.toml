@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "skillgate"
-version = "0.2.0"
+version = "0.3.0"
 description = "Verification for AI skills: golden cases, repeated runs, binary judging, and receipts."
 readme = "README.md"
 license = {text = "MIT"}
@@ -12,6 +12,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
     "anthropic>=1.0",
+    "google-genai>=1.0",
 ]
 
 [project.optional-dependencies]
@@ -25,4 +26,5 @@ packages = ["skillgate"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 markers = ["live: calls a real model API; opt in with SKILLGATE_LIVE=1"]

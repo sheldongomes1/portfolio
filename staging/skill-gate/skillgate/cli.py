@@ -329,7 +329,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    from skillgate.envfile import load_env_file
+
     args = build_parser().parse_args(argv)
+    load_env_file()
     try:
         return args.func(args)
     except SkillGateError as e:

@@ -63,6 +63,21 @@ receipt says why.
 To see tamper detection, change one character in any file under `runs/*/outputs/` and run
 `skillgate verify-receipt receipts/<id>/receipt.json` again.
 
+## Run it on your computer with your own keys
+
+```bash
+git clone https://github.com/sheldongomes1/portfolio && cd portfolio/staging/skill-gate
+./setup.sh              # .venv, install, tests, and a .env created from .env.example
+# open .env and paste ANTHROPIC_API_KEY and GEMINI_API_KEY
+. .venv/bin/activate
+```
+
+Skill Gate reads `.env` itself (from the folder you run it in, or the nearest parent up to the
+repository root), so there is nothing to export. A variable already set in your shell wins.
+`.env` is git-ignored; never commit it. To work on Skill Gate with Claude Code, run `claude` in
+this folder: `CLAUDE.md` tells it the project rules, the current milestone and how to check
+the keys without spending anything.
+
 ## The workflow
 
 ```
@@ -158,8 +173,11 @@ flag**). Cases tagged `should_not_flag` should carry a `no_flag` expectation.
 Copy `skillgate.yaml.example` to your project as `skillgate.yaml`. Model IDs must be exact
 versions; floating aliases such as `-latest` are rejected. Missing API keys
 (`ANTHROPIC_API_KEY` for the judge, `GEMINI_API_KEY` for API mode) stop the command with a
-clear message; Skill Gate never switches to another model. The executor model and its price are
-left for you to fill in from Google's current model list and pricing page.
+clear message; Skill Gate never switches to another model. The example names `gemini-3.8-flash`,
+a stable Gemini model, and its paid-tier price, both checked on Google's model and pricing pages
+on 2026-09-25; recheck them when you copy the file (the price doubles on 2027-01-01). Google's
+pricing page says free-tier Gemini requests are used to improve Google's products; use a
+paid-tier key for anything that is not fictional.
 
 Prompts used by Skill Gate live in `prompts/` as versioned files. Their SHA-256 hashes go into
 every receipt.
@@ -178,9 +196,12 @@ CI (`.github/workflows/ci.yml`) runs the tests, re-verifies every committed rece
 
 ```
 skillgate/        the CLI and library
-prompts/          versioned prompts (judge, lint, criteria drafting)
+prompts/          versioned prompts (judge, lint, criteria drafting, executor assembly)
 tests/            pytest suite
 examples/         refund-triage: a complete, key-free example with a committed receipt
+setup.sh          one-time local setup
+.env.example      template for your API keys (copy to .env, which is git-ignored)
+CLAUDE.md         project rules and status for Claude Code
 ASSUMPTIONS.md    every assumption and interpretation made while building this
 CHANGELOG.md
 ```

@@ -36,9 +36,13 @@ def iso(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def stamp(dt: datetime) -> str:
-    """A sortable, filesystem-safe UTC time stamp: 20260924T221500Z."""
-    return dt.strftime("%Y%m%dT%H%M%SZ")
+def dir_stamp() -> str:
+    """A sortable UTC time stamp with microseconds, for naming runs, judgments and receipts.
+
+    Microseconds keep two runs started in the same second apart, and keep name order equal
+    to creation order.
+    """
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
 
 
 _CURLY = str.maketrans({"“": '"', "”": '"', "‘": "'", "’": "'"})

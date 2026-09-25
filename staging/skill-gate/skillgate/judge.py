@@ -26,6 +26,7 @@ from skillgate.cases import Case, load_cases
 from skillgate.checks import run_check
 from skillgate.config import Config
 from skillgate.criteria import check_ratified, load_criteria, ratification_path
+from skillgate.estimate import check_budget, estimate
 from skillgate.llm import JSONModel, LLMError, make_model
 from skillgate.prompts import Prompt, load_prompt
 from skillgate.util import (
@@ -37,7 +38,7 @@ from skillgate.util import (
     read_json,
     rel,
     sha256_file,
-    stamp,
+    dir_stamp,
     utc_now,
     write_json,
 )
@@ -125,6 +126,8 @@ def judge_with_model(model: JSONModel, prompt: Prompt, check: Check, case_input:
         evidence = str(data.get("evidence", ""))
         if verdict not in ("PASS", "FAIL"):
             problem = f"the verdict was {verdict!r}; it must be PASS or FAIL."
+        elif not output.strip():
+            problem = None if not evidence.strip() else "the output is empty, so the evidence must be empty."
         elif not evidence.strip():
             problem = "the evidence was empty."
         elif normalize_for_match(evidence) not in normalize_for_match(output):
@@ -155,7 +158,8 @@ def latest_run(runs_dir: Path) -> Path:
 
 def judge_run(cfg: Config, run_dir: Path | None = None, *,
               model_factory: Callable[[], JSONModel] | None = None,
-              on_model_needed: Callable[[], None] | None = None) -> Path:
+              on_model_needed: Callable[[], None] | None = None,
+              confirm_budget: bool = False) -> Path:
     run_dir = Path(run_dir) if run_dir else latest_run(cfg.paths["runs"])
     run = read_json(run_dir / "run.json")
     root = cfg.root
@@ -182,15 +186,28 @@ def judge_run(cfg: Config, run_dir: Path | None = None, *,
             out_path = run_dir / "outputs" / case.id / f"{r}.md"
             plan.append((case, r, out_path, checks))
 
+    # In API mode, execution.json says which repeats produced an output. A repeat whose
+    # executor call failed is ERROR; a completed but empty answer is judged like any other.
+    execution = read_json(run_dir / "execution.json") if run["mode"] == "api" else None
+    if run["mode"] == "api" and execution is None:
+        raise SkillGateError(f"{run_dir.name}: API run has no execution.json; it did not finish")
+
+    def exec_status(case_id: str, r: int) -> dict[str, Any] | None:
+        return execution["outputs"].get(f"{case_id}/{r}") if execution else None
+
     needs_model = any(ch.check is None for _, _, _, checks in plan for ch in checks)
     model = None
     if needs_model:
+        outputs = {f"{c.id}/{r}": (p.read_text(encoding="utf-8") if p.is_file() else "") for c, r, p, _ in plan}
+        est = estimate(cfg, cases=[cases_by_id[rc["id"]] for rc in run["cases"]], criteria=criteria, k=k,
+                       mode="judge", outputs=outputs)
+        check_budget(cfg, est, confirm_budget, "judging this run")
         if on_model_needed:
             on_model_needed()
         model = model_factory() if model_factory else make_model(cfg.judge)
 
     started = utc_now()
-    judge_dir = new_dir(run_dir / f"judge-{stamp(started)}")
+    judge_dir = new_dir(run_dir / f"judge-{dir_stamp()}")
     log = CallLog(judge_dir / "log.jsonl", cfg)
     log.write({"event": "start", "run_id": run["run_id"], "judge_model": cfg.judge.model})
 
@@ -204,7 +221,12 @@ def judge_run(cfg: Config, run_dir: Path | None = None, *,
         for ch in checks:
             base = {"case_id": case.id, "split": case.split, "repeat": r, "check_id": ch.id,
                     "check_kind": ch.kind, "expectation_kind": ch.expectation_kind}
-            if not output.strip():
+            status = exec_status(case.id, r)
+            if status is not None and status["status"] != "ok":
+                results.append({**base, "method": "none", "verdict": "ERROR",
+                                "reason": f"The executor produced no output: {status.get('error', status['status'])}",
+                                "evidence": ""})
+            elif execution is None and not output.strip():
                 results.append({**base, "method": "none", "verdict": "ERROR",
                                 "reason": "Output file is missing or empty; the case was not run.", "evidence": ""})
             elif ch.check is not None:

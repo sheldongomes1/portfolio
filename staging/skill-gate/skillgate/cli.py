@@ -119,13 +119,42 @@ def cmd_criteria(args) -> int:
     return 0
 
 
-def cmd_run(args) -> int:
-    from skillgate.run import create_manual_run
+def cmd_estimate(args) -> int:
+    from skillgate.cases import load_cases
+    from skillgate.criteria import load_criteria
+    from skillgate.estimate import estimate, render
+    from skillgate.run import executor_cache_keys, select_cases
+    from skillgate.skill import load_document, load_skill
 
     cfg = _cfg(args)
-    if args.mode != "manual":
-        print("API mode arrives in milestone 3. Use --mode manual.", file=sys.stderr)
-        return 2
+    k = args.k or cfg.repeats
+    cases = select_cases(load_cases(cfg.paths["cases"]), args.split)
+    skill = load_skill(cfg.skill_path, cfg.skill_name)
+    refs = [load_document(p) for p in cfg.reference_paths]
+    keys = executor_cache_keys(cfg, skill, refs, cases, k) if args.mode == "api" and cfg.executor else None
+    est = estimate(cfg, cases=cases, criteria=load_criteria(cfg.paths["criteria"]), k=k, mode=args.mode,
+                   skill=skill, references=refs, cache_keys=keys)
+    print(render(est))
+    budget = cfg.budget.get("max_usd")
+    if budget is not None and est["total_cost_usd"] > float(budget):
+        print("OVER BUDGET: a paid step with this estimate aborts unless you pass --confirm-budget.")
+    return 0
+
+
+def cmd_run(args) -> int:
+    from skillgate.notice import ensure_accepted
+    from skillgate.run import create_api_run, create_manual_run
+
+    cfg = _cfg(args)
+    if args.mode == "api":
+        def notice():
+            ensure_accepted(cfg.root, "the skill, its reference files and the case inputs", "Google (Gemini API)", args.yes)
+        run_dir, ex = create_api_run(cfg, split=args.split, k=args.k, confirm_budget=args.confirm_budget, on_paid=notice)
+        cost = "unknown" if ex["cost_usd"] is None else f"${ex['cost_usd']:.4f}"
+        print(f"Created {run_dir}: {ex['calls']} executor call(s), {ex['cache_hits']} from cache, {ex['errors']} failed, "
+              f"cost {cost}. Next: `skillgate judge`.")
+        print("Note: API mode emulates a Workspace skill; the receipt will say so.")
+        return 0
     run_dir, warnings = create_manual_run(cfg, split=args.split, k=args.k)
     for w in warnings:
         print(f"WARNING: {w}")
@@ -144,11 +173,53 @@ def cmd_judge(args) -> int:
     def notice():
         ensure_accepted(cfg.root, "case inputs and the skill's outputs", "Anthropic", args.yes)
 
-    judge_dir = judge_run(cfg, Path(args.run) if args.run else None, on_model_needed=notice)
+    judge_dir = judge_run(cfg, Path(args.run) if args.run else None, on_model_needed=notice,
+                          confirm_budget=args.confirm_budget)
     s = read_json(judge_dir / "summary.json")
     for sp, x in s["by_split"].items():
         print(f"{sp}: {x['passed']} of {x['cases']} cases passed ({x['failed']} failed, {x['flaky']} flaky, {x['error_cases']} ERROR)")
     print(f"Judgments: {s['totals']['PASS']} PASS, {s['totals']['FAIL']} FAIL, {s['totals']['ERROR']} ERROR. Report: {judge_dir / 'report.md'}")
+    return 0
+
+
+def cmd_calibrate(args) -> int:
+    from skillgate.calibrate import export_sheet, import_labels, interactive
+    from skillgate.judge import latest_run
+    from skillgate.receipt import latest_judge
+    from skillgate.util import read_json
+
+    cfg = _cfg(args)
+    if args.import_csv:
+        out = import_labels(cfg, Path(args.import_csv), by=args.by or "")
+    else:
+        run_dir = Path(args.run) if args.run else latest_run(cfg.paths["runs"])
+        judge_dir = Path(args.judge) if args.judge else latest_judge(run_dir)
+        if args.export:
+            out = export_sheet(cfg, judge_dir, sample=args.sample, seed=args.seed)
+            print(f"Wrote {out / 'sheet.md'} and {out / 'labels.csv'}. Label every item PASS or FAIL without looking "
+                  f"up the judge's verdicts, then run: skillgate calibrate --import {out / 'labels.csv'} --by \"Name\"")
+            return 0
+        out = interactive(cfg, judge_dir, by=args.by or "", sample=args.sample, seed=args.seed)
+    rec = read_json(out)
+    c = rec["counts"]
+    print(f"{rec['status']}: {c['agree']} of {c['items']} agree; {c['judge_fail_agree']} of {c['judge_fail']} on the "
+          f"judge's FAIL verdicts. Wrote {out}.")
+    for reason in rec["reasons"]:
+        print(f"  - {reason}")
+    return 0
+
+
+def cmd_stale(args) -> int:
+    from skillgate.stale import check_stale
+
+    cfg = _cfg(args)
+    changes, receipt = check_stale(cfg, Path(args.receipt) if args.receipt else None)
+    if changes:
+        print(f"STALE: {receipt} no longer describes the current skill setup.")
+        for c in changes:
+            print(f"  - {c}")
+        return 1
+    print(f"FRESH: {receipt} matches the current skill, references, models, prompts, criteria and cases.")
     return 0
 
 
@@ -210,17 +281,40 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--yes", action="store_true")
     s.set_defaults(func=cmd_criteria)
 
-    s = sub.add_parser("run", help="run the golden cases (manual mode: run sheet + output files)")
+    s = sub.add_parser("estimate", help="estimate model calls, tokens and cost before a paid run")
+    s.add_argument("--mode", choices=["manual", "api"], default="api")
+    s.add_argument("--split", choices=["all", "dev", "holdout"], default="all")
+    s.add_argument("--k", type=int, help="repeats per case (default: repeats in skillgate.yaml)")
+    s.set_defaults(func=cmd_estimate)
+
+    s = sub.add_parser("run", help="run the golden cases (manual: run sheet; api: the executor model)")
     s.add_argument("skill", nargs="?")
     s.add_argument("--mode", choices=["manual", "api"], default="manual")
     s.add_argument("--split", choices=["all", "dev", "holdout"], default="all")
     s.add_argument("--k", type=int, help="repeats per case (default: repeats in skillgate.yaml)")
+    s.add_argument("--confirm-budget", action="store_true", help="run even if the estimate exceeds budget.max_usd")
+    s.add_argument("--yes", action="store_true", help="confirm the data-handling notice non-interactively")
     s.set_defaults(func=cmd_run)
 
     s = sub.add_parser("judge", help="judge every output of a run")
     s.add_argument("--run", help="run directory (default: latest)")
+    s.add_argument("--confirm-budget", action="store_true", help="judge even if the estimate exceeds budget.max_usd")
     s.add_argument("--yes", action="store_true")
     s.set_defaults(func=cmd_judge)
+
+    s = sub.add_parser("calibrate", help="measure judge-human agreement on a blind sample")
+    s.add_argument("--run", help="run directory whose judgments to sample (default: latest)")
+    s.add_argument("--judge", help="judge directory inside the run (default: latest)")
+    s.add_argument("--sample", type=int, help="sample size (at least thresholds.calibration_min_sample)")
+    s.add_argument("--seed", type=int, help="seed for the sample (default: random, recorded)")
+    s.add_argument("--export", action="store_true", help="write a blind labeling sheet instead of asking here")
+    s.add_argument("--import", dest="import_csv", metavar="CSV", help="import labels.csv from an exported sheet")
+    s.add_argument("--by", help="who labeled the sample (required)")
+    s.set_defaults(func=cmd_calibrate)
+
+    s = sub.add_parser("check-stale", help="exit 1 if the latest receipt no longer matches the skill setup")
+    s.add_argument("--receipt", help="receipt.json to check (default: the latest)")
+    s.set_defaults(func=cmd_stale)
 
     s = sub.add_parser("receipt", help="write receipt.md and receipt.json for a judged run")
     s.add_argument("--run", help="run directory (default: latest)")

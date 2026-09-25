@@ -2,6 +2,30 @@
 
 Newest first.
 
+## 0.3.0 — 2026-09-25 — Milestone 3: API mode, cost, calibration, staleness
+
+### Added
+- `skillgate estimate`: model calls, tokens and cost for the executor and the judge, estimated
+  offline. `run --mode api` and `judge` stop above `budget.max_usd` unless `--confirm-budget`;
+  a model without a configured price cannot be estimated, so paid steps refuse to start.
+- `skillgate run --mode api`: runs each case `k` times through Gemini (google-genai SDK), with the
+  skill and reference files assembled by the versioned `prompts/executor.v1.md`. Checks the
+  model exists before any paid call and records its reported version and every setting. Outputs
+  are cached by skill, references, case, model, settings, prompt and repeat; failures are not
+  cached and become ERROR in judging. API-mode receipts are flagged API EMULATION.
+- `skillgate calibrate`: a blind, stratified sample of dev-case model judgments, labeled in the
+  terminal or through an exported sheet. Agreement is counted overall and on FAIL verdicts; the
+  record is tied to the judge's model, settings and prompt hash, and receipts look it up.
+- `skillgate check-stale`: STALE (exit 1) when the skill, a reference, a model or its settings, a
+  prompt, the criteria or the golden cases differ from the latest receipt.
+- CI: tests, `verify-receipt` on every committed receipt, `check-stale` on the example.
+- `verify-receipt` also recomputes the calibration from its record and labeled judgments.
+
+### Changed
+- Run, judgment and receipt folders carry microseconds in their names, so two created in the
+  same second never collide.
+- `receipt.md` lists every prompt hash (judge and executor) in sorted order.
+
 ## 0.2.0 — 2026-09-24 — Milestone 2: core
 
 ### Added

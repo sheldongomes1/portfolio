@@ -12,11 +12,13 @@ from pathlib import Path
 from typing import Any
 
 from skillgate.aggregate import aggregate
+from skillgate.calibrate import find_record, judge_identity
 from skillgate.cases import golden_stats, load_cases, load_golden, verify_splits
 from skillgate.config import Config
 from skillgate.criteria import check_ratified, coverage, load_criteria, ratification_path
 from skillgate.judge import JUDGE_PROMPT, latest_run
 from skillgate.prompts import load_prompt
+from skillgate.run import config_models
 from skillgate.skill import extract_rules, load_skill
 from skillgate.util import (
     SkillGateError,
@@ -28,7 +30,7 @@ from skillgate.util import (
     rel,
     sha256_file,
     sha256_text,
-    stamp,
+    dir_stamp,
     utc_now,
     write_json,
 )
@@ -51,6 +53,49 @@ def load_judgments(judge_dir: Path) -> tuple[list[dict[str, Any]], list[Path]]:
     for f in files:
         out.extend(read_json(f))
     return out, files
+
+
+def executor_block(run: dict[str, Any], capture: dict[str, Any], execution: dict[str, Any] | None) -> dict[str, Any]:
+    ex = dict(run["executor"])
+    if run["mode"] == "manual":
+        ex.update({k: capture[k] for k in ("surface", "run_date", "operator")})
+    if execution is not None:
+        ex.update({"served_models": execution["served_models"], "calls": execution["calls"],
+                   "cache_hits": execution["cache_hits"], "errors": execution["errors"],
+                   "cost_usd": execution["cost_usd"]})
+    return ex
+
+
+def calibration_status(cfg: Config, identity: dict[str, Any], judge_used: bool) -> tuple[dict[str, Any], list]:
+    """The calibration block for a receipt, and the files it rests on (for the manifest)."""
+    if not judge_used:
+        return {"status": "NOT APPLICABLE", "reason": "every check was deterministic; no model judged anything"}, []
+    path = find_record(cfg, identity)
+    if path is None:
+        return {"status": "JUDGE UNCALIBRATED",
+                "reason": "no calibration record for this judge (model, settings and prompt); run `skillgate calibrate`"}, []
+    rec = read_json(path)
+    files = [(path, "calibration")] + [(cfg.root / it["judgment_file"], "calibration_judgment") for it in rec["items"]]
+    block = calibration_block(rec, rel(path, cfg.root))
+    changed = [it["item_id"] for it in rec["items"]
+               if not (cfg.root / it["judgment_file"]).is_file()
+               or sha256_file(cfg.root / it["judgment_file"]) != it["judgment_sha256"]]
+    if changed:
+        block.update(status="JUDGE UNCALIBRATED",
+                     reason=f"the calibration record's judgments changed after labeling ({', '.join(changed[:5])})")
+        files = [(path, "calibration")]
+    return block, files
+
+
+def calibration_block(rec: dict[str, Any], record_path: str) -> dict[str, Any]:
+    c, req = rec["counts"], rec["required"]
+    detail = (f"{c['agree']} of {c['items']} labels agree with the judge (at least {req['agree']} required); "
+              f"{c['judge_fail_agree']} of {c['judge_fail']} on the judge's FAIL verdicts "
+              f"(at least {req['judge_fail_agree']} required); labeled blind by {rec['labeled_by']} at {rec['labeled_at']}")
+    if rec["status"] == "CALIBRATED":
+        return {"status": "CALIBRATED", "reason": detail, "record": record_path, "counts": c, "required": req}
+    return {"status": "JUDGE UNCALIBRATED", "reason": "; ".join(rec["reasons"]) + f" ({detail})",
+            "record": record_path, "counts": c, "required": req}
 
 
 def compute_verdict(ctx: dict[str, Any]) -> tuple[str, list[str], list[str]]:
@@ -177,16 +222,13 @@ def build_receipt(cfg: Config, run_dir: Path | None = None, judge_dir: Path | No
         capture = {k2: (str(cap.get(k2)) if cap.get(k2) else "") for k2 in ("surface", "run_date", "operator", "notes")}
         capture["complete"] = bool(capture["surface"] and capture["run_date"])
 
-    if meta["judge"]["used"]:
-        calibration = {"status": "JUDGE UNCALIBRATED",
-                       "reason": "no calibration record for this judge model and prompt"}
-    else:
-        calibration = {"status": "NOT APPLICABLE", "reason": "every check was deterministic; no model judged anything"}
-
     manifest: list[dict[str, str]] = []
 
     def add(path: Path, role: str) -> None:
         manifest.append({"path": rel(path, root), "role": role, "sha256": sha256_file(path)})
+
+    identity = judge_identity(meta["judge"]["model"], meta["judge"]["settings"], meta["prompts"][JUDGE_PROMPT]["sha256"])
+    calibration, calibration_files = calibration_status(cfg, identity, meta["judge"]["used"])
 
     add(cfg.path, "config")
     add(skill.path, "skill")
@@ -204,6 +246,11 @@ def build_receipt(cfg: Config, run_dir: Path | None = None, judge_dir: Path | No
     add(run_dir / "run.json", "run")
     if run["mode"] == "manual":
         add(run_dir / "capture.yaml", "capture")
+    execution = None
+    if run["mode"] == "api":
+        execution = read_json(run_dir / "execution.json")
+        add(run_dir / "execution.json", "execution")
+        add(run_dir / "log.jsonl", "execution_log")
     for rc in run["cases"]:
         for r in range(1, k + 1):
             p = run_dir / "outputs" / rc["id"] / f"{r}.md"
@@ -213,6 +260,11 @@ def build_receipt(cfg: Config, run_dir: Path | None = None, judge_dir: Path | No
         add(judge_dir / name, role)
     for f in judgment_files:
         add(f, "judgment")
+    listed = {m["path"] for m in manifest}
+    for path, role in calibration_files:
+        if rel(path, root) not in listed:
+            add(path, role)
+            listed.add(rel(path, root))
 
     now = utc_now()
     ctx: dict[str, Any] = {
@@ -222,11 +274,13 @@ def build_receipt(cfg: Config, run_dir: Path | None = None, judge_dir: Path | No
         "skill": {"name": skill.name, "version": skill.version, "path": rel(skill.path, root), "sha256": skill.sha256},
         "references": run["references"],
         "mode": run["mode"],
-        "executor": run["executor"] if run["mode"] != "manual" else {**run["executor"], **{k2: capture[k2] for k2 in ("surface", "run_date", "operator")}},
+        "executor": executor_block(run, capture, execution),
+        "config_models": run.get("config_models") or config_models(cfg),
         "api_note": API_NOTE if run["mode"] == "api" else None,
         "judge": {"provider": meta["judge"]["provider"], "model": meta["judge"]["model"], "settings": meta["judge"]["settings"],
                   "used": meta["judge"]["used"], "served_models": meta["judge"]["served_models"]},
-        "prompts": {name: p["sha256"] for name, p in meta["prompts"].items()},
+        "prompts": {**{name: p["sha256"] for name, p in meta["prompts"].items()},
+                    **(run["executor"].get("prompt") or {})},
         "run": {"run_id": run["run_id"], "created_at": run["created_at"], "judged_at": meta["finished_at"],
                 "judge_id": meta["judge_id"], "k": k,
                 "cases": [{"id": rc["id"], "split": rc["split"]} for rc in run["cases"]]},
@@ -252,7 +306,7 @@ def build_receipt(cfg: Config, run_dir: Path | None = None, judge_dir: Path | No
     ctx.update(verdict=verdict, reasons=reasons, flags=flags, warnings=stats["warnings"])
     ctx["consistency_sha256"] = consistency_hash(ctx)
 
-    out_dir = new_dir(cfg.paths["receipts"] / f"{stamp(now)}-{skill.name}")
+    out_dir = new_dir(cfg.paths["receipts"] / f"{dir_stamp()}-{skill.name}")
     write_json(out_dir / "receipt.json", ctx)
     (out_dir / "receipt.md").write_text(render_md(ctx), encoding="utf-8")
     return out_dir
@@ -286,10 +340,12 @@ def render_md(r: dict[str, Any]) -> str:
         L.append(f"| Mode | manual: surface \"{ex.get('surface') or 'not recorded'}\", run date {ex.get('run_date') or 'not recorded'}, operator {ex.get('operator') or 'not recorded'} |")
     else:
         L.append(f"| Mode | {r['mode']}: executor `{ex.get('model')}` settings `{canonical_json(ex.get('settings', {}))}` |")
+        L.append(f"| Executor calls | {ex.get('calls')} call(s), {ex.get('cache_hits')} from cache, {ex.get('errors')} failed; "
+                 f"served by {', '.join(ex.get('served_models') or []) or 'no call'} |")
     j = r["judge"]
     L.append(f"| Judge | `{j['model']}` settings `{canonical_json(j['settings'])}`" + ("" if j["used"] else " (not called: all checks deterministic)") + " |")
-    for name, h in r["prompts"].items():
-        L.append(f"| Judge prompt | `{name}` SHA-256 `{h}` |")
+    for name, h in sorted(r["prompts"].items()):
+        L.append(f"| Prompt | `{name}` SHA-256 `{h}` |")
     run = r["run"]
     L += [f"| Run | `{run['run_id']}`, judged `{run['judge_id']}`, repeats k = {run['k']} |",
           f"| Receipt generated | {r['generated_at']} (UTC) |", ""]

@@ -15,13 +15,14 @@ one, or on the second run of the same input. Skill Gate turns "it looked fine" i
 - a receipt listing the SHA-256 of every file it rests on, which `verify-receipt` recomputes.
 
 > **Data handling.** Skill Gate sends the skill, its reference files, case inputs and skill
-> outputs to external model APIs (Anthropic for judging and linting; Google, from milestone 3,
-> for API-mode runs). Use fictional data, or get the data owner's approval before running it on
-> anything confidential. The first command that would send data asks you to confirm.
+> outputs to external model APIs (Anthropic for judging and linting; Google for API-mode runs).
+> Use fictional data, or get the data owner's approval before running it on anything
+> confidential. The first command that would send data asks you to confirm.
 
 ## Status
 
-This is being built in milestones (PRD v2). **Milestone 2 (core) is done:**
+This is being built in milestones (PRD v2). **Milestones 2 (core) and 3 (API mode, cost,
+calibration, staleness) are done:**
 
 | Command | Status |
 |---|---|
@@ -32,11 +33,16 @@ This is being built in milestones (PRD v2). **Milestone 2 (core) is done:**
 | `run --mode manual` | done, with repeats |
 | `judge` | done: deterministic checks, model judge, ERROR handling |
 | `receipt`, `verify-receipt` | done |
-| `estimate`, `run --mode api`, `calibrate`, `check-stale`, CI | milestone 3 |
+| `estimate`, budget cap | done |
+| `run --mode api` with caching | done; not yet run against the real Gemini API |
+| `calibrate` | done: blind labeling in the terminal or with an exported sheet |
+| `check-stale` | done |
+| CI | done: tests, every committed receipt re-verified, staleness |
 | Skill Gate skill (`skill/`), invoice demo, SPEC.md, one-pager | milestone 4 |
 
-Until `calibrate` exists, any receipt that used the model judge is marked `JUDGE UNCALIBRATED`
-and cannot be VERIFIED. A run decided entirely by deterministic checks needs no calibration.
+A receipt that used the model judge is marked `JUDGE UNCALIBRATED`, and cannot be VERIFIED,
+until that judge (model, settings and prompt) has a passing calibration record. A run decided
+entirely by deterministic checks needs no calibration.
 
 ## Quick start: a receipt in two minutes, no API key
 
@@ -60,7 +66,7 @@ To see tamper detection, change one character in any file under `runs/*/outputs/
 ## The workflow
 
 ```
-lint → interview → split → criteria → run → judge → receipt → verify-receipt
+lint → interview → split → criteria → [estimate] → run → judge → calibrate → receipt → verify-receipt → check-stale
 ```
 
 1. **`skillgate lint`** reads the skill (`.md`, `.txt` or a `.docx` export) and writes
@@ -83,27 +89,48 @@ lint → interview → split → criteria → run → judge → receipt → veri
    `skillgate criteria --ratify --by "Name"`. Editing it afterwards invalidates the
    ratification. `coverage.md` maps the skill's rules to the checks that trace to them and lists
    uncovered rules.
-5. **`skillgate run --mode manual`** creates `runs/<time>-manual/` with a run sheet per split,
+5. **`skillgate estimate`** prints the model calls, tokens and cost of a run and its judging,
+   before anything is spent. `run --mode api` and `judge` stop when their estimate exceeds
+   `budget.max_usd`, unless you pass `--confirm-budget`. A model with no price in
+   `skillgate.yaml` cannot be estimated, so paid steps refuse to start.
+6. **`skillgate run --mode manual`** creates `runs/<time>-manual/` with a run sheet per split,
    empty `outputs/<case>/<repeat>.md` files, and `capture.yaml` for where and when it ran. Paste
    each input into the skill (for a Workspace skill, the Gemini side panel), in a fresh
    conversation each time, and save each answer. The holdout sheet is a separate file: ideally
    someone other than the skill's author runs it.
-6. **`skillgate judge`** decides every check on every output. Checks with a `check:` block
+
+   **`skillgate run --mode api`** runs each case `k` times through the executor model (Gemini),
+   with the skill and its reference files as the system instruction. This emulates a Workspace
+   skill; it is not one, and every API-mode receipt says so. Before any paid call it asks the API
+   whether the configured model exists and records its reported version. Outputs are cached by
+   skill, references, case, model, settings, prompt assembly and repeat, so re-running unchanged
+   work costs nothing. A failed or blocked call becomes ERROR for that repeat and is not cached.
+7. **`skillgate judge`** decides every check on every output. Checks with a `check:` block
    (regex, contains, required sections, verbatim quotes) are decided deterministically first.
    The rest go to the judge model, one check per call; the judge sees the output, the input and
    that one check, never the author's notes or earlier verdicts. Its evidence must appear in the
    output, or it is asked once more, then recorded as ERROR. API failures, refusals and
    malformed answers are ERROR. `report.md` details dev failures and withholds holdout details.
-7. **`skillgate receipt`** writes `receipt.md` and `receipt.json`: skill version and hashes,
+8. **`skillgate calibrate`** shows a person a random sample of at least 30 model judgments from
+   dev cases (about half of them FAIL verdicts, when there are that many) with the input, the
+   output and the check, but not the verdict, and asks for PASS or FAIL. Label in the terminal,
+   or `--export` a sheet and `--import` the labels. The judge counts as calibrated only when at
+   least 90% of labels agree overall and on the judge's FAIL verdicts. The record belongs to one
+   judge model, settings and prompt; change any of them and you calibrate again.
+9. **`skillgate receipt`** writes `receipt.md` and `receipt.json`: skill version and hashes,
    mode, judge model and settings, prompt hashes, results by split, misses and false flags,
    FAIL counts per criterion, failing cases (holdout redacted), golden-set make-up and seeds,
    uncovered rules, calibration status, the criteria's ratification, and a manifest of every
    file's SHA-256. The verdict is VERIFIED only if every case passes on both splits on every
    repeat, there are no ERRORs, the judge is calibrated (or unused), and the golden set meets its
    minimums. Otherwise NOT VERIFIED, with every reason.
-8. **`skillgate verify-receipt receipt.json`** recomputes every hash, re-aggregates the results
-   from the judgment files, recomputes the verdict, and re-renders `receipt.md`. Any difference
-   is reported and the command exits 1.
+10. **`skillgate verify-receipt receipt.json`** recomputes every hash, re-aggregates the results
+    from the judgment files, recomputes the calibration and the verdict, and re-renders
+    `receipt.md`. Any difference is reported and the command exits 1.
+11. **`skillgate check-stale`** compares the latest receipt with the project as it is now: the
+    skill, its reference files, the executor and judge models and settings, Skill Gate's prompts,
+    the criteria and the golden cases. If anything changed it prints `STALE` with the changes and
+    exits 1, for CI or a scheduled job.
 
 ## Writing checks
 
@@ -129,8 +156,10 @@ flag**). Cases tagged `should_not_flag` should carry a `no_flag` expectation.
 ## Configuration
 
 Copy `skillgate.yaml.example` to your project as `skillgate.yaml`. Model IDs must be exact
-versions; floating aliases such as `-latest` are rejected. Missing API keys stop the command
-with a clear message; Skill Gate never switches to another model.
+versions; floating aliases such as `-latest` are rejected. Missing API keys
+(`ANTHROPIC_API_KEY` for the judge, `GEMINI_API_KEY` for API mode) stop the command with a
+clear message; Skill Gate never switches to another model. The executor model and its price are
+left for you to fill in from Google's current model list and pricing page.
 
 Prompts used by Skill Gate live in `prompts/` as versioned files. Their SHA-256 hashes go into
 every receipt.
@@ -141,6 +170,9 @@ every receipt.
 pytest                                   # all model calls are faked
 SKILLGATE_LIVE=1 ANTHROPIC_API_KEY=... pytest tests/test_live.py   # one real judge call
 ```
+
+CI (`.github/workflows/ci.yml`) runs the tests, re-verifies every committed receipt, and runs
+`check-stale` on the example.
 
 ## Files
 

@@ -34,6 +34,13 @@ DEFAULT_THRESHOLDS = {
     "calibration_min_sample": 30,
 }
 
+DEFAULT_ESTIMATE = {
+    "chars_per_token": 4,          # rough token count without calling an API
+    "executor_output_tokens": 2000,  # assumed per executor call (answer plus any thinking)
+    "judge_output_tokens": 1500,   # assumed per judge call (thinking plus the JSON verdict)
+    "margin": 1.25,                # multiplier on the total, for re-asks and estimation error
+}
+
 DEFAULT_PATHS = {
     "cases": "golden/cases",
     "golden": "golden/golden.yaml",
@@ -41,6 +48,8 @@ DEFAULT_PATHS = {
     "runs": "runs",
     "receipts": "receipts",
     "reports": "reports",
+    "cache": ".skillgate/cache",
+    "calibration": "calibration",
 }
 
 
@@ -86,6 +95,7 @@ class Config:
     thresholds: dict[str, float]
     budget: dict[str, Any]
     pricing: dict[str, dict[str, float]]
+    estimate: dict[str, float] = field(default_factory=lambda: dict(DEFAULT_ESTIMATE))
 
     @property
     def sha256(self) -> str:
@@ -155,6 +165,8 @@ def load_config(path: Path | None = None) -> Config:
     executor = None
     if raw.get("executor"):
         executor = _model_config(raw["executor"], "executor", default_provider="gemini")
+        if executor.provider != "gemini":
+            raise SkillGateError("executor.provider: only 'gemini' is supported")
 
     repeats = int(raw.get("repeats", 3))
     if repeats < 1:
@@ -174,4 +186,5 @@ def load_config(path: Path | None = None) -> Config:
         thresholds={**DEFAULT_THRESHOLDS, **(raw.get("thresholds") or {})},
         budget=dict(raw.get("budget") or {}),
         pricing={k: dict(v) for k, v in (raw.get("pricing") or {}).items()},
+        estimate={**DEFAULT_ESTIMATE, **(raw.get("estimate") or {})},
     )

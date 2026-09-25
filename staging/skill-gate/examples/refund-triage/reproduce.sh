@@ -13,3 +13,4 @@ cp fixture-outputs/capture.yaml "$run_dir/capture.yaml"
 skillgate judge
 skillgate receipt
 skillgate verify-receipt "$(ls -d receipts/*/ | tail -1)receipt.json"
+skillgate check-stale

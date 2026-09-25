@@ -1,6 +1,6 @@
 # skillgate.yaml: copy this file into your project as skillgate.yaml and edit it.
 # All paths are relative to this file. API keys never go here: set ANTHROPIC_API_KEY
-# (and, from milestone 3, GEMINI_API_KEY) in your environment or an uncommitted .env.
+# (and GEMINI_API_KEY for `run --mode api`) in your environment or an uncommitted .env.
 
 skill:
   name: invoice-review              # used in receipts; defaults to the skill file's folder name
@@ -15,6 +15,8 @@ paths:
   runs: runs                        # one time-stamped directory per run; never overwritten
   receipts: receipts
   reports: reports                  # lint reports
+  calibration: calibration          # judge calibration records
+  cache: .skillgate/cache           # executor output cache (keep it out of git)
 
 # The judge. Exact model IDs only: floating aliases such as "-latest" are rejected,
 # because a receipt must name the model version that judged.
@@ -28,11 +30,16 @@ judge:
   timeout_seconds: 120
   concurrency: 4
 
-# The executor, used by `run --mode api` (milestone 3). Manual mode does not call it.
+# The executor, used by `run --mode api`. Manual mode does not call it. Pick the exact Gemini
+# model version from Google's model list; aliases ending in -latest are rejected. Before any paid
+# call, Skill Gate asks the Gemini API for this model and stops if it does not exist. Every
+# setting here is passed to the model and recorded in the receipt.
 # executor:
 #   provider: gemini
-#   model: <exact Gemini model version, verified against Google's docs>
-#   settings: {temperature: 1.0}
+#   model: <exact Gemini model version>
+#   settings: {temperature: 1.0, max_output_tokens: 4000}
+#   max_retries: 4
+#   concurrency: 4
 
 repeats: 3                          # k: each case runs k times; a case passes only if all k pass
 
@@ -41,12 +48,21 @@ thresholds:
   min_cases_verified: 10            # never VERIFIED below this many
   edge_share: 0.30                  # share of cases tagged edge or should_not_flag
   holdout_share: 0.30               # share of cases drawn into the holdout split
-  calibration_agreement: 0.90       # judge-human agreement required (milestone 3)
+  calibration_agreement: 0.90       # judge-human agreement required, overall and on FAIL verdicts
   calibration_min_sample: 30
 
 budget:
-  max_usd: 10.00                    # `estimate` and `run --mode api` abort above this (milestone 3)
+  max_usd: 10.00                    # `run --mode api` and `judge` stop above this unless --confirm-budget
 
-# Prices per million tokens, for cost logging. Check the provider's pricing page; these change.
+# Assumptions for `skillgate estimate` (tokens are counted offline from characters).
+estimate:
+  chars_per_token: 4
+  executor_output_tokens: 2000      # per executor call, answer plus thinking
+  judge_output_tokens: 1500         # per judge call, thinking plus the verdict
+  margin: 1.25                      # multiplier on the total
+
+# Prices per million tokens, used by `estimate` and the cost logs. A model with no price here
+# cannot be estimated, so paid steps refuse to start. Check each provider's pricing page.
 pricing:
   claude-opus-5: {input_per_mtok: 5.00, output_per_mtok: 25.00}
+  # <exact Gemini model version>: {input_per_mtok: ..., output_per_mtok: ...}

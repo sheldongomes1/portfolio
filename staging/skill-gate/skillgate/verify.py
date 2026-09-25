@@ -3,7 +3,8 @@
 1. Recompute the SHA-256 of every file in the manifest.
 2. Compare the judge prompt hashes with the prompt files in this installation.
 3. Re-aggregate the results from the judgment files and compare.
-4. Recompute the golden-set statistics and split draws from the case files.
+4. Recompute the golden-set statistics and split draws from the case files, and the judge
+   calibration from its record and the judgments it labeled.
 5. Recompute the verdict and its reasons from all of the above.
 6. Re-render receipt.md from receipt.json and compare with the file on disk.
 7. Check the receipt's consistency hash.
@@ -18,10 +19,11 @@ from pathlib import Path
 from typing import Any
 
 from skillgate.aggregate import aggregate
+from skillgate.calibrate import evaluate, judge_identity
 from skillgate.cases import _parse_case, golden_stats, verify_splits
 from skillgate.config import DEFAULT_THRESHOLDS
 from skillgate.prompts import PROMPTS_DIR
-from skillgate.receipt import SCHEMA_VERSION, compute_verdict, consistency_hash, render_md
+from skillgate.receipt import SCHEMA_VERSION, calibration_block, compute_verdict, consistency_hash, render_md
 from skillgate.util import SkillGateError, read_json, read_yaml, sha256_file
 
 
@@ -99,6 +101,27 @@ def verify_receipt(receipt_path: Path, root: Path | None = None) -> tuple[list[s
         if split_problems != r["split_problems"]:
             problems.append("split_problems: does not match the case files and golden.yaml")
         ctx["split_problems"] = split_problems
+    cal_files = by_role.get("calibration", [])
+    if cal_files:
+        rec = read_json(cal_files[0])
+        expected_identity = judge_identity(r["judge"]["model"], r["judge"]["settings"], r["prompts"].get("judge.v1", ""))
+        if rec["judge"] != expected_identity:
+            problems.append("calibration: the record belongs to a different judge (model, settings or prompt)")
+        for it in rec["items"]:
+            jf = root / it["judgment_file"]
+            if not jf.is_file() or sha256_file(jf) != it["judgment_sha256"]:
+                problems.append(f"calibration: judgment {it['judgment_file']} changed after labeling")
+                continue
+            actual = next((j["verdict"] for j in read_json(jf) if j["check_id"] == it["check_id"]), None)
+            if actual != it["judge_verdict"]:
+                problems.append(f"calibration: item {it['item_id']} records a judge verdict the judgment file does not have")
+        recomputed = evaluate(rec["items"], float(rec["threshold"]), int(rec["min_sample"]))
+        if {k: rec[k] for k in ("counts", "required", "status")} != {k: recomputed[k] for k in ("counts", "required", "status")}:
+            problems.append("calibration: counts or status do not match the labeled items")
+        if not problems or not any(p.startswith("calibration:") for p in problems):
+            ctx["calibration"] = {**r["calibration"], **calibration_block(rec, r["calibration"].get("record", ""))}
+    elif r["calibration"]["status"] == "CALIBRATED":
+        problems.append("calibration: the receipt says CALIBRATED but lists no calibration record")
     verdict, reasons, flags = compute_verdict(ctx)
     if verdict != r["verdict"] or reasons != r["reasons"] or flags != r["flags"]:
         problems.append(f"verdict: recomputes to {verdict}, receipt says {r['verdict']}")

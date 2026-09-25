@@ -20,9 +20,9 @@ All results are counts of binary PASS, FAIL and ERROR judgments.
 | Reference | `skill/reference/refund-policy.md` SHA-256 `9bbf024fc27611fc851555db7371cfaafdca490a35275168eebaaa0a9abafbc6` |
 | Mode | manual: surface "hand-written fixture; no model was run", run date 2026-09-24, operator Skill Gate maintainers |
 | Judge | `claude-opus-5` settings `{"effort": "high", "max_tokens": 16000}` (not called: all checks deterministic) |
-| Judge prompt | `judge.v1` SHA-256 `b21566561723da9c6ecc89694ed211b1ed72d0eb8f2cc95d25eaf3f668414f2d` |
-| Run | `20260924T225012Z-manual`, judged `judge-20260924T225012Z`, repeats k = 2 |
-| Receipt generated | 2026-09-24T22:50:12Z (UTC) |
+| Prompt | `judge.v1` SHA-256 `b21566561723da9c6ecc89694ed211b1ed72d0eb8f2cc95d25eaf3f668414f2d` |
+| Run | `20260925T122324.710354Z-manual`, judged `judge-20260925T122324.815740Z`, repeats k = 2 |
+| Receipt generated | 2026-09-25T12:23:24Z (UTC) |
 
 ## Results by split
 
@@ -95,4 +95,4 @@ NOT APPLICABLE: every check was deterministic; no model judged anything.
 The full list with SHA-256 hashes is in `receipt.json`. Run `skillgate verify-receipt` on it to
 recompute every hash, the results and the verdict.
 
-Consistency hash of receipt.json: `30c5050934994186cc18dbc7e84b5a37fc1e5dc16fc4ccc662c2f5bdd57414ab`. This detects accidental edits; it is not a signature.
+Consistency hash of receipt.json: `b2b5bfabe95dfcc7e444f7a95942e8d7b20916e631c6f49c47d7f1b700a24239`. This detects accidental edits; it is not a signature.

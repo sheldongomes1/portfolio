@@ -1,6 +1,6 @@
 # Run sheet: refund-triage, holdout split
 
-Run `20260924T225012Z-manual`. 2 case(s), 2 repeat(s) each.
+Run `20260925T122324.710354Z-manual`. 2 case(s), 2 repeat(s) each.
 
 **Held-out cases.** The skill's author should not read this sheet. Ideally someone else
 runs it, after the skill is frozen for this run.

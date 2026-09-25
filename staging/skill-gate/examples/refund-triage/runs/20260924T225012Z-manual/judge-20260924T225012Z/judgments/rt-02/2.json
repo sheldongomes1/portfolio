@@ -1,0 +1,54 @@
+[
+  {
+    "case_id": "rt-02",
+    "check_id": "C1",
+    "check_kind": "criterion",
+    "check_type": "regex",
+    "evidence": "Decision: DENY",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "Output matches /\\A\\s*Decision: (APPROVE|DENY|ESCALATE)[ \\t]*$/.",
+    "repeat": 2,
+    "split": "dev",
+    "verdict": "PASS"
+  },
+  {
+    "case_id": "rt-02",
+    "check_id": "C2",
+    "check_kind": "criterion",
+    "check_type": "regex",
+    "evidence": "Decision: DENY\nPolicy: P2",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "Output matches /\\A[^\\n]*\\n\\s*Policy: P[1-4][ \\t]*$/.",
+    "repeat": 2,
+    "split": "dev",
+    "verdict": "PASS"
+  },
+  {
+    "case_id": "rt-02",
+    "check_id": "C3",
+    "check_kind": "criterion",
+    "check_type": "verbatim_quotes",
+    "evidence": "I used it a couple of times",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "1 of 1 quote(s) are not verbatim: \"I used it a couple of times\" (not in the input).",
+    "repeat": 2,
+    "split": "dev",
+    "verdict": "FAIL"
+  },
+  {
+    "case_id": "rt-02",
+    "check_id": "E1",
+    "check_kind": "expectation",
+    "check_type": "regex",
+    "evidence": "Decision: DENY\nPolicy: P2",
+    "expectation_kind": "detect",
+    "method": "deterministic",
+    "reason": "Output matches /^Decision: DENY\\s*\\n\\s*Policy: P2\\b/.",
+    "repeat": 2,
+    "split": "dev",
+    "verdict": "PASS"
+  }
+]

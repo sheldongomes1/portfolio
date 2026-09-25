@@ -1,0 +1,15 @@
+# Criteria for refund-triage, reviewed from criteria.proposed.yaml and ratified.
+# Every criterion applies to every case. All three are deterministic checks.
+criteria:
+- id: C1
+  text: The first line is "Decision:" followed by exactly one of APPROVE, DENY or ESCALATE.
+  traces_to: [k0cd1bdd9]
+  check: {type: regex, pattern: '\A\s*Decision: (APPROVE|DENY|ESCALATE)[ \t]*$'}
+- id: C2
+  text: The second line names one policy clause, P1 to P4.
+  traces_to: [k0cd1bdd9, k32c362cb]
+  check: {type: regex, pattern: '\A[^\n]*\n\s*Policy: P[1-4][ \t]*$'}
+- id: C3
+  text: Every passage in double quotes appears verbatim in the customer's message or the order record.
+  traces_to: [k0cd1bdd9]
+  check: {type: verbatim_quotes, min_length: 6}

@@ -1,0 +1,52 @@
+# skillgate.yaml: copy this file into your project as skillgate.yaml and edit it.
+# All paths are relative to this file. API keys never go here: set ANTHROPIC_API_KEY
+# (and, from milestone 3, GEMINI_API_KEY) in your environment or an uncommitted .env.
+
+skill:
+  name: invoice-review              # used in receipts; defaults to the skill file's folder name
+  path: skill/skill.md              # .md, .txt, or a .docx export of the Google Doc
+  references:                       # reference files the skill uses (globs allowed)
+    - skill/reference/*.md
+
+paths:
+  cases: golden/cases               # one YAML file per golden case
+  golden: golden/golden.yaml        # how dev/holdout splits were drawn (seeds)
+  criteria: golden/criteria.yaml    # ratified general criteria
+  runs: runs                        # one time-stamped directory per run; never overwritten
+  receipts: receipts
+  reports: reports                  # lint reports
+
+# The judge. Exact model IDs only: floating aliases such as "-latest" are rejected,
+# because a receipt must name the model version that judged.
+judge:
+  provider: anthropic
+  model: claude-opus-5
+  settings:
+    effort: high                    # recorded in every receipt
+    max_tokens: 16000
+  max_retries: 4                    # API errors are retried with exponential backoff, then ERROR
+  timeout_seconds: 120
+  concurrency: 4
+
+# The executor, used by `run --mode api` (milestone 3). Manual mode does not call it.
+# executor:
+#   provider: gemini
+#   model: <exact Gemini model version, verified against Google's docs>
+#   settings: {temperature: 1.0}
+
+repeats: 3                          # k: each case runs k times; a case passes only if all k pass
+
+thresholds:
+  min_cases_warn: 12                # warn below this many golden cases
+  min_cases_verified: 10            # never VERIFIED below this many
+  edge_share: 0.30                  # share of cases tagged edge or should_not_flag
+  holdout_share: 0.30               # share of cases drawn into the holdout split
+  calibration_agreement: 0.90       # judge-human agreement required (milestone 3)
+  calibration_min_sample: 30
+
+budget:
+  max_usd: 10.00                    # `estimate` and `run --mode api` abort above this (milestone 3)
+
+# Prices per million tokens, for cost logging. Check the provider's pricing page; these change.
+pricing:
+  claude-opus-5: {input_per_mtok: 5.00, output_per_mtok: 25.00}

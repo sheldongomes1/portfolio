@@ -1,0 +1,54 @@
+[
+  {
+    "case_id": "rt-05",
+    "check_id": "C1",
+    "check_kind": "criterion",
+    "check_type": "regex",
+    "evidence": "Decision: APPROVE",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "Output matches /\\A\\s*Decision: (APPROVE|DENY|ESCALATE)[ \\t]*$/.",
+    "repeat": 2,
+    "split": "holdout",
+    "verdict": "PASS"
+  },
+  {
+    "case_id": "rt-05",
+    "check_id": "C2",
+    "check_kind": "criterion",
+    "check_type": "regex",
+    "evidence": "Decision: APPROVE\nPolicy: P1",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "Output matches /\\A[^\\n]*\\n\\s*Policy: P[1-4][ \\t]*$/.",
+    "repeat": 2,
+    "split": "holdout",
+    "verdict": "PASS"
+  },
+  {
+    "case_id": "rt-05",
+    "check_id": "C3",
+    "check_kind": "criterion",
+    "check_type": "verbatim_quotes",
+    "evidence": "",
+    "expectation_kind": null,
+    "method": "deterministic",
+    "reason": "1 quote(s) checked; all verbatim.",
+    "repeat": 2,
+    "split": "holdout",
+    "verdict": "PASS"
+  },
+  {
+    "case_id": "rt-05",
+    "check_id": "E1",
+    "check_kind": "expectation",
+    "check_type": "regex",
+    "evidence": "",
+    "expectation_kind": "detect",
+    "method": "deterministic",
+    "reason": "Output does not match /^Decision: DENY\\b/.",
+    "repeat": 2,
+    "split": "holdout",
+    "verdict": "FAIL"
+  }
+]

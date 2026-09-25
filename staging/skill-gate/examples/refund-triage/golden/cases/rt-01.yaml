@@ -1,0 +1,28 @@
+id: rt-01
+input:
+  text: '@Refund Triage Please triage this refund request.
+
+
+    Customer message:
+
+    Hi, I ordered the rain jacket and it doesn''t fit. It''s still in the bag with the tags on. Can I
+    get a refund?
+
+    '
+  files:
+  - inputs/orders/ORD-1001.md
+expectations:
+- id: E1
+  text: The decision is APPROVE under P1.
+  kind: other
+  traces_to:
+  - k1ee4ba21
+  check:
+    type: regex
+    pattern: '^Decision: APPROVE\s*\n\s*Policy: P1\b'
+tags:
+- happy_path
+source: expert
+confirmed_by: Example maintainer (fictional fixture)
+confirmed_at: '2026-09-24'
+split: dev

@@ -1,0 +1,5 @@
+# Fill this in when the outputs are saved. The receipt records it.
+surface: hand-written fixture; no model was run
+run_date: '2026-09-24'
+operator: Skill Gate maintainers
+notes: Outputs were written by hand to exercise PASS, FAIL, FLAKY, a miss and a false flag.

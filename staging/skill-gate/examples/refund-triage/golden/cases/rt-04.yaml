@@ -1,0 +1,28 @@
+id: rt-04
+input:
+  text: '@Refund Triage Please triage this refund request.
+
+
+    Customer message:
+
+    Please refund the kayak. It''s unused and still boxed.
+
+    '
+  files:
+  - inputs/orders/ORD-1004.md
+expectations:
+- id: E1
+  text: The order over 500 dollars is escalated under P4.
+  kind: detect
+  traces_to:
+  - k1f6f9b61
+  check:
+    type: regex
+    pattern: '^Decision: ESCALATE\s*\n\s*Policy: P4\b'
+tags:
+- edge
+- over_limit
+source: expert
+confirmed_by: Example maintainer (fictional fixture)
+confirmed_at: '2026-09-24'
+split: dev

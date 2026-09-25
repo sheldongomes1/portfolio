@@ -1,5 +1,6 @@
 .env
 .env.*
+!.env.example
 __pycache__/
 *.pyc
 *.egg-info/
@@ -7,3 +8,5 @@ __pycache__/
 .venv/
 # Per-user state (data-handling notice acceptance)
 .skillgate/
+# The owner's PRD: kept local because this repository is public
+PRD.md

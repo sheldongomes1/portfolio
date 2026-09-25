@@ -30,16 +30,17 @@ judge:
   timeout_seconds: 120
   concurrency: 4
 
-# The executor, used by `run --mode api`. Manual mode does not call it. Pick the exact Gemini
-# model version from Google's model list; aliases ending in -latest are rejected. Before any paid
-# call, Skill Gate asks the Gemini API for this model and stops if it does not exist. Every
-# setting here is passed to the model and recorded in the receipt.
-# executor:
-#   provider: gemini
-#   model: <exact Gemini model version>
-#   settings: {temperature: 1.0, max_output_tokens: 4000}
-#   max_retries: 4
-#   concurrency: 4
+# The executor, used by `run --mode api`. Manual mode does not call it. gemini-3.8-flash is a
+# stable model ID from Google's model list (ai.google.dev/gemini-api/docs/models, checked
+# 2026-09-25); aliases ending in -latest are rejected. Before any paid call, Skill Gate asks the
+# Gemini API for this model and stops if it does not exist. Every setting here is passed to the
+# model and recorded in the receipt.
+executor:
+  provider: gemini
+  model: gemini-3.8-flash
+  settings: {temperature: 1.0, max_output_tokens: 8000}
+  max_retries: 4
+  concurrency: 4
 
 repeats: 3                          # k: each case runs k times; a case passes only if all k pass
 
@@ -65,4 +66,6 @@ estimate:
 # cannot be estimated, so paid steps refuse to start. Check each provider's pricing page.
 pricing:
   claude-opus-5: {input_per_mtok: 5.00, output_per_mtok: 25.00}
-  # <exact Gemini model version>: {input_per_mtok: ..., output_per_mtok: ...}
+  # Gemini paid tier through 2026-12-31; it doubles to 1.50 / 7.50 on 2027-01-01
+  # (ai.google.dev/gemini-api/docs/pricing, checked 2026-09-25). Output includes thinking tokens.
+  gemini-3.8-flash: {input_per_mtok: 0.75, output_per_mtok: 3.75}

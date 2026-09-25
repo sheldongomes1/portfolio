@@ -83,4 +83,6 @@ def test_example_config_is_valid(tmp_path):
     (tmp_path / "skill" / "skill.md").write_text("x")
     (tmp_path / "skill" / "reference" / "a.md").write_text("x")
     cfg = load_config(tmp_path / "skillgate.yaml")
-    assert cfg.judge.model == "claude-opus-5" and cfg.repeats == 3 and cfg.executor is None
+    assert cfg.judge.model == "claude-opus-5" and cfg.repeats == 3
+    assert cfg.executor.provider == "gemini" and cfg.executor.model == "gemini-3.8-flash"
+    assert cfg.price(cfg.judge.model, 1, 1) is not None and cfg.price(cfg.executor.model, 1, 1) is not None

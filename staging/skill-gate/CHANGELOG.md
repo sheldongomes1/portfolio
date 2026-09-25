@@ -2,6 +2,19 @@
 
 Newest first.
 
+## 0.3.1 — 2026-09-25 — Local setup
+
+### Added
+- API keys are read from the nearest `.env` (the working directory up to the repository root);
+  the shell's own variables take precedence. `.env.example` is the template.
+- `setup.sh`: virtual environment, install, tests and `.env` in one step.
+- `CLAUDE.md`: project rules, status and key checks for Claude Code.
+
+### Changed
+- `skillgate.yaml.example` names `gemini-3.8-flash` with its paid-tier price, both checked on
+  Google's model and pricing pages on 2026-09-25.
+- With `SKILLGATE_LIVE=1`, the live test also reads the key from `.env`.
+
 ## 0.3.0 — 2026-09-25 — Milestone 3: API mode, cost, calibration, staleness
 
 ### Added

@@ -1,9 +1,12 @@
 """One opt-in smoke test against the real judge model. Skipped unless SKILLGATE_LIVE=1.
 
     SKILLGATE_LIVE=1 ANTHROPIC_API_KEY=... pytest tests/test_live.py
+
+With SKILLGATE_LIVE=1, a key in the nearest .env is used too.
 """
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -13,6 +16,11 @@ from skillgate.llm import AnthropicJSONModel
 from skillgate.prompts import load_prompt
 
 pytestmark = pytest.mark.live
+
+if os.environ.get("SKILLGATE_LIVE") == "1":
+    from skillgate.envfile import load_env_file
+
+    load_env_file(Path(__file__).parent)
 
 
 @pytest.mark.skipif(os.environ.get("SKILLGATE_LIVE") != "1" or not os.environ.get("ANTHROPIC_API_KEY"),
